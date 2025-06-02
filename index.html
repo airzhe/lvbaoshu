@@ -56,6 +56,15 @@
             background: rgba(45, 55, 72, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.15);
         }
+
+        /* 确保 #quizContainer 在应用 glass-morphism 时的样式 */
+        #quizContainer.glass-morphism {
+            background: #9995d9; /* Light Mode */
+        }
+
+        body.dark-mode #quizContainer.glass-morphism {
+            background: rgba(45, 55, 72, 0.6); /* Dark Mode */
+        }
         
         .btn {
             position: relative;
@@ -208,7 +217,7 @@
         }
         #quizContainer.immersive-active .options-grid {
             margin-top: auto;
-            padding-bottom: 1rem;
+            padding-bottom: 2rem;
         }
          #quizContainer.immersive-active .feedback-display {
             position: fixed;
@@ -248,7 +257,8 @@
         .feedback-display {
             text-align: center;
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            /* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.08);  */
+            
             word-break: break-word;
         }
         body.dark-mode .feedback-display.text-green-600 {
@@ -310,10 +320,19 @@
         }
 
         @media (max-width: 768px) {
-            .controls-section .flex-wrap { flex-direction: column; align-items: stretch; }
-            .controls-section .button-group { flex-direction: column; }
-            .controls-section .btn { width: 100%; }
-            .final-score-grid { grid-template-columns: 1fr; }
+            .controls-section { /* Changed from .controls-section .flex-wrap */
+                flex-direction: column; 
+                align-items: stretch; 
+            }
+            .controls-section .button-group { 
+                flex-direction: column; 
+            }
+            .controls-section .btn { 
+                width: 100%; 
+            }
+            .final-score-grid { 
+                grid-template-columns: 1fr; 
+            }
         }
     </style>
 </head>
@@ -340,27 +359,49 @@
         </div>
 
         <!-- Controls -->
-        <div class="controls-section glass-morphism rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 flex flex-wrap gap-3 sm:gap-4 items-center justify-center shadow-xl animate-[slideUp_0.8s_ease_0.2s]">
+        <div class="controls-section glass-morphism rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 flex flex-wrap gap-x-4 gap-y-3 sm:gap-x-6 sm:gap-y-4 items-center justify-center shadow-xl animate-[slideUp_0.8s_ease_0.2s]">
+            <!-- Lesson Selector -->
             <div class="lesson-selector flex items-center gap-2 w-full sm:w-auto">
-                <label for="lesson" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base">レッスン:</label>
-                <select id="lesson"
-                    class="flex-grow p-2 sm:p-2.5 rounded-lg border-2 border-indigo-300 bg-white/90 dark:bg-gray-700 dark:text-white dark:border-indigo-500 text-sm sm:text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm">
-                    <option value="all">全てのレッスン</option>
-                    <option value="lesson1">レッスン1</option><option value="lesson2">レッスン2</option><option value="lesson3">レッスン3</option><option value="lesson4">レッスン4</option><option value="lesson5">レッスン5</option><option value="lesson6">レッスン6</option><option value="lesson7">レッスン7</option><option value="lesson8">レッスン8</option><option value="lesson9">レッスン9</option><option value="lesson10">レッスン10</option><option value="lesson11">レッスン11</option><option value="lesson12">レッスン12</option><option value="lesson13">レッスン13</option><option value="lesson14">レッスン14</option><option value="lesson15">レッスン15</option><option value="lesson16">レッスン16</option><option value="lesson17">レッスン17</option><option value="lesson18">レッスン18</option><option value="lesson19">レッスン19</option><option value="lesson20">レッスン20</option><option value="lesson21">レッスン21</option><option value="lesson22">レッスン22</option><option value="lesson23">レッスン23</option><option value="lesson24">レッスン24</option><option value="lesson25">レッスン25</option><option value="lesson26">レッスン26</option><option value="lesson27">レッスン27</option><option value="lesson28">レッスン28</option><option value="lesson29">レッスン29</option><option value="lesson30">レッスン30</option><option value="lesson31">レッスン31</option><option value="lesson32">レッスン32</option><option value="lesson33">レッスン33</option><option value="lesson34">レッスン34</option><option value="lesson35">レッスン35</option><option value="lesson36">レッスン36</option><option value="lesson37">レッスン37</option><option value="lesson38">レッスン38</option><option value="lesson39">レッスン39</option><option value="lesson40">レッスン40</option><option value="lesson41">レッスン41</option>
-                </select>
+                <label for="lesson" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base shrink-0">レッスン:</label>
+                <div class="relative flex-grow">
+                    <select id="lesson"
+                        class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
+                        <option value="all">全てのレッスン</option>
+                        <option value="lesson1">レッスン1</option><option value="lesson2">レッスン2</option><option value="lesson3">レッスン3</option><option value="lesson4">レッスン4</option><option value="lesson5">レッスン5</option><option value="lesson6">レッスン6</option><option value="lesson7">レッスン7</option><option value="lesson8">レッスン8</option><option value="lesson9">レッスン9</option><option value="lesson10">レッスン10</option><option value="lesson11">レッスン11</option><option value="lesson12">レッスン12</option><option value="lesson13">レッスン13</option><option value="lesson14">レッスン14</option><option value="lesson15">レッスン15</option><option value="lesson16">レッスン16</option><option value="lesson17">レッスン17</option><option value="lesson18">レッスン18</option><option value="lesson19">レッスン19</option><option value="lesson20">レッスン20</option><option value="lesson21">レッスン21</option><option value="lesson22">レッスン22</option><option value="lesson23">レッスン23</option><option value="lesson24">レッスン24</option><option value="lesson25">レッスン25</option><option value="lesson26">レッスン26</option><option value="lesson27">レッスン27</option><option value="lesson28">レッスン28</option><option value="lesson29">レッスン29</option><option value="lesson30">レッスン30</option><option value="lesson31">レッスン31</option><option value="lesson32">レッスン32</option><option value="lesson33">レッスン33</option><option value="lesson34">レッスン34</option><option value="lesson35">レッスン35</option><option value="lesson36">レッスン36</option><option value="lesson37">レッスン37</option><option value="lesson38">レッスン38</option><option value="lesson39">レッスン39</option><option value="lesson40">レッスン40</option><option value="lesson41">レッスン41</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
+                        <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
             </div>
-             <div class="mode-selector flex items-center gap-2 w-full sm:w-auto">
-                <label for="mode" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base">練習モード:</label>
-                <select id="mode" class="flex-grow p-2 sm:p-2.5 rounded-lg border-2 border-indigo-300 bg-white/90 dark:bg-gray-700 dark:text-white dark:border-indigo-500 text-sm sm:text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm">
-                    <option value="reading">読み方</option><option value="meaning">意味</option><option value="usage">使い方</option><option value="mixed">ミックス</option>
-                </select>
+
+            <!-- Mode Selector -->
+            <div class="mode-selector flex items-center gap-2 w-full sm:w-auto">
+                <label for="mode" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base shrink-0">練習モード:</label>
+                <div class="relative flex-grow">
+                    <select id="mode" class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
+                        <option value="reading">読み方</option><option value="meaning">意味</option><option value="usage">使い方</option><option value="mixed">ミックス</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
+                        <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
             </div>
+
+            <!-- Difficulty Selector -->
             <div class="difficulty-selector flex items-center gap-2 w-full sm:w-auto">
-                <label for="difficulty" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base">問題数:</label>
-                <select id="difficulty" class="flex-grow p-2 sm:p-2.5 rounded-lg border-2 border-indigo-300 bg-white/90 dark:bg-gray-700 dark:text-white dark:border-indigo-500 text-sm sm:text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm">
-                    <option value="5">5問</option><option value="10">10問</option><option value="20" selected>20問</option><option value="30">30問</option><option value="50">50問</option><option value="all">全て</option>
-                </select>
+                <label for="difficulty" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base shrink-0">問題数:</label>
+                <div class="relative flex-grow">
+                    <select id="difficulty" class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
+                        <option value="5">5問</option><option value="10">10問</option><option value="20" selected>20問</option><option value="30">30問</option><option value="50">50問</option><option value="all">全て</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
+                        <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
             </div>
+
+            <!-- Button Group -->
             <div class="button-group flex flex-wrap justify-center gap-2 sm:gap-3 mt-2 sm:mt-0 w-full sm:w-auto">
                 <button id="startQuizButton" class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-full shadow-lg text-sm sm:text-base" onclick="QuizManager.startQuiz()" disabled>✨ 練習開始</button>
                 <button class="btn bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-full shadow-lg text-sm sm:text-base" onclick="QuizManager.resetQuiz()">🔄 リセット</button>

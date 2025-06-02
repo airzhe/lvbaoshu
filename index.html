@@ -322,17 +322,17 @@
 
         @media (max-width: 768px) {
             .controls-section { /* Changed from .controls-section .flex-wrap */
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: column; 
+                align-items: stretch; 
             }
-            .controls-section .button-group {
-                flex-direction: column;
+            .controls-section .button-group { 
+                flex-direction: column; 
             }
-            .controls-section .btn {
-                width: 100%;
+            .controls-section .btn { 
+                width: 100%; 
             }
-            .final-score-grid {
-                grid-template-columns: 1fr;
+            .final-score-grid { 
+                grid-template-columns: 1fr; 
             }
         }
     </style>
@@ -368,7 +368,9 @@
                     <select id="lesson"
                         class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
                         <option value="all">全てのレッスン</option>
-                        <!-- Lesson options will be populated by JavaScript -->
+                        <!-- Options will be dynamically populated here by JavaScript -->
+                        <!-- The following are examples and will be replaced -->
+                        <option value="lesson1">レッスン1</option><option value="lesson2">レッスン2</option><option value="lesson3">レッスン3</option><option value="lesson4">レッスン4</option><option value="lesson5">レッスン5</option><option value="lesson6">レッスン6</option><option value="lesson7">レッスン7</option><option value="lesson8">レッスン8</option><option value="lesson9">レッスン9</option><option value="lesson10">レッスン10</option><option value="lesson11">レッスン11</option><option value="lesson12">レッスン12</option><option value="lesson13">レッスン13</option><option value="lesson14">レッスン14</option><option value="lesson15">レッスン15</option><option value="lesson16">レッスン16</option><option value="lesson17">レッスン17</option><option value="lesson18">レッスン18</option><option value="lesson19">レッスン19</option><option value="lesson20">レッスン20</option><option value="lesson21">レッスン21</option><option value="lesson22">レッスン22</option><option value="lesson23">レッスン23</option><option value="lesson24">レッスン24</option><option value="lesson25">レッスン25</option><option value="lesson26">レッスン26</option><option value="lesson27">レッスン27</option><option value="lesson28">レッスン28</option><option value="lesson29">レッスン29</option><option value="lesson30">レッスン30</option><option value="lesson31">レッスン31</option><option value="lesson32">レッスン32</option><option value="lesson33">レッスン33</option><option value="lesson34">レッスン34</option><option value="lesson35">レッスン35</option><option value="lesson36">レッスン36</option><option value="lesson37">レッスン37</option><option value="lesson38">レッスン38</option><option value="lesson39">レッスン39</option><option value="lesson40">レッスン40</option><option value="lesson41">レッスン41</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
                         <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -489,7 +491,6 @@
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     AllVocabularyData = await response.json();
                     console.log("Vocabulary loaded successfully:", AllVocabularyData);
-                    UIManager.populateLessonSelect(); // Call to populate select
                     if (document.getElementById('startQuizButton')) document.getElementById('startQuizButton').disabled = false;
                     return true;
                 } catch (error) {
@@ -518,13 +519,8 @@
                 return shuffled;
             }
 
-            // 判断发音是否和拼写一样
-            static isReadingSameAsWord(vocab) {
-                if (!vocab || typeof vocab.word === 'undefined' || typeof vocab.reading === 'undefined') {
-                    return false;
-                }
-                return vocab.word === vocab.reading;
-            }
+            // isKatakanaOnly might still be useful for other features, so it's kept.
+            static isKatakanaOnly(word) { return /^[ァ-ヶー]+$/.test(word); }
 
             static generateQuestion(vocabItem, mode, allVocabPool) {
                 if (!vocabItem || typeof vocabItem.word === 'undefined') {
@@ -532,24 +528,29 @@
                     return null;
                 }
                 const otherVocabUnfiltered = allVocabPool.filter(v => v && v.word !== vocabItem.word);
-
+                
                 let otherVocab = [];
                 if (mode === 'reading') otherVocab = otherVocabUnfiltered.filter(v => v && v.reading);
                 else if (mode === 'meaning') otherVocab = otherVocabUnfiltered.filter(v => v && (v.chineseMeaning || v.meaning));
                 else if (mode === 'usage') otherVocab = otherVocabUnfiltered.filter(v => v && v.word);
                 else otherVocab = otherVocabUnfiltered;
 
-                // 替换原有的 isKatakanaOnly 判断为 isReadingSameAsWord
-                if (mode === 'reading' && this.isReadingSameAsWord(vocabItem)) {
-                    // 跳过读音和拼写一样的情况，转为 meaning
-                    return this.generateQuestion(vocabItem, 'meaning', allVocabPool);
+                // MODIFIED: If mode is 'reading' and word pronunciation is same as spelling, switch to 'meaning'
+                if (mode === 'reading' && vocabItem.word === vocabItem.reading) {
+                    mode = 'meaning';
                 }
+                
+                // Fallback for 'usage' if not applicable
                 if (mode === 'usage' && (!vocabItem.usage || typeof vocabItem.usage !== 'string' || !vocabItem.usage.includes('___'))) {
                     const fallbackModes = ['meaning', 'reading'];
                     let newMode = fallbackModes[Math.floor(Math.random() * fallbackModes.length)];
-                    if (newMode === 'reading' && this.isReadingSameAsWord(vocabItem)) newMode = 'meaning';
+                    // MODIFIED: If the chosen fallback is 'reading' and word pronunciation is same as spelling, switch newMode to 'meaning'
+                    if (newMode === 'reading' && vocabItem.word === vocabItem.reading) {
+                        newMode = 'meaning';
+                    }
                     mode = newMode;
                 }
+
 
                 let questionText, correctAnswerText;
                 let potentialWrongAnswers = [];
@@ -566,7 +567,7 @@
                         potentialWrongAnswers = otherVocab.map(v => v.chineseMeaning || v.meaning).filter(Boolean);
                         break;
                     case 'usage':
-                        questionText = vocabItem.usage
+                        questionText = vocabItem.usage 
                         correctAnswerText = vocabItem.word;
                         potentialWrongAnswers = otherVocab.map(v => v.word).filter(Boolean);
                         break;
@@ -574,9 +575,9 @@
                 }
 
                 potentialWrongAnswers = [...new Set(potentialWrongAnswers.filter(text => text !== correctAnswerText))];
-
+                
                 const wrongAnswers = this.shuffleArray(potentialWrongAnswers).slice(0, 3);
-
+                
                 let options = [{ text: correctAnswerText, correct: true }];
                 wrongAnswers.forEach(text => options.push({ text, correct: false }));
 
@@ -612,29 +613,6 @@
             static generatedSentenceText = document.getElementById('generatedSentenceText');
             static sentenceLoadingSpinner = document.getElementById('sentenceLoadingSpinner');
             static keyboardHintTimeout = null;
-            static lessonSelectElement = document.getElementById('lesson'); // Get the lesson select element
-
-
-            static populateLessonSelect() {
-                if (!this.lessonSelectElement) return;
-                this.lessonSelectElement.innerHTML = '<option value="all">全てのレッスン</option>';
-
-                const lessonKeys = Object.keys(AllVocabularyData);
-                // Sort keys numerically based on the number part
-                lessonKeys.sort((a, b) => {
-                    const numA = parseInt(a.replace('lesson', ''), 10);
-                    const numB = parseInt(b.replace('lesson', ''), 10);
-                    return numA - numB;
-                });
-
-                lessonKeys.forEach(key => {
-                    const option = document.createElement('option');
-                    option.value = key;
-                    option.textContent = key.replace('lesson', 'レッスン');
-                    this.lessonSelectElement.appendChild(option);
-                });
-            }
-
 
             static isTouchDevice() {
                 return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
@@ -681,7 +659,7 @@
 
             static showKeyboardHint(forceShow = false) {
                 if (!forceShow && this.isTouchDevice()) {
-                    return;
+                    return; 
                 }
                 this.keyboardHint.classList.add('show');
                 clearTimeout(this.keyboardHintTimeout);
@@ -748,9 +726,9 @@
                     <div class="options-grid grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4">
                         ${questionData.options.map((opt, index) => `
                             <button class="option p-3 md:p-4 rounded-lg text-base md:text-lg font-medium transition-all duration-200 ease-in-out
-                                         border-2 shadow-md hover:shadow-lg
-                                         focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400
-                                         text-gray-700 dark:text-gray-100"
+                                         border-2 shadow-md hover:shadow-lg 
+                                         focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                         text-gray-700 dark:text-gray-100" 
                                     onclick="QuizManager.processAnswerSelection(this, ${index})" data-index="${index}">
                                 <span class="text-indigo-500 dark:text-indigo-300 font-semibold mr-2">${index + 1}.</span> ${opt.text}
                             </button>
@@ -826,10 +804,8 @@
                     <h2 class="text-3xl sm:text-4xl font-bold mb-3 gradient-text">${emoji} ${reviewMode ? '復習完了！' : '練習終了！'}</h2>
                     <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 mb-6">${message}</p>
                     <div class="final-score-grid grid md:grid-cols-2 gap-3 md:gap-4 mb-6 text-left">
-                        <div class="stats-card p-3 md:p-4 rounded-lg"><p class="text-lg md:text-xl font-semibold">スコア: <span class="text-green-500 dark:text-green-400">${state.score} / ${state.currentQuiz.length}</span></p><p>正答率: <span class="text-blue-500 dark:text-blue-400">${accuracy}%</span></p></div>
-                        <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">最長連続正解</h4><p class="text-lg md:text-xl font-bold">${state.maxStreak}</p></div>
-                        <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">合計時間</h4><p class="text-lg md:text-xl font-bold">${timeTaken}秒</p></div>
-                        <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">平均解答時間/問</h4><p class="text-lg md:text-xl font-bold">${avgTimePerQ}秒</p></div>
+                        <div class="stats-card p-3 md:p-4 rounded-xl"><p class="text-lg md:text-xl font-semibold">スコア: <span class="text-green-500 dark:text-green-400">${state.score} / ${state.currentQuiz.length}</span></p><p>正答率: <span class="text-blue-500 dark:text-blue-400">${accuracy}%</span></p></div>
+                        <div class="stats-card p-3 md:p-4 rounded-xl"><p>最長連続正解: <span class="text-yellow-500 dark:text-yellow-400">${state.maxStreak}</span></p><p>合計時間: <span class="text-purple-500 dark:text-purple-400">${timeTaken}秒</span></p><p>平均解答時間: <span class="text-teal-500 dark:text-teal-400">${avgTimePerQ}秒/問</span></p></div>
                     </div>
                     ${state.wrongAnswers.length > 0 ? `
                     <div class="wrong-answers mt-6 bg-white/10 dark:bg-gray-800/30 p-3 md:p-4 rounded-xl max-h-60 overflow-y-auto">
@@ -908,6 +884,43 @@
                 }
                 this.quizContainer.innerHTML = this.initialWelcomeHTML;
                 QuizManager.resetQuizInternalStateOnly();
+            }
+
+            // NEW: Method to populate lesson selector
+            static populateLessonSelector(vocabularyData) {
+                const lessonSelect = document.getElementById('lesson');
+                if (!lessonSelect) {
+                    console.error("Lesson selector not found.");
+                    return;
+                }
+
+                const lessonKeys = Object.keys(vocabularyData);
+                
+                // Sort keys numerically based on the number in "lessonX"
+                lessonKeys.sort((a, b) => {
+                    const numA = parseInt(a.replace('lesson', ''), 10);
+                    const numB = parseInt(b.replace('lesson', ''), 10);
+                    
+                    if (isNaN(numA) && isNaN(numB)) return a.localeCompare(b); // both not "lessonX"
+                    if (isNaN(numA)) return 1; // a is not "lessonX", b is (or also not)
+                    if (isNaN(numB)) return -1; // b is not "lessonX", a is
+
+                    return numA - numB;
+                });
+
+                // Clear existing lesson options, keeping the first one ("全てのレッスン")
+                while (lessonSelect.options.length > 1) {
+                    lessonSelect.remove(1);
+                }
+
+                // Add sorted lesson options
+                lessonKeys.forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    const lessonNumber = key.replace('lesson', '');
+                    option.textContent = `レッスン${lessonNumber}`;
+                    lessonSelect.appendChild(option);
+                });
             }
         }
 
@@ -1193,8 +1206,12 @@
         document.addEventListener('DOMContentLoaded', async () => {
             UIManager.loadTheme();
             const loaded = await VocabularyManager.loadVocabulary();
-            if (loaded) UIManager.showWelcomeMessage();
-            else UIManager.quizContainer.innerHTML = `<p class="text-center text-red-500 dark:text-red-400 p-10">語彙データの読み込みに失敗しました。練習を開始できません。</p>`;
+            if (loaded) {
+                UIManager.populateLessonSelector(AllVocabularyData); // Populate lessons
+                UIManager.showWelcomeMessage();
+            } else {
+                 UIManager.quizContainer.innerHTML = `<p class="text-center text-red-500 dark:text-red-400 p-10">語彙データの読み込みに失敗しました。練習を開始できません。</p>`;
+            }
 
             document.addEventListener('keydown', (event) => {
                 QuizManager.handleKeyPress(event);

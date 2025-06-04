@@ -1,77 +1,152 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>新無敵緑宝書N2単語練習 - 究極版</title>
+    <!-- Title will be set by JavaScript -->
+    <title>単語練習</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --dark-gradient: linear-gradient(135deg, #1a2634 0%, #2c3e50 100%);
-            --accent-color: #667eea;
-            --success-color: #10b981;
-            --error-color: #ef4444;
-            --warning-color: #f59e0b;
-        }
+            /* === 主题颜色和背景 === */
+            --body-bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --body-text-color: #2d3748; /* 基础文本颜色 (深灰，Tailwind gray-800 类似) */
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --container-border-color: rgba(255, 255, 255, 0.2);
+            --container-text-color: inherit; /* 继承 body 或特定颜色 */
 
-        body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            background: var(--primary-gradient);
-            transition: background 0.5s ease, color 0.3s ease;
-            color: #1f2937;
-            overscroll-behavior-y: contain;
+            --controls-bg-white-override: initial;
+
+            --gradient-text-bg: linear-gradient(45deg, #667eea, #764ba2);
+
+            --btn-before-bg: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+
+            --exit-btn-bg: linear-gradient(to bottom right, #e5e7eb, #d1d5db);
+            --exit-btn-text-color: #374151;
+            --exit-btn-hover-bg: linear-gradient(to bottom right, #d1d5db, #b3b7c1);
+
+            --progress-bar-bg: #e9d5ff; /* 浅色模式进度条背景 (Tailwind purple-200 类似) */
+            --progress-fill-bg: linear-gradient(to right, #3b82f6, #8b5cf6);
+
+            --option-bg: rgba(255, 255, 255, 0.8);
+            --option-border-color: #93c5fd; /* Tailwind blue-300 */
+            --option-text-color: inherit;
+            --option-hover-bg: rgba(239, 246, 255, 0.95);
+            --option-hover-border-color: #818cf8;  
+            --option-hover-text-color: var(--text-body);
+
+            --feedback-text-color-default: #374151; /* Tailwind gray-700 */
+            --text-feedback-details: #52525b;
+
+            --text-green-600-val: #059669;
+            --text-red-600-val: #dc2626;
+            --text-red-500-val: #ef4444;
+            --text-orange-500-val: #f97316;
+            --text-gray-900-val: #111827;
+            --text-color-example-sentence-val: #4b5563; /* Tailwind gray-700 */
+
+            --glass-morphism-bg: rgba(233, 236, 241, 0.6); /* Tailwind gray-100 with opacity (for .features bg-indigo-100) */
+            --glass-morphism-border: 1px solid rgba(229, 231, 235, 0.5); /* Tailwind gray-200 with opacity */
+            --glass-morphism-header-text: #4f46e5; /* Tailwind indigo-600 for .features h3 */
+
+            /* 反馈特定颜色 (浅色) */
+            --feedback-green-text: var(--text-green-600-val);
+            --feedback-green-bg: rgba(220, 252, 231, 0.9);  /* Tailwind green-100, more opaque */
+            --feedback-green-border: rgba(110, 231, 183, 0.7); /* Tailwind green-300, more opaque */
+            --feedback-green-shadow: 0 4px 12px rgba(52, 211, 153, 0.15);
+
+            --feedback-red-text: var(--text-red-600-val);
+            --feedback-red-bg: rgba(254, 226, 226, 0.9);   /* Tailwind red-100, more opaque */
+            --feedback-red-border: rgba(252, 165, 165, 0.7);  /* Tailwind red-300, more opaque */
+            --feedback-red-shadow: 0 4px 12px rgba(248, 113, 113, 0.15);
+            
+            --immersive-quiz-container-bg: rgba(255, 255, 255, 0.25); /* from your original */
         }
 
         body.dark-mode {
-            background: var(--dark-gradient);
-            color: #e2e8f0;
+            --body-bg-gradient: linear-gradient(135deg, #1a2634 0%, #2c3e50 100%);
+            --body-text-color: #e2e8f0; /* Tailwind slate-200 */
+            --container-bg: rgba(45, 55, 72, 0.95); /* Tailwind slate-700 */
+            --container-border-color: rgba(255, 255, 255, 0.3);
+            --container-text-color: #e2e8f0;
+
+            --controls-bg-white-override: rgba(255, 255, 255, 0.1);
+
+            /* --gradient-text-bg: linear-gradient(45deg, #93c5fd, #c4b5fd); */
+
+            --btn-before-bg: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+
+            --exit-btn-bg: linear-gradient(to bottom right, #4b5563, #6b7280);
+            --exit-btn-text-color: #e2e8f0;
+            --exit-btn-hover-bg: linear-gradient(to bottom right, #6b7280, #9ca3af);
+
+            --progress-bar-bg: #4b5563; /* Tailwind gray-600 */
+            /* --progress-fill-bg: linear-gradient(to right, #3b82f6, #8b5cf6); /* 保持不变或按需修改 */
+
+            --option-bg: rgba(55, 65, 81, 0.8); /* Tailwind gray-700 */
+            --option-border-color: #60a5fa; /* Tailwind blue-400 */
+            --option-text-color: #e2e8f0;
+            --option-hover-bg: rgba(69, 71, 90, 0.9);    /* 例如：Catppuccin Surface1，比基础背景稍亮 */
+            --option-hover-border-color: #89b4fa; 
+            --option-hover-text-color: var(--text-body);
+
+            --text-green-600-val: #34d399;
+            --text-red-600-val: #f87171; /* Note: original was text-red-600, but value seems for text-red-400/500 */
+            --text-red-500-val: #f87171;
+            --text-orange-500-val: #fb923c;
+            --text-gray-900-val: #e2e8f0;
+            --text-color-example-sentence-val: #cbd5e1; /* Tailwind slate-300 */
+
+
+            --glass-morphism-bg: rgba(45, 55, 72, 0.6); /* Tailwind slate-700 with opacity (for .features dark:bg-indigo-900 dark:bg-opacity-40) */
+            --glass-morphism-border: 1px solid rgba(255, 255, 255, 0.15);
+            --glass-morphism-header-text: #818cf8; /* Tailwind indigo-400 for .features h3 dark:text-indigo-400 */
+
+            /* 反馈特定颜色 (深色) */
+            --text-feedback-details:#fecaca;
+            --feedback-green-text: #ffffff;
+            --feedback-green-bg: rgba(16, 185, 129, 0.8);
+            --feedback-green-border: rgba(52, 211, 153, 0.5);
+            --feedback-green-shadow: 0 4px 12px rgba(52, 211, 153, 0.25);
+
+
+            --feedback-red-text: #ffffff;
+            --feedback-red-bg: rgba(220, 38, 38, 0.8);
+            --feedback-red-border: rgba(248, 113, 113, 0.5);
+            --feedback-red-shadow: 0 4px 12px rgba(248, 113, 113, 0.25);
+            
+            --immersive-quiz-container-bg: rgba(30, 41, 59, 0.6); /* dark variant of your original, slate-800 like*/
+
         }
-        
+
+        /* --- 基础和组件样式 --- */
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background: var(--body-bg-gradient);
+            color: var(--body-text-color);
+            transition: background 0.5s ease, color 0.5s ease;
+            overscroll-behavior-y: contain;
+        }
+
+        .header, .controls, .quiz-container:not(.immersive-active) { /* Exclude immersive for its own bg */
+            background: var(--container-bg);
+            /* border-color: var(--container-border-color); Apply if these elements have a border styled e.g., border: 1px solid; */
+            color: var(--container-text-color);
+        }
+
+        body.dark-mode .controls .bg-white { /* Handles Tailwind .bg-white inside .controls */
+            background: var(--controls-bg-white-override) !important; /* Important if .bg-white has high specificity */
+        }
+
         .gradient-text {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: var(--gradient-text-bg);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        body.dark-mode .gradient-text {
-            background: linear-gradient(45deg, #93c5fd, #c4b5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-        }
-
-        body.dark-mode .glass-morphism {
-            background: rgba(45, 55, 72, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        /* 确保 #quizContainer 在应用 glass-morphism 时的样式 */
-        #quizContainer.glass-morphism {
-            background: #9995d9; /* Light Mode */
-        }
-
-        body.dark-mode #quizContainer.glass-morphism {
-            background: rgba(45, 55, 72, 0.6); /* Dark Mode */
-        }
-    
-        
-        .btn {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
         .btn::before {
             content: '';
             position: absolute;
@@ -79,119 +154,126 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: var(--btn-before-bg);
             transition: left 0.5s;
         }
-        body.dark-mode .btn::before {
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        }
+
         .btn:hover::before {
             left: 100%;
         }
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+        .exit-btn {
+            position: absolute;
+            top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+            right: 0.75rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--exit-btn-bg);
+            color: var(--exit-btn-text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            z-index: 50;
         }
-        .btn:active:not(:disabled) {
-            transform: translateY(0px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+
+        .exit-btn:hover {
+            background: var(--exit-btn-hover-bg);
+            transform: scale(1.05);
         }
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+
+        .exit-btn:active {
+            transform: scale(0.95);
+        }
+
+        .theme-toggle {
+            z-index: 50;
+            /* Base styles for theme-toggle if not covered by Tailwind and needed here */
+        }
+
+        body.quiz-mode-active .theme-toggle {
+            display: none !important;
+        }
+
+        .progress-bar {
+            background: var(--progress-bar-bg);
+            width: 100%;
+            height: 0.625rem; /* 2.5 in Tailwind, h-2.5 */
+            border-radius: 0.375rem; /* rounded-md */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: var(--progress-fill-bg);
+            height: 100%;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: width 0.5s ease-in-out; /* width comes from JS style */
+            position: relative; /* For ::after positioning */
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 30px 30px;
+            animation: move 2s linear infinite;
+        }
+
+        @keyframes move {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
         }
 
         .option {
             position: relative;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(255, 255, 255, 0.8);
-            border-color: #93c5fd;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            background: var(--option-bg);
+            border-color: var(--option-border-color); /* Needs 'border-width' and 'border-style' to be visible */
+            color: var(--option-text-color);
+            /* Ensure other Tailwind classes like p-*, rounded-*, border-2 are on the HTML element */
         }
-        body.dark-mode .option {
-            background: rgba(55, 65, 81, 0.8);
-            border-color: #60a5fa;
-            color: #e2e8f0;
-        }
-        .option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
-            transition: left 0.5s;
-        }
-        body.dark-mode .option::before {
-            background: linear-gradient(90deg, transparent, rgba(147, 197, 253, 0.2), transparent);
-        }
-        .option:hover::before {
-            left: 100%;
-        }
-        .option:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
-        }
-         .option.selected-option {
-            transform: scale(1.03);
-            border-width: 2px;
-            border-color: var(--accent-color) !important;
-        }
-        body.dark-mode .option.selected-option {
-            border-color: #a3bffa !important;
+        
+        @media (hover: hover) and (pointer: fine) {
+            .option:hover:not(:disabled) {
+                background-color: var(--option-hover-bg);
+                border-color: var(--option-hover-border-color);
+                color: var(--option-hover-text-color); 
+            }
         }
 
-        .progress-bar { background: #e0e7ff; }
-        body.dark-mode .progress-bar { background: #374151; }
-        .progress-fill {
-            background: linear-gradient(to right, #4f46e5, #7c3aed);
-            position: relative;
-            overflow: hidden;
-        }
-        body.dark-mode .progress-fill {
-             background: linear-gradient(to right, #3b82f6, #8b5cf6);
-        }
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background-image: linear-gradient(-45deg,
-                    rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%,
-                    rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%,
-                    transparent 75%, transparent);
-            background-size: 30px 30px;
-            animation: progress-move 2s linear infinite;
-        }
-        @keyframes progress-move {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 30px; }
+        .option.selected-option {
+            border-width: 2px; /* This makes the border visible if other border properties are set */
         }
 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes correctPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-        @keyframes incorrectShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-        @keyframes scoreReveal { from { opacity: 0; transform: scale(0.8) rotate(-5deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        .float-animation { animation: float 3s ease-in-out infinite; }
+        @keyframes incorrectShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
-        body.quiz-mode-active .main-container {
+        body.quiz-mode-active .container {
             padding: 0;
             max-width: 100%;
-            height: 100dvh;
+            height: 100dvh; /* Use dvh for dynamic viewport height */
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        body.quiz-mode-active .header-section,
-        body.quiz-mode-active .controls-section {
-            display: none !important;
-        }
-        body.quiz-mode-active .theme-toggle {
-             display: none !important;
         }
 
         #quizContainer.immersive-active {
@@ -202,1035 +284,1095 @@
             border-radius: 0;
             box-shadow: none;
             padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem) !important;
-            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem) !important;
+            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem) !important;
             padding-left: 1rem !important;
             padding-right: 1rem !important;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             position: relative;
+            background: var(--immersive-quiz-container-bg) ;
         }
+
+        #quizContainer.immersive-active > div:not(.progress-container):not(.stats):not(.options):not(.feedback):not(.question-area-wrapper) {
+            flex-grow: 1; 
+        }
+        
         #quizContainer.immersive-active .question-area-wrapper {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 8rem; 
+            align-items: center;
         }
-        #quizContainer.immersive-active .options-grid {
+        
+        #quizContainer.immersive-active .question-content-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        #quizContainer.immersive-active .options {
             margin-top: auto;
             padding-bottom: 2rem;
+            width: 100%;
         }
-         #quizContainer.immersive-active .feedback-display {
-            position: fixed;
-            bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+
+        #quizContainer.immersive-active .feedback {
+            position: absolute;
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
             max-width: 500px;
+            margin-top: 0;
+            margin-bottom: 0;
             z-index: 100;
-            margin-bottom: 0.5rem;
+            visibility: hidden; /* Controlled by JS */
         }
 
-        .exit-btn {
-            position: absolute;
-            top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
-            right: 0.75rem;
-            width: 2.5rem; height: 2.5rem;
-            background: linear-gradient(to bottom right, #e5e7eb, #d1d5db);
-            color: #374151;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 9999px; font-size: 1.25rem; font-weight: 600;
-            cursor: pointer; transition: all 0.3s ease; z-index: 150;
+        .header.hidden-during-quiz,
+        .controls.hidden-during-quiz {
+            display: none !important;
         }
-        body.dark-mode .exit-btn {
-            background: linear-gradient(to bottom right, #4b5563, #6b7280);
-            color: #e2e8f0;
-        }
-        .exit-btn:hover {
-            background: linear-gradient(to bottom right, #d1d5db, #b3b7c1);
-            transform: scale(1.05);
-        }
-        body.dark-mode .exit-btn:hover {
-            background: linear-gradient(to bottom right, #6b7280, #9ca3af);
-        }
-        .exit-btn:active { transform: scale(0.95); }
 
-        .feedback-display {
+        .feedback {
             text-align: center;
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease-out;
-            /* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.08);  */
-            
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             word-break: break-word;
-        }
-        body.dark-mode .feedback-display.text-green-600 {
-            color: #6ee7b7 !important; background-color: rgba(16, 185, 129, 0.25) !important;
-            border-color: rgba(52, 211, 153, 0.5) !important; box-shadow: 0 4px 12px rgba(52, 211, 153, 0.25) !important;
-        }
-        body.dark-mode .feedback-display.text-red-600 {
-            color: #fca5a5 !important; background-color: rgba(220, 38, 38, 0.25) !important;
-            border-color: rgba(248, 113, 113, 0.5) !important; box-shadow: 0 4px 12px rgba(248, 113, 113, 0.25) !important;
-        }
-        .feedback-display small {
-            display: block; margin-top: 0.5rem; line-height: 1.4;
+            color: var(--feedback-text-color-default);
+            /* Other base styles for feedback like padding, border-radius if not handled by Tailwind */
         }
 
-        .notification {
-            position: fixed; top: 20px; right: 20px; padding: 12px 24px;
-            border-radius: 8px; color: white; font-weight: 600;
-            transform: translateX(120%); opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease;
-            z-index: 1000; backdrop-filter: blur(5px);
+        /* Assumes JS adds 'text-green-600' or 'text-red-600' for feedback states */
+        .feedback.text-green-600 { 
+            color: var(--feedback-green-text) !important; /* Important to override Tailwind if needed */
+            background-color: var(--feedback-green-bg);
+            border-color: var(--feedback-green-border); /* Needs border-width and style */
+            box-shadow: var(--feedback-green-shadow);
         }
-        .notification.show { transform: translateX(0); opacity: 1;}
-        .notification.success { background: rgba(16, 185, 129, 0.85); }
-        .notification.error   { background: rgba(239, 68, 68, 0.85); }
-        .notification.warning { background: rgba(245, 158, 11, 0.85); }
+
+        .feedback.text-red-600 {
+            color: var(--feedback-red-text) !important; /* Important to override Tailwind if needed */
+            background-color: var(--feedback-red-bg);
+            border-color: var(--feedback-red-border); /* Needs border-width and style */
+            box-shadow: var(--feedback-red-shadow);
+        }
+
+        .feedback small.feedback-details { /* 或者 .feedback-details 如果足够特定 */
+            display: block;
+            margin-top: 0.5rem; /* 或者 var(--spacing-small) */
+            line-height: 1.4;   /* 或者 var(--line-height-tight) */
+            color: var(--text-feedback-details); /* 使用 CSS 变量 */
+            opacity: 0.9; /* 你可以保留一个固定的透明度，或者也用变量控制 */
+        }
+    
         
-        .stats-card {
-            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
+        /* For .features div in welcome message */
+        .features.glass-morphism { 
+            background: var(--glass-morphism-bg);
+            border: var(--glass-morphism-border);
+            /* color for text inside .features.glass-morphism ul li can inherit or be set */
         }
-        body.dark-mode .stats-card {
-            background: rgba(55, 65, 81, 0.4); border-color: rgba(255, 255, 255, 0.1);
+        .features.glass-morphism h3 {
+            color: var(--glass-morphism-header-text);
         }
-        .stats-card:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+
+
+        .feedback small {
+            display: block;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+            /* color for small text can also be a variable */
+        }
+
+        /* Stats colors - these override Tailwind text color classes in dark mode */
+        body.dark-mode .stats .score.text-green-600 {
+            color: var(--text-green-600-val) !important;
+        }
+
+        body.dark-mode .stats .streak-counter.text-red-500 {
+            color: var(--text-red-500-val) !important;
+        }
+
+        body.dark-mode .stats .timer.text-orange-500 {
+            color: var(--text-orange-500-val) !important;
+        }
+
+        /* Question text color */
+        body.dark-mode .question.text-gray-900 { /* Handles custom .question with Tailwind .text-gray-900 */
+            color: var(--text-gray-900-val) !important;
+        }
+
+        #exampleSentenceDisplay {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
+            word-break: normal; 
+            line-height: 1.6;
+            text-align: center; 
+            margin-top: 0;
+            color: var(--text-color-example-sentence-val);
+        }
+        #exampleSentenceDisplay.visible {
+            max-height: 10em;
+            opacity: 1;
+            margin-top: 0.5rem;
+        }
+
+        /* Option selection gradient overrides for dark mode - specific to your JS logic */
+        body.dark-mode .option.bg-gradient-to-br.from-indigo-500.to-purple-600 {
+            background: linear-gradient(to bottom right, #60a5fa, #a78bfa);
+        }
+
+        body.dark-mode .option.bg-gradient-to-br.from-green-500.to-lime-600 {
+            background: linear-gradient(to bottom right, #34d399, #86efac);
+        }
+
+        body.dark-mode .option.bg-gradient-to-br.from-red-500.to-orange-500 {
+            background: linear-gradient(to bottom right, #f87171, #fb923c);
+        }
 
         #keyboardHint {
             position: fixed;
             bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
             right: 1rem;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(3px);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             font-size: 0.875rem;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0; /* Controlled by JS */
+            transition: opacity 0.3s ease;
             z-index: 50;
-            transform: translateY(20px);
-        }
-        #keyboardHint.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        body.dark-mode #keyboardHint {
-            background: rgba(55, 65, 81, 0.9);
-            color: #e2e8f0;
-        }
-
-        @media (max-width: 768px) {
-            .controls-section { /* Changed from .controls-section .flex-wrap */
-                flex-direction: column; 
-                align-items: stretch; 
-            }
-            .controls-section .button-group { 
-                flex-direction: column; 
-            }
-            .controls-section .btn { 
-                width: 100%; 
-            }
-            .final-score-grid { 
-                grid-template-columns: 1fr; 
-            }
         }
     </style>
 </head>
+<body class="min-h-screen text-gray-800 relative">
+    <button class="theme-toggle fixed top-5 right-5 bg-white bg-opacity-90 rounded-full w-12 h-12 flex items-center justify-center text-2xl cursor-pointer shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg z-50" onclick="toggleTheme()">🌙</button>
 
-<body class="min-h-screen relative overflow-x-hidden">
-    <!-- Theme Toggle -->
-    <button
-        class="theme-toggle fixed top-5 right-5 bg-white bg-opacity-80 dark:bg-gray-700 dark:text-yellow-300 rounded-full w-12 h-12 flex items-center justify-center text-2xl cursor-pointer shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl z-[200]"
-        onclick="UIManager.toggleTheme()">
-        🌙
-    </button>
+    <div class="container mx-auto p-5 max-w-4xl">
+        <div class="header bg-opacity-95 backdrop-blur-md rounded-2xl p-8 mb-8 text-center shadow-lg border border-white border-opacity-20 animate-[slideDown_0.8s_ease]">
+            <!-- H1 will be set by JavaScript -->
+            <h1 class="text-4xl font-bold mb-2 gradient-text">語彙練習</h1>
+            <p class="text-gray-600 text-lg">日本語能力試験スタイル語彙練習</p>
+        </div>
 
-    <!-- Main Container -->
-    <div class="main-container mx-auto p-4 sm:p-5 max-w-4xl">
-        <!-- Header -->
-        <div class="header-section glass-morphism rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8 text-center shadow-2xl animate-[slideDown_0.8s_ease]">
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 gradient-text float-animation">新無敵緑宝書N2単語練習</h1>
-            <p class="text-sm sm:text-base lg:text-lg text-gray-700 dark:text-gray-300">JLPTスタイル語彙練習 - 究極版</p>
-            <div class="mt-3 sm:mt-4 flex justify-center gap-2 sm:gap-4 text-xs sm:text-sm">
-                <span class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded-full shadow-md">v3.1</span>
-                <span class="bg-green-500 text-white px-2 sm:px-3 py-1 rounded-full shadow-md">自動提出</span>
-                <span class="bg-purple-500 text-white px-2 sm:px-3 py-1 rounded-full shadow-md">統計保存</span>
+        <div class="controls bg-opacity-95 backdrop-blur-md rounded-xl p-5 mb-8 flex flex-wrap gap-4 items-center justify-center shadow-lg border border-white border-opacity-20 animate-[slideUp_0.8s_ease]">
+            <div class="lesson-selector flex items-center gap-2">
+                <label for="lesson" class="font-semibold text-indigo-600">レッスン:</label>
+                <select id="lesson" class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+                    <option value="all">全てのレッスン</option>
+                </select>
+            </div>
+            <div class="mode-selector flex items-center gap-2">
+                <label for="mode" class="font-semibold text-indigo-600">練習モード:</label>
+                <select id="mode" class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+                    <option value="reading">読み方</option>
+                    <option value="meaning">意味</option>
+                    <option value="usage">使い方</option>
+                    <option value="mixed">ミックス</option>
+                </select>
+            </div>
+            <div class="difficulty-selector flex items-center gap-2">
+                <label for="difficulty" class="font-semibold text-indigo-600">問題数:</label>
+                <select id="difficulty" class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+                    <option value="5">5問</option>
+                    <option value="10">10問</option>
+                    <option value="20" selected>20問</option>
+                    <option value="30">30問</option>
+                    <option value="all">全て</option>
+                </select>
+            </div>
+            <div>
+                <button id="startQuizButton" class="btn relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed" onclick="startQuiz()" disabled>練習開始</button>
+                <button class="btn secondary relative overflow-hidden bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed" onclick="resetQuiz()">リセット</button>
             </div>
         </div>
 
-        <!-- Controls -->
-        <div class="controls-section glass-morphism rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 flex flex-wrap gap-x-4 gap-y-3 sm:gap-x-6 sm:gap-y-4 items-center justify-center shadow-xl animate-[slideUp_0.8s_ease_0.2s]">
-            <!-- Lesson Selector -->
-            <div class="lesson-selector flex items-center gap-2 w-full sm:w-auto">
-                <label for="lesson" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base shrink-0">レッスン:</label>
-                <div class="relative flex-grow">
-                    <select id="lesson"
-                        class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
-                        <option value="all">全てのレッスン</option>
-                        <!-- Options will be dynamically populated here by JavaScript -->
-                        <!-- The following are examples and will be replaced -->
-                        <option value="lesson1">レッスン1</option><option value="lesson2">レッスン2</option><option value="lesson3">レッスン3</option><option value="lesson4">レッスン4</option><option value="lesson5">レッスン5</option><option value="lesson6">レッスン6</option><option value="lesson7">レッスン7</option><option value="lesson8">レッスン8</option><option value="lesson9">レッスン9</option><option value="lesson10">レッスン10</option><option value="lesson11">レッスン11</option><option value="lesson12">レッスン12</option><option value="lesson13">レッスン13</option><option value="lesson14">レッスン14</option><option value="lesson15">レッスン15</option><option value="lesson16">レッスン16</option><option value="lesson17">レッスン17</option><option value="lesson18">レッスン18</option><option value="lesson19">レッスン19</option><option value="lesson20">レッスン20</option><option value="lesson21">レッスン21</option><option value="lesson22">レッスン22</option><option value="lesson23">レッスン23</option><option value="lesson24">レッスン24</option><option value="lesson25">レッスン25</option><option value="lesson26">レッスン26</option><option value="lesson27">レッスン27</option><option value="lesson28">レッスン28</option><option value="lesson29">レッスン29</option><option value="lesson30">レッスン30</option><option value="lesson31">レッスン31</option><option value="lesson32">レッスン32</option><option value="lesson33">レッスン33</option><option value="lesson34">レッスン34</option><option value="lesson35">レッスン35</option><option value="lesson36">レッスン36</option><option value="lesson37">レッスン37</option><option value="lesson38">レッスン38</option><option value="lesson39">レッスン39</option><option value="lesson40">レッスン40</option><option value="lesson41">レッスン41</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
-                        <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
+        <div class="quiz-container bg-opacity-95 backdrop-blur-md rounded-2xl p-10 shadow-lg border border-white border-opacity-20 min-h-[400px] animate-[fadeIn_0.5s_ease]" id="quizContainer">
+            <div class="welcome-message">
+                <h2 class="text-center text-2xl font-bold mb-5">練習モードを選んで開始してください</h2>
+                <p class="text-center text-gray-600 dark:text-gray-300 text-lg mb-8">
+                    <strong>読み方:</strong> 漢字の読みを選択<br>
+                    <strong>意味:</strong> 単語の意味を選択<br>
+                    <strong>使い方:</strong> 文脈に合う単語を選択<br>
+                    <strong>ミックス:</strong> 全種類の問題をランダムに<br>
+                </p>
+                <div class="features glass-morphism mt-8 p-5 bg-indigo-100 dark:bg-indigo-900 dark:bg-opacity-40 rounded-xl">
+                    <h3 class="text-center text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">✨ 新機能</h3>
+                    <ul class="text-left text-gray-600 dark:text-gray-300 leading-relaxed list-none list-inside">
+                        <li>🎯 問題数選択（5/10/30/全て）</li>
+                        <li>🔥 連続正解カウンター</li>
+                        <li>⏱️ 問題別タイマー</li>
+                        <li>🌙 ダークモード対応</li>
+                        <li>⌨️ キーボードショートカット</li>
+                        <li>📱 完全レスポンシブ対応</li>
+                        <li>📚 レッスン選択機能</li>
+                        <li>🇨🇳 意味練習で中国語表示</li>
+                        <li>✨ AIによる新しい例文生成</li>
+                        <li>📖 問題文クリックで例文表示 (全モード対応)</li>
+                    </ul>
                 </div>
             </div>
-
-            <!-- Mode Selector -->
-            <div class="mode-selector flex items-center gap-2 w-full sm:w-auto">
-                <label for="mode" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base shrink-0">練習モード:</label>
-                <div class="relative flex-grow">
-                    <select id="mode" class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
-                        <option value="reading">読み方</option><option value="meaning">意味</option><option value="usage">使い方</option><option value="mixed">ミックス</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
-                        <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Difficulty Selector -->
-            <div class="difficulty-selector flex items-center gap-2 w-full sm:w-auto">
-                <label for="difficulty" class="font-semibold text-indigo-700 dark:text-indigo-300 text-sm sm:text-base shrink-0">問題数:</label>
-                <div class="relative flex-grow">
-                    <select id="difficulty" class="appearance-none w-full block bg-white/80 dark:bg-gray-700/80 border-2 border-indigo-300 dark:border-indigo-500 text-gray-800 dark:text-gray-100 py-2.5 px-4 pr-10 rounded-lg leading-tight focus:outline-none focus:bg-white/95 dark:focus:bg-gray-600/90 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm text-sm sm:text-base cursor-pointer transition-all duration-200">
-                        <option value="5">5問</option><option value="10">10問</option><option value="20" selected>20問</option><option value="30">30問</option><option value="50">50問</option><option value="all">全て</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-indigo-700 dark:text-indigo-300">
-                        <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Button Group -->
-            <div class="button-group flex flex-wrap justify-center gap-2 sm:gap-3 mt-2 sm:mt-0 w-full sm:w-auto">
-                <button id="startQuizButton" class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-full shadow-lg text-sm sm:text-base" onclick="QuizManager.startQuiz()" disabled>✨ 練習開始</button>
-                <button class="btn bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-full shadow-lg text-sm sm:text-base" onclick="QuizManager.resetQuiz()">🔄 リセット</button>
-                <button class="btn bg-gradient-to-br from-green-500 to-emerald-600 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-full shadow-lg text-sm sm:text-base" onclick="StatsManager.showStats()">📊 統計</button>
-            </div>
-        </div>
-
-        <!-- Quiz Container -->
-        <div class="quiz-container glass-morphism rounded-2xl p-6 sm:p-10 shadow-2xl min-h-[400px] sm:min-h-[500px] animate-[fadeIn_0.5s_ease_0.4s]" id="quizContainer">
-            <!-- Content will be dynamically inserted here -->
         </div>
     </div>
 
-    <!-- Keyboard Hint -->
-    <div id="keyboardHint" class="text-xs sm:text-sm">
-        ⌨️ 1-4で選択 (自動提出) • Rでリセット
+    <div class="keyboard-shortcut fixed bottom-5 right-5 bg-gray-800 text-white py-2.5 px-4 rounded-xl text-xs opacity-0 transition-opacity duration-300 z-50" id="keyboardHint">
+        キーボード: 1-4で選択, Enterで確定
     </div>
 
-    <!-- Notification Container -->
-    <div id="notificationContainer"></div>
-
-    <!-- Modals -->
-    <div id="messageBox" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[250] hidden backdrop-blur-sm p-4">
-        <div class="glass-morphism p-6 sm:p-8 rounded-2xl shadow-2xl max-w-md w-full text-center mx-auto">
-            <p id="messageBoxText" class="text-base sm:text-lg font-semibold mb-6 text-gray-800 dark:text-white"></p>
-            <button class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2.5 px-5 sm:py-3 sm:px-6 rounded-full text-sm sm:text-base" onclick="UIManager.hideMessageBox()">OK</button>
+    <div id="messageBox" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+            <p id="messageBoxText" class="text-lg font-semibold mb-4"></p>
+            <button class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full" onclick="hideMessageBox()">OK</button>
         </div>
     </div>
 
-    <div id="statsModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[250] hidden backdrop-blur-sm p-4">
-        <div class="glass-morphism p-6 sm:p-8 rounded-2xl shadow-2xl max-w-3xl w-full mx-auto max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4 sm:mb-6">
-                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white gradient-text">📊 学習統計</h3>
-                <button class="text-gray-500 dark:text-white/70 hover:text-gray-800 dark:hover:text-white text-2xl sm:text-3xl" onclick="StatsManager.hideStats()">×</button>
+    <div id="generatedSentenceModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full text-center">
+            <h3 class="text-xl font-bold mb-4 text-indigo-700">✨ 新しい例文</h3>
+            <p id="generatedSentenceText" class="text-lg text-gray-800 mb-4"></p>
+            <div id="sentenceLoadingSpinner" class="hidden">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
+                <p class="text-gray-600 text-sm mt-2">生成中...</p>
             </div>
-            <div id="statsContent" class="text-sm sm:text-base"></div>
-        </div>
-    </div>
-    
-    <div id="generatedSentenceModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-[300] hidden p-4">
-        <div class="glass-morphism p-6 sm:p-8 rounded-2xl shadow-xl max-w-lg w-full text-center mx-auto">
-            <h3 class="text-lg sm:text-xl font-bold mb-4 text-indigo-700 dark:text-indigo-300 gradient-text">✨ 新しい例文</h3>
-            <div id="sentenceLoadingSpinner" class="my-4 hidden">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 dark:border-indigo-400 mx-auto"></div>
-                <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-2">AIが生成中...</p>
-            </div>
-            <p id="generatedSentenceText" class="text-base sm:text-lg text-gray-800 dark:text-gray-200 mb-6 min-h-[3em]"></p>
-            <button class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2.5 px-5 sm:py-3 sm:px-6 rounded-full text-sm sm:text-base" onclick="UIManager.hideGeneratedSentenceModal()">閉じる</button>
+            <button class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full" onclick="hideGeneratedSentenceModal()">閉じる</button>
         </div>
     </div>
 
     <script>
-        let AllVocabularyData = {};
+        let allVocabulary = {};
+        let currentQuiz = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let quizMode = 'reading';
+        let streak = 0;
+        let maxStreak = 0;
+        let startTime = null;
+        let questionStartTime = null;
+        let totalTime = 0;
+        let wrongAnswers = [];
+        let isDarkMode = false;
+        let timerInterval;
 
-        class QuizState {
-            constructor() { this.reset(); }
-            reset() {
-                this.currentQuiz = []; this.currentQuestion = 0; this.score = 0;
-                this.selectedAnswer = null; this.selectedButton = null; this.quizMode = 'reading';
-                this.streak = 0; this.maxStreak = 0; this.startTime = null;
-                this.questionStartTime = null; this.totalTime = 0; this.wrongAnswers = [];
-                this.isActive = false; this.questionTimes = []; this.answerProcessed = false;
-                this.currentLesson = 'all';
-            }
-            updateScore(isCorrect) {
-                if (isCorrect) { this.score++; this.streak++; this.maxStreak = Math.max(this.maxStreak, this.streak); } 
-                else { this.streak = 0; }
-            }
-            addWrongAnswer(questionData) { this.wrongAnswers.push({ ...questionData, timestamp: Date.now(), questionNumber: this.currentQuestion }); }
-            getProgress() {
-                if (!this.isActive && this.currentQuiz.length > 0 && this.currentQuestion >= this.currentQuiz.length) return 100;
-                return this.currentQuiz.length > 0 ? Math.round(((this.currentQuestion) / this.currentQuiz.length) * 100) : 0;
-            }
-            getAccuracy() {
-                const questionsConsidered = this.currentQuiz.length;
-                return questionsConsidered > 0 ? Math.round((this.score / questionsConsidered) * 100) : 0;
+        let headerElement;
+        let controlsElement;
+        let quizContainerElement;
+        let mainContainerElement;
+        let startQuizButton;
+        let lessonSelectElement;
+        let currentJLPTLevel = 'N2'; // Default level
+
+        // --- MODIFICATION START ---
+        async function loadVocabularyData(fileNameToLoad) {
+            try {
+                // Ensure startQuizButton is available before trying to modify it
+                if (!startQuizButton) {
+                     startQuizButton = document.getElementById('startQuizButton');
+                }
+                if (startQuizButton) startQuizButton.disabled = true; // Disable button while loading
+
+                const response = await fetch(fileNameToLoad); 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} while fetching ${fileNameToLoad}`);
+                }
+                allVocabulary = await response.json();
+                console.log(`Vocabulary for ${currentJLPTLevel} loaded successfully from ${fileNameToLoad}:`, allVocabulary);
+                populateLessonSelect();
+                if (startQuizButton) startQuizButton.disabled = false;
+            } catch (error) {
+                console.error(`Could not load vocabulary from ${fileNameToLoad}:`, error);
+                showMessageBox(`語彙データ(${fileNameToLoad})の読み込みに失敗しました。ファイルが存在するか、内容が正しいJSON形式か確認してください。`);
+                if (startQuizButton) startQuizButton.disabled = true;
             }
         }
 
-        class VocabularyManager {
-            static async loadVocabulary() {
-                try {
-                    const response = await fetch('vocabulary.json');
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    AllVocabularyData = await response.json();
-                    console.log("Vocabulary loaded successfully:", AllVocabularyData);
-                    if (document.getElementById('startQuizButton')) document.getElementById('startQuizButton').disabled = false;
-                    return true;
-                } catch (error) {
-                    console.error("Could not load vocabulary:", error);
-                    UIManager.showMessageBox("語彙データの読み込みに失敗しました。ページを再読み込みするか、vocabulary.jsonファイルを確認してください。");
-                    if (document.getElementById('startQuizButton')) document.getElementById('startQuizButton').disabled = true;
-                    return false;
-                }
-            }
-
-            static getVocabularyByLesson(lessonKey) {
-                if (lessonKey === 'all') {
-                    let all = [];
-                    Object.values(AllVocabularyData).forEach(lesson => { all = all.concat(lesson); });
-                    return all;
-                }
-                return AllVocabularyData[lessonKey] || [];
-            }
-
-            static shuffleArray(array) {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            }
-
-            // isKatakanaOnly might still be useful for other features, so it's kept.
-            static isKatakanaOnly(word) { return /^[ァ-ヶー]+$/.test(word); }
-
-            static generateQuestion(vocabItem, mode, allVocabPool) {
-                if (!vocabItem || typeof vocabItem.word === 'undefined') {
-                    console.warn("Skipping invalid vocabItem for question generation:", vocabItem);
-                    return null;
-                }
-                const otherVocabUnfiltered = allVocabPool.filter(v => v && v.word !== vocabItem.word);
-                
-                let otherVocab = [];
-                if (mode === 'reading') otherVocab = otherVocabUnfiltered.filter(v => v && v.reading);
-                else if (mode === 'meaning') otherVocab = otherVocabUnfiltered.filter(v => v && (v.chineseMeaning || v.meaning));
-                else if (mode === 'usage') otherVocab = otherVocabUnfiltered.filter(v => v && v.word);
-                else otherVocab = otherVocabUnfiltered;
-
-                // MODIFIED: If mode is 'reading' and word pronunciation is same as spelling, switch to 'meaning'
-                if (mode === 'reading' && vocabItem.word === vocabItem.reading) {
-                    mode = 'meaning';
-                }
-                
-                // Fallback for 'usage' if not applicable
-                if (mode === 'usage' && (!vocabItem.usage || typeof vocabItem.usage !== 'string' || !vocabItem.usage.includes('___'))) {
-                    const fallbackModes = ['meaning', 'reading'];
-                    let newMode = fallbackModes[Math.floor(Math.random() * fallbackModes.length)];
-                    // MODIFIED: If the chosen fallback is 'reading' and word pronunciation is same as spelling, switch newMode to 'meaning'
-                    if (newMode === 'reading' && vocabItem.word === vocabItem.reading) {
-                        newMode = 'meaning';
-                    }
-                    mode = newMode;
-                }
-
-
-                let questionText, correctAnswerText;
-                let potentialWrongAnswers = [];
-
-                switch (mode) {
-                    case 'reading':
-                        questionText = vocabItem.word;
-                        correctAnswerText = vocabItem.reading;
-                        potentialWrongAnswers = otherVocab.map(v => v.reading).filter(Boolean);
-                        break;
-                    case 'meaning':
-                        questionText = `${vocabItem.word} ${vocabItem.word !== vocabItem.reading ? '('+vocabItem.reading+')' : ''}`;
-                        correctAnswerText = vocabItem.chineseMeaning || vocabItem.meaning;
-                        potentialWrongAnswers = otherVocab.map(v => v.chineseMeaning || v.meaning).filter(Boolean);
-                        break;
-                    case 'usage':
-                        questionText = vocabItem.usage 
-                        correctAnswerText = vocabItem.word;
-                        potentialWrongAnswers = otherVocab.map(v => v.word).filter(Boolean);
-                        break;
-                    default: return null;
-                }
-
-                potentialWrongAnswers = [...new Set(potentialWrongAnswers.filter(text => text !== correctAnswerText))];
-                
-                const wrongAnswers = this.shuffleArray(potentialWrongAnswers).slice(0, 3);
-                
-                let options = [{ text: correctAnswerText, correct: true }];
-                wrongAnswers.forEach(text => options.push({ text, correct: false }));
-
-                while (options.length < 2 && options.length < 4) {
-                     options.push({ text: `ダミー選択肢${options.length}`, correct: false });
-                }
-                 if (options.length < 2) return null;
-
-
-                return {
-                    question: questionText,
-                    options: this.shuffleArray(options).slice(0,4),
-                    correctAnswer: correctAnswerText,
-                    vocab: vocabItem,
-                    mode: mode,
-                    level: vocabItem.level,
-                    timestamp: Date.now()
-                };
-            }
-        }
-
-        class UIManager {
-            static quizContainer = document.getElementById('quizContainer');
-            static keyboardHint = document.getElementById('keyboardHint');
-            static notificationContainer = document.getElementById('notificationContainer');
-            static messageBox = document.getElementById('messageBox');
-            static messageBoxText = document.getElementById('messageBoxText');
-            static statsModal = document.getElementById('statsModal');
-            static statsContent = document.getElementById('statsContent');
-            static themeToggleIcon = document.querySelector('.theme-toggle');
-            static initialWelcomeHTML = '';
-            static generatedSentenceModal = document.getElementById('generatedSentenceModal');
-            static generatedSentenceText = document.getElementById('generatedSentenceText');
-            static sentenceLoadingSpinner = document.getElementById('sentenceLoadingSpinner');
-            static keyboardHintTimeout = null;
-
-            static isTouchDevice() {
-                return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-            }
-
-            static toggleTheme() {
-                document.body.classList.toggle('dark-mode');
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                this.themeToggleIcon.textContent = isDarkMode ? '☀️' : '🌙';
-                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            }
-            static loadTheme() {
-                const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                const isDarkMode = theme === 'dark';
-                if (isDarkMode) document.body.classList.add('dark-mode');
-                else document.body.classList.remove('dark-mode');
-                this.themeToggleIcon.textContent = isDarkMode ? '☀️' : '🌙';
-            }
-            static showNotification(message, type = 'success', duration = 3000) {
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.textContent = message;
-                this.notificationContainer.appendChild(notification);
-                requestAnimationFrame(() => { notification.classList.add('show'); });
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    setTimeout(() => { if (notification.parentNode) notification.remove(); }, 400);
-                }, duration);
-            }
-            static showMessageBox(message) { this.messageBoxText.textContent = message; this.messageBox.classList.remove('hidden'); }
-            static hideMessageBox() { this.messageBox.classList.add('hidden'); }
+        function initializeApp() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const levelParam = urlParams.get('level'); // Use 'level' as the parameter key
+            const allowedLevels = ['n1', 'n2', 'n3'];
             
-            static showGeneratedSentenceModal(sentence = '') {
-                this.generatedSentenceText.textContent = sentence;
-                this.sentenceLoadingSpinner.classList.add('hidden');
-                this.generatedSentenceModal.classList.remove('hidden');
-            }
-            static hideGeneratedSentenceModal() { this.generatedSentenceModal.classList.add('hidden'); }
-            static showSentenceLoadingSpinner() {
-                this.generatedSentenceText.textContent = '';
-                this.sentenceLoadingSpinner.classList.remove('hidden');
-                this.generatedSentenceModal.classList.remove('hidden');
-            }
+            let determinedLevel = 'n2'; // Default to N2
 
-            static showKeyboardHint(forceShow = false) {
-                if (!forceShow && this.isTouchDevice()) {
-                    return; 
-                }
-                this.keyboardHint.classList.add('show');
-                clearTimeout(this.keyboardHintTimeout);
-                this.keyboardHintTimeout = setTimeout(() => {
-                    this.hideKeyboardHint();
-                }, 4000);
-            }
-            static hideKeyboardHint() {
-                this.keyboardHint.classList.remove('show');
-                clearTimeout(this.keyboardHintTimeout);
-            }
-
-            static clearQuizArea(animation = 'animate-[fadeIn_0.5s_ease]') {
-                this.quizContainer.innerHTML = '';
-                this.quizContainer.className = `quiz-container glass-morphism rounded-2xl p-6 sm:p-10 shadow-2xl min-h-[400px] sm:min-h-[500px] ${animation}`;
-                if (QuizManager.state.isActive) {
-                    document.body.classList.add('quiz-mode-active');
-                    this.quizContainer.classList.add('immersive-active');
-                } else {
-                    document.body.classList.remove('quiz-mode-active');
-                    this.quizContainer.classList.remove('immersive-active');
-                }
+            if (levelParam && allowedLevels.includes(levelParam.toLowerCase())) {
+                determinedLevel = levelParam.toLowerCase();
+            } else if (levelParam) {
+                console.warn(`Invalid level parameter '${levelParam}' provided. Defaulting to N2.`);
             }
             
-            static displayQuestion(questionData, questionNumber, totalQuestions) {
-                this.clearQuizArea('animate-[slideIn_0.4s_ease-out]');
-                QuizManager.state.questionStartTime = Date.now();
-                QuizManager.state.answerProcessed = false;
+            currentJLPTLevel = determinedLevel.toUpperCase();
+            const jsonFileName = `${determinedLevel}.json`;
 
-                let questionText = questionData.question;
-                let questionTypeLabel = "";
-                if (questionData.mode === 'reading') questionTypeLabel = "この言葉の読み方は？";
-                else if (questionData.mode === 'meaning') {
-                    questionTypeLabel = "この言葉の意味は？";
-                    const parts = questionData.question.split(' (');
-                    const wordPart = parts[0];
-                    const readingPart = parts.length > 1 ? `(${parts.slice(1).join(' (')}` : '';
-                    questionText = `<span class="text-2xl sm:text-3xl md:text-4xl">${wordPart}</span> ${readingPart ? `<span class="text-lg sm:text-xl md:text-2xl text-gray-500 dark:text-gray-400">${readingPart}</span>` : ''}`;
-                } else if (questionData.mode === 'usage') {
-                    questionTypeLabel = "（　　）に最も適切な言葉は？";
-                    if (typeof questionData.question === 'string') questionText = questionData.question.replace("___", `<span class="font-bold text-indigo-500 dark:text-indigo-300 text-3xl md:text-4xl">（　　）</span>`);
-                    else questionText = "問題文エラー";
-                }
-
-                const progressPercentage = Math.round(((questionNumber -1) / totalQuestions) * 100) ;
-
-                const questionElement = document.createElement('div');
-                questionElement.className = 'question-content h-full flex flex-col';
-                questionElement.innerHTML = `
-                    ${QuizManager.state.isActive ? '<button class="exit-btn" onclick="QuizManager.resetQuiz()">✕</button>' : ''}
-                    <div class="progress-container mb-4 md:mb-6">
-                        <div class="flex justify-between mb-1.5 text-xs sm:text-sm font-semibold text-indigo-700 dark:text-indigo-300">
-                           <span>${questionNumber} / ${totalQuestions}</span>
-                           <span>進捗: ${progressPercentage}%</span>
-                        </div>
-                        <div class="progress-bar w-full h-2 sm:h-2.5 bg-indigo-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
-                            <div class="progress-fill h-full rounded-full transition-all duration-500 ease-in-out relative" style="width: ${progressPercentage}%"></div>
-                        </div>
-                    </div>
-                    <div class="question-area-wrapper">
-                        <p class="text-sm sm:text-base text-indigo-600 dark:text-indigo-300 mb-2 font-semibold">${questionTypeLabel}</p>
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-gray-800 dark:text-white break-words min-h-[3em] flex items-center justify-center text-center">${questionText}</h2>
-                    </div>
-                    <div class="options-grid grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4">
-                        ${questionData.options.map((opt, index) => `
-                            <button class="option p-3 md:p-4 rounded-lg text-base md:text-lg font-medium transition-all duration-200 ease-in-out
-                                         border-2 shadow-md hover:shadow-lg 
-                                         focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                                         text-gray-700 dark:text-gray-100" 
-                                    onclick="QuizManager.processAnswerSelection(this, ${index})" data-index="${index}">
-                                <span class="text-indigo-500 dark:text-indigo-300 font-semibold mr-2">${index + 1}.</span> ${opt.text}
-                            </button>
-                        `).join('')}
-                    </div>
-                    <div class="feedback-display mt-4 sm:mt-6 text-base sm:text-lg font-semibold min-h-[3em] sm:min-h-[4em]" id="feedbackArea"></div>
-                `;
-                this.quizContainer.appendChild(questionElement);
-                this.updateProgressBar();
-            }
-
-            static updateProgressBar() {
-                const progressBarFill = document.querySelector('.progress-fill');
-                if (progressBarFill) progressBarFill.style.width = `${QuizManager.state.getProgress()}%`;
-            }
-
-            static showFeedback(isCorrect, correctAnswer, selectedButton, questionData) {
-                const feedbackArea = document.getElementById('feedbackArea');
-                feedbackArea.innerHTML = '';
-                
-                document.querySelectorAll('.quiz-container .option').forEach(optButton => {
-                    optButton.disabled = true;
-                    const optText = optButton.textContent.substring(optButton.textContent.indexOf('.') + 1).trim();
-                    optButton.classList.remove('selected-option');
-
-                    if (optText === correctAnswer) {
-                        optButton.classList.add('!bg-green-500', '!border-green-600', '!text-white', 'animate-[correctPulse_0.5s_ease]');
-                        optButton.classList.remove('text-gray-700', 'dark:text-gray-100', 'dark:bg-gray-700/50', 'bg-white/80');
-                    } else if (optButton === selectedButton && !isCorrect) {
-                        optButton.classList.add('!bg-red-500', '!border-red-600', '!text-white', 'animate-[incorrectShake_0.5s_ease]');
-                         optButton.classList.remove('text-gray-700', 'dark:text-gray-100', 'dark:bg-gray-700/50', 'bg-white/80');
-                    } else {
-                        optButton.classList.add('opacity-50', 'dark:opacity-40');
-                    }
-                });
-
-                let feedbackText = '';
-                if (isCorrect) {
-                    feedbackArea.className = `feedback-display mt-4 sm:mt-6 text-base sm:text-lg font-semibold min-h-[3em] sm:min-h-[4em] p-3 rounded-lg text-green-600 bg-green-50 border-2 border-green-200 dark:text-green-400 dark:bg-green-700/30 dark:border-green-600`;
-                    feedbackText = '🎉 正解！';
-                } else {
-                    feedbackArea.className = `feedback-display mt-4 sm:mt-6 text-base sm:text-lg font-semibold min-h-[3em] sm:min-h-[4em] p-3 rounded-lg text-red-600 bg-red-50 border-2 border-red-200 dark:text-red-300 dark:bg-red-700/30 dark:border-red-600`;
-                    feedbackText = `❌ 不正解。正解は “<strong>${correctAnswer}</strong>”。`;
-                    if (questionData.vocab) {
-                        const vocab = questionData.vocab;
-                        const displayMeaning = vocab.chineseMeaning || vocab.meaning;
-                        feedbackText += `<br><small class="text-gray-600 dark:text-slate-400 opacity-90 dark:opacity-85 text-xs sm:text-sm">
-                            ${vocab.word} ${vocab.word !== vocab.reading ? '('+vocab.reading+')' : ''} - ${displayMeaning}
-                        </small>`;
-                    }
-                }
-                feedbackArea.innerHTML = feedbackText;
-                feedbackArea.style.animation = 'animate-[fadeIn_0.3s_ease]';
-            }
-
-            static displayFinalScore(reviewMode = false) {
-                this.clearQuizArea('animate-[scoreReveal_0.8s_cubic-bezier(0.25,1,0.5,1)]');
-                this.hideKeyboardHint();
-                const state = QuizManager.state;
-                const timeTaken = (state.totalTime / 1000).toFixed(1);
-                const avgTimePerQ = state.questionTimes.length > 0 ? (state.questionTimes.reduce((a, b) => a + b, 0) / state.questionTimes.length / 1000).toFixed(1) : 'N/A';
-                const accuracy = state.getAccuracy();
-
-                let message = ''; let emoji = '';
-                if (accuracy >= 90) { message = '素晴らしい！'; emoji = '🏆'; }
-                else if (accuracy >= 70) { message = 'よくできました！'; emoji = '🎉'; }
-                else if (accuracy >= 50) { message = 'もう少し頑張りましょう。'; emoji = '💪'; }
-                else { message = '復習が必要です。'; emoji = '📚'; }
-
-                const scoreElement = document.createElement('div');
-                scoreElement.className = 'final-score text-center';
-                scoreElement.innerHTML = `
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-3 gradient-text">${emoji} ${reviewMode ? '復習完了！' : '練習終了！'}</h2>
-                    <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 mb-6">${message}</p>
-                    <div class="final-score-grid grid md:grid-cols-2 gap-3 md:gap-4 mb-6 text-left">
-                        <div class="stats-card p-3 md:p-4 rounded-xl"><p class="text-lg md:text-xl font-semibold">スコア: <span class="text-green-500 dark:text-green-400">${state.score} / ${state.currentQuiz.length}</span></p><p>正答率: <span class="text-blue-500 dark:text-blue-400">${accuracy}%</span></p></div>
-                        <div class="stats-card p-3 md:p-4 rounded-xl"><p>最長連続正解: <span class="text-yellow-500 dark:text-yellow-400">${state.maxStreak}</span></p><p>合計時間: <span class="text-purple-500 dark:text-purple-400">${timeTaken}秒</span></p><p>平均解答時間: <span class="text-teal-500 dark:text-teal-400">${avgTimePerQ}秒/問</span></p></div>
-                    </div>
-                    ${state.wrongAnswers.length > 0 ? `
-                    <div class="wrong-answers mt-6 bg-white/10 dark:bg-gray-800/30 p-3 md:p-4 rounded-xl max-h-60 overflow-y-auto">
-                        <h3 class="text-lg md:text-xl font-bold mb-3 text-gray-800 dark:text-white">間違えた問題の復習</h3>
-                        <ul class="space-y-2.5 text-left text-sm">
-                            ${state.wrongAnswers.map(item => `
-                                <li class="p-2.5 bg-red-100 dark:bg-red-900/40 rounded-lg text-red-700 dark:text-red-300 shadow-sm">
-                                    <div class="font-semibold">${item.vocab.word} ${item.vocab.word !== item.vocab.reading ? '('+item.vocab.reading+')' : ''}</div>
-                                    <div>あなたの回答: ${item.options.find(opt => opt.text === item.selectedAnswer)?.text || 'N/A'}</div>
-                                    <div>正解: ${item.correctAnswer}</div>
-                                    <div class="text-xs">意味: ${item.vocab.chineseMeaning || item.vocab.meaning}</div>
-                                    <button class="generate-sentence-btn mt-1.5 px-2.5 py-1 bg-blue-500 text-white text-xs rounded-full hover:bg-blue-600 transition-colors duration-200 shadow" 
-                                            onclick="UIManager.generateExampleSentence(this, '${item.vocab.word.replace(/'/g, "\\'")}', '${item.vocab.reading.replace(/'/g, "\\'")}', '${(item.vocab.chineseMeaning || item.vocab.meaning).replace(/'/g, "\\'")}')">
-                                        ✨ AI例文
-                                    </button>
-                                </li>`).join('')}
-                        </ul>
-                    </div>` : ''}
-                    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
-                        <button class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full" onclick="QuizManager.startQuiz()">もう一度挑戦</button>
-                        ${!reviewMode && state.wrongAnswers.length > 0 ? `<button class="btn bg-gradient-to-br from-yellow-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full" onclick="QuizManager.startReviewMode()">間違えた問題を復習</button>` : ''}
-                        <button class="btn bg-gradient-to-br from-gray-500 to-gray-600 dark:from-gray-600 dark:to-gray-700 text-white font-semibold py-3 px-6 rounded-full" onclick="UIManager.showWelcomeMessage()">メニューに戻る</button>
-                    </div>`;
-                this.quizContainer.appendChild(scoreElement);
+            // Update page title and H1
+            document.title = `新無敵緑宝書${currentJLPTLevel}単語練習`;
+            const h1Element = document.querySelector('.header h1.gradient-text');
+            if (h1Element) {
+                h1Element.textContent = `新無敵緑宝書${currentJLPTLevel}語彙練習`;
             }
             
-            static async generateExampleSentence(buttonElement, word, reading, meaning) {
-                buttonElement.disabled = true;
-                buttonElement.innerHTML = '<span class="animate-pulse">生成中...</span>';
-                this.showSentenceLoadingSpinner();
-
-                const apiKey = "YOUR_GEMINI_API_KEY"; // IMPORTANT: Replace with your actual key
-                if (apiKey === "YOUR_GEMINI_API_KEY" || !apiKey) {
-                    this.showGeneratedSentenceModal('エラー: Gemini APIキーが設定されていません。');
-                    console.error('Gemini API key is not set.');
-                    buttonElement.disabled = false; buttonElement.innerHTML = '✨ AI例文';
-                    return;
-                }
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ role: "user", parts: [{ text: `「${word} (${reading})」という日本語の単語（意味：${meaning}）を使って、JLPT N3/N2レベルの自然な例文を一つ生成してください。**例文のみを日本語で提供し、説明や他のテキストは一切含めないでください。**` }] }] };
-
-                try {
-                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!response.ok) {
-                        const errorResult = await response.json().catch(() => ({ error: { message: '不明なAPIエラー形式。' } }));
-                        throw new Error(`Gemini APIリクエスト失敗: ${response.status} ${response.statusText}. ${errorResult.error?.message || ''}`);
-                    }
-                    const result = await response.json();
-                    if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        this.showGeneratedSentenceModal(result.candidates[0].content.parts[0].text.trim());
-                    } else {
-                        this.showGeneratedSentenceModal('例文の生成に失敗しました。API応答の形式が予期しないものです。');
-                        console.error('Gemini API response structure unexpected:', result);
-                    }
-                } catch (error) {
-                    this.showGeneratedSentenceModal(`例文の生成中にエラーが発生しました。詳細はコンソールを確認してください。`);
-                    console.error('Error calling Gemini API:', error);
-                } finally {
-                    buttonElement.disabled = false; buttonElement.innerHTML = '✨ AI例文';
-                }
-            }
-
-            static showWelcomeMessage() {
-                this.clearQuizArea('animate-[fadeIn_0.5s_ease]');
-                this.hideKeyboardHint();
-                if (!this.initialWelcomeHTML) {
-                    this.initialWelcomeHTML = `
-                    <div class="welcome-message text-center">
-                        <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 gradient-text">練習モードを選んで開始してください</h2>
-                        <div class="grid md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                            <div class="mode-explanation glass-morphism rounded-xl p-4 sm:p-6 shadow-lg"><h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-800 dark:text-white">📚 練習モード</h3><ul class="text-left text-gray-700 dark:text-gray-300 space-y-1.5 text-sm sm:text-base"><li><strong>読み方:</strong> 漢字の読みを選択</li><li><strong>意味:</strong> 単語の意味を選択</li><li><strong>使い方:</strong> 文脈に合う単語を選択</li><li><strong>ミックス:</strong> 全種類の問題をランダムに</li></ul></div>
-                            <div class="features glass-morphism rounded-xl p-4 sm:p-6 shadow-lg"><h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-800 dark:text-white">✨ 主な機能</h3><ul class="text-left text-gray-700 dark:text-gray-300 space-y-1.5 text-sm sm:text-base"><li>🎯 問題数・レッスン選択</li><li>💾 学習記録と詳細統計</li><li>🔥 連続正解カウンター</li><li>🌙 ダークモード対応</li><li>📱 レスポンシブデザイン</li><li>⚡️ 自動提出＆AI例文</li></ul></div>
-                        </div>
-                        <div class="quick-start bg-gradient-to-r from-blue-500/30 to-purple-500/30 dark:from-blue-700/40 dark:to-purple-700/40 rounded-xl p-4 sm:p-6 shadow-lg"><h3 class="text-base sm:text-lg font-bold mb-2 text-gray-800 dark:text-white">🚀 クイックスタート</h3><p class="text-gray-700 dark:text-gray-300 mb-3 text-xs sm:text-sm">初めての方は<strong>レッスン1</strong>から<strong>10問</strong>の<strong>読み方</strong>練習がおすすめです！</p><button class="btn bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-2 px-3 sm:py-2.5 sm:px-4 rounded-full text-xs sm:text-sm shadow-md" onclick="QuizManager.quickStart()">⚡ クイックスタート</button></div>
-                    </div>`;
-                }
-                this.quizContainer.innerHTML = this.initialWelcomeHTML;
-                QuizManager.resetQuizInternalStateOnly();
-            }
-
-            // NEW: Method to populate lesson selector
-            static populateLessonSelector(vocabularyData) {
-                const lessonSelect = document.getElementById('lesson');
-                if (!lessonSelect) {
-                    console.error("Lesson selector not found.");
-                    return;
-                }
-
-                const lessonKeys = Object.keys(vocabularyData);
-                
-                // Sort keys numerically based on the number in "lessonX"
-                lessonKeys.sort((a, b) => {
-                    const numA = parseInt(a.replace('lesson', ''), 10);
-                    const numB = parseInt(b.replace('lesson', ''), 10);
-                    
-                    if (isNaN(numA) && isNaN(numB)) return a.localeCompare(b); // both not "lessonX"
-                    if (isNaN(numA)) return 1; // a is not "lessonX", b is (or also not)
-                    if (isNaN(numB)) return -1; // b is not "lessonX", a is
-
-                    return numA - numB;
-                });
-
-                // Clear existing lesson options, keeping the first one ("全てのレッスン")
-                while (lessonSelect.options.length > 1) {
-                    lessonSelect.remove(1);
-                }
-
-                // Add sorted lesson options
-                lessonKeys.forEach(key => {
-                    const option = document.createElement('option');
-                    option.value = key;
-                    const lessonNumber = key.replace('lesson', '');
-                    option.textContent = `レッスン${lessonNumber}`;
-                    lessonSelect.appendChild(option);
-                });
-            }
+            // Load the determined JSON file
+            loadVocabularyData(jsonFileName);
         }
+        // --- MODIFICATION END ---
 
-        class QuizManager {
-            static state = new QuizState();
-            static isReviewMode = false;
+        function populateLessonSelect() {
+            if (!lessonSelectElement) return;
+            lessonSelectElement.innerHTML = '<option value="all">全てのレッスン</option>';
 
-            static startQuiz(isReview = false, wordsToReview = null) {
-                this.isReviewMode = isReview;
-                const config = this.getQuizConfig();
-                this.state.currentLesson = config.lesson;
-
-                let sourceVocab;
-                if (isReview && wordsToReview) {
-                    sourceVocab = wordsToReview;
-                     if (!config.mode || config.mode === "mixed") {
-                        config.mode = "mixed";
-                    }
-                } else {
-                    sourceVocab = VocabularyManager.getVocabularyByLesson(config.lesson);
-                }
-
-                if (!this.validateQuizStart(sourceVocab, config)) return;
-                
-                this.initializeQuiz(sourceVocab, config, isReview ? sourceVocab : VocabularyManager.getVocabularyByLesson('all'));
-                
-                if (this.state.currentQuiz.length === 0) {
-                    UIManager.showNotification('選択された設定で問題を作成できませんでした。単語数が不足しているか、選択肢を生成できません。', 'error', 5000);
-                    this.resetQuizInternalStateOnly(); UIManager.showWelcomeMessage(); return;
-                }
-                UIManager.showKeyboardHint();
-                this.showQuestion();
-            }
-            
-            static startReviewMode() {
-                const wordsToReview = this.state.wrongAnswers.map(wa => wa.vocab).filter(Boolean);
-                if (wordsToReview.length === 0) {
-                    UIManager.showNotification("復習する問題がありません。", "info");
-                    return;
-                }
-                const optionPool = VocabularyManager.getVocabularyByLesson(this.state.currentLesson) 
-                                 || VocabularyManager.getVocabularyByLesson('all');
-
-                this.state.reset();
-                this.state.isActive = true;
-                this.state.quizMode = 'mixed';
-                this.state.startTime = Date.now();
-                this.state.currentQuiz = this.generateQuizQuestions(wordsToReview, 'mixed', optionPool);
-                
-                if (this.state.currentQuiz.length === 0) {
-                     UIManager.showNotification('復習問題の作成に失敗しました。', 'error');
-                     this.resetQuizInternalStateOnly(); UIManager.showWelcomeMessage(); return;
-                }
-                this.isReviewMode = true;
-                UIManager.showKeyboardHint();
-                this.showQuestion();
-            }
-
-            static getQuizConfig() { return { lesson: document.getElementById('lesson').value, mode: document.getElementById('mode').value, difficulty: document.getElementById('difficulty').value }; }
-            static validateQuizStart(sourceVocab, config) {
-                if (!sourceVocab || sourceVocab.length === 0) { UIManager.showNotification('選択されたレッスンには単語がありません。', 'error'); return false; }
-                if (sourceVocab.length < 2 && !this.isReviewMode) { UIManager.showNotification('問題作成には少なくとも2単語必要です。', 'warning', 4000); return false; }
-                 if (sourceVocab.length < 1 && this.isReviewMode) { UIManager.showNotification('復習する単語がありません。', 'warning', 4000); return false; }
-                return true;
-            }
-            static initializeQuiz(sourceVocab, config, optionPoolVocab) {
-                this.state.reset(); this.state.isActive = true;
-                this.state.quizMode = config.mode; this.state.startTime = Date.now();
-                this.state.currentLesson = config.lesson;
-
-                let questionCount = config.difficulty === 'all' ? sourceVocab.length : Math.min(parseInt(config.difficulty), sourceVocab.length);
-                 if (this.isReviewMode) questionCount = sourceVocab.length;
-
-                let selectedVocab = VocabularyManager.shuffleArray(sourceVocab);
-                if (selectedVocab.length > questionCount && !this.isReviewMode) selectedVocab = selectedVocab.slice(0, questionCount);
-                
-                this.state.currentQuiz = this.generateQuizQuestions(selectedVocab, config.mode, optionPoolVocab);
-            }
-
-            static generateQuizQuestions(vocabList, mode, allSourceVocabForOptions) {
-                let questions = [];
-                if (mode === 'mixed') {
-                    const modes = ['reading', 'meaning', 'usage'];
-                    questions = vocabList.map(vocab => {
-                        let attemptModes = VocabularyManager.shuffleArray([...modes]);
-                        let qData = null;
-                        while(attemptModes.length > 0) {
-                            const randomMode = attemptModes.pop();
-                            qData = VocabularyManager.generateQuestion(vocab, randomMode, allSourceVocabForOptions);
-                            if (qData && qData.options && qData.options.length >= 2) break;
-                        }
-                        return qData;
-                    });
-                } else {
-                    questions = vocabList.map(vocab => VocabularyManager.generateQuestion(vocab, mode, allSourceVocabForOptions));
-                }
-                return questions.filter(q => q && q.options && q.options.length >= 2);
-            }
-            static quickStart() { document.getElementById('lesson').value = 'lesson1'; document.getElementById('mode').value = 'reading'; document.getElementById('difficulty').value = '10'; this.startQuiz(); }
-            static showQuestion() {
-                UIManager.updateProgressBar();
-                if (this.state.currentQuestion < this.state.currentQuiz.length) {
-                    const questionData = this.state.currentQuiz[this.state.currentQuestion];
-                    UIManager.displayQuestion(questionData, this.state.currentQuestion + 1, this.state.currentQuiz.length);
-                } else { this.endQuiz(); }
-            }
-            static processAnswerSelection(button, optionIndex) {
-                if (!this.state.isActive || this.state.answerProcessed) return;
-                this.state.answerProcessed = true;
-                
-                const currentQData = this.state.currentQuiz[this.state.currentQuestion];
-                if (!currentQData || !currentQData.options || optionIndex < 0 || optionIndex >= currentQData.options.length) {
-                    console.error("Invalid option or data in processAnswerSelection", optionIndex, currentQData);
-                    this.state.answerProcessed = false; UIManager.showNotification("エラー発生。", "error"); return; 
-                }
-                this.state.selectedAnswer = currentQData.options[optionIndex].text;
-                this.state.selectedButton = button;
-                this.submitSelectedAnswer();
-            }
-            static submitSelectedAnswer() {
-                if (!this.state.selectedAnswer || !this.state.isActive) return;
-
-                const questionData = this.state.currentQuiz[this.state.currentQuestion];
-                const isCorrect = this.state.selectedAnswer === questionData.correctAnswer;
-                const timeTaken = Date.now() - this.state.questionStartTime;
-                this.state.questionTimes.push(timeTaken);
-                this.state.updateScore(isCorrect);
-                
-                if (!isCorrect) {
-                    const wrongAnswerData = { ...questionData, selectedAnswer: this.state.selectedAnswer };
-                    this.state.addWrongAnswer(wrongAnswerData);
-                }
-                
-                UIManager.showFeedback(isCorrect, questionData.correctAnswer, this.state.selectedButton, questionData);
-                
-                this.state.currentQuestion++;
-                
-                setTimeout(() => {
-                    this.state.selectedAnswer = null; this.state.selectedButton = null;
-                    this.showQuestion();
-                }, isCorrect ? 1500 : 3000);
-            }
-            static endQuiz() {
-                this.state.isActive = false;
-                this.state.totalTime = Date.now() - this.state.startTime;
-                UIManager.displayFinalScore(this.isReviewMode);
-                if (!this.isReviewMode) {
-                     StatsManager.saveQuizResult(this.state);
-                }
-                this.isReviewMode = false;
-            }
-            static resetQuiz() { this.state.reset(); UIManager.showWelcomeMessage(); UIManager.updateProgressBar(); UIManager.showNotification('クイズがリセットされました。', 'warning'); this.isReviewMode = false; }
-            static resetQuizInternalStateOnly() { this.state.reset(); this.isReviewMode = false; }
-            static handleKeyPress(event) {
-                if (!this.state.isActive || this.state.answerProcessed || UIManager.statsModal.classList.contains('hidden') === false || UIManager.messageBox.classList.contains('hidden') === false || UIManager.generatedSentenceModal.classList.contains('hidden') === false) return;
-                const key = event.key;
-                if (key >= '1' && key <= '4') {
-                    const optionIndex = parseInt(key) - 1;
-                    const options = document.querySelectorAll('.quiz-container .option');
-                    if (options.length > optionIndex && options[optionIndex] && !options[optionIndex].disabled) {
-                        this.processAnswerSelection(options[optionIndex], optionIndex); event.preventDefault();
-                    }
-                }
-            }
-        }
-
-        class StorageManager {
-            static save(key, data) { try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) { console.error("LS save error", e); UIManager.showNotification('統計保存失敗。', 'error');}}
-            static load(key) { try { const data = localStorage.getItem(key); return data ? JSON.parse(data) : null; } catch (e) { console.error("LS load error", e); return null; }}
-            static remove(key) { localStorage.removeItem(key); }
-        }
-
-        class StatsManager {
-            static STATS_KEY = 'jlptQuizStats_v3.1_ultimate';
-
-            static saveQuizResult(quizState) {
-                let stats = StorageManager.load(this.STATS_KEY) || {
-                    totalQuizzes: 0, totalQuestionsAnswered: 0, totalCorrect: 0, totalTimeSeconds: 0,
-                    overallMaxStreak: 0, lessonStats: {}, modeStats: {}, wordMastery: {}, quizHistory: []
-                };
-                stats.totalQuizzes++;
-                const questionsInThisQuiz = quizState.currentQuiz.length;
-                stats.totalQuestionsAnswered += questionsInThisQuiz;
-                stats.totalCorrect += quizState.score;
-                stats.totalTimeSeconds += quizState.totalTime / 1000;
-                stats.overallMaxStreak = Math.max(stats.overallMaxStreak, quizState.maxStreak);
-
-                const lessonKey = quizState.currentLesson || document.getElementById('lesson').value;
-                stats.lessonStats[lessonKey] = stats.lessonStats[lessonKey] || { played: 0, correct: 0, answeredQ: 0 };
-                stats.lessonStats[lessonKey].played++; stats.lessonStats[lessonKey].correct += quizState.score; stats.lessonStats[lessonKey].answeredQ += questionsInThisQuiz;
-
-                const modeKey = quizState.quizMode;
-                stats.modeStats[modeKey] = stats.modeStats[modeKey] || { played: 0, correct: 0, answeredQ: 0 };
-                stats.modeStats[modeKey].played++; stats.modeStats[modeKey].correct += quizState.score; stats.modeStats[modeKey].answeredQ += questionsInThisQuiz;
-                
-                quizState.currentQuiz.forEach((qData, index) => {
-                    if (!qData || !qData.vocab) return;
-                    const word = qData.vocab.word;
-                    stats.wordMastery[word] = stats.wordMastery[word] || { correct: 0, incorrect: 0, attempts: 0, lastSeen: Date.now() };
-                    stats.wordMastery[word].attempts++;
-                    stats.wordMastery[word].lastSeen = Date.now();
-                    
-                    const wasWrong = quizState.wrongAnswers.some(wa => wa.vocab.word === word && wa.questionNumber === index);
-                    if(wasWrong) stats.wordMastery[word].incorrect++;
-                    else stats.wordMastery[word].correct++;
-                });
-
-                stats.quizHistory.unshift({
-                    date: new Date().toISOString(), score: quizState.score,
-                    totalQuestionsInQuiz: questionsInThisQuiz,
-                    mode: modeKey, lesson: lessonKey, timeSeconds: quizState.totalTime / 1000,
-                    accuracy: quizState.getAccuracy()
-                });
-                if (stats.quizHistory.length > 20) stats.quizHistory.pop();
-                StorageManager.save(this.STATS_KEY, stats);
-            }
-            static loadStats() { return StorageManager.load(this.STATS_KEY); }
-            static showStats() {
-                const stats = this.loadStats();
-                UIManager.statsContent.innerHTML = ''; 
-                if (!stats || stats.totalQuizzes === 0) {
-                    UIManager.statsContent.innerHTML = `<p class="text-gray-600 dark:text-white/80 text-center py-4">まだ統計データがありません。練習を始めましょう！</p>`;
-                    UIManager.statsModal.classList.remove('hidden'); return;
-                }
-                const overallAccuracy = stats.totalQuestionsAnswered > 0 ? ((stats.totalCorrect / stats.totalQuestionsAnswered) * 100).toFixed(1) : "0.0";
-                const avgTimePerQ = stats.totalQuestionsAnswered > 0 ? (stats.totalTimeSeconds / stats.totalQuestionsAnswered).toFixed(1) : "0.0";
-
-                let content = `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-6">
-                    <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">総練習回数</h4><p class="text-lg md:text-xl font-bold">${stats.totalQuizzes}</p></div>
-                    <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">総解答数</h4><p class="text-lg md:text-xl font-bold">${stats.totalQuestionsAnswered}</p></div>
-                    <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">総正解数</h4><p class="text-lg md:text-xl font-bold">${stats.totalCorrect}</p></div>
-                    <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">全体正答率</h4><p class="text-lg md:text-xl font-bold">${overallAccuracy}%</p></div>
-                    <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">最長連続正解</h4><p class="text-lg md:text-xl font-bold">${stats.overallMaxStreak}</p></div>
-                    <div class="stats-card p-3 md:p-4 rounded-lg"><h4 class="text-xs md:text-sm font-semibold text-indigo-700 dark:text-indigo-300">平均解答時間/問</h4><p class="text-lg md:text-xl font-bold">${avgTimePerQ}秒</p></div>
-                </div>`;
-                if (Object.keys(stats.lessonStats).length > 0) {
-                    content += `<h4 class="text-md md:text-lg font-semibold mt-6 mb-3">レッスン別統計</h4><div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 max-h-48 overflow-y-auto pr-2">`;
-                    for (const lesson in stats.lessonStats) {
-                        const ls = stats.lessonStats[lesson]; const acc = ls.answeredQ > 0 ? ((ls.correct / ls.answeredQ) * 100).toFixed(1) : "0.0";
-                        const lessonOpt = document.querySelector(`#lesson option[value="${lesson}"]`); const lessonTxt = lessonOpt ? lessonOpt.textContent : lesson;
-                        content += `<div class="stats-card p-2 md:p-3 rounded-md text-xs md:text-sm"><p class="font-bold text-indigo-600 dark:text-indigo-200">${lessonTxt}</p><p>挑戦: ${ls.played}, 正答率: ${acc}% (${ls.correct}/${ls.answeredQ})</p></div>`;
-                    } content += `</div>`;
-                }
-                if (Object.keys(stats.modeStats).length > 0) {
-                    content += `<h4 class="text-md md:text-lg font-semibold mt-6 mb-3">モード別統計</h4><div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 max-h-48 overflow-y-auto pr-2">`;
-                    for (const mode in stats.modeStats) {
-                        const ms = stats.modeStats[mode]; const acc = ms.answeredQ > 0 ? ((ms.correct / ms.answeredQ) * 100).toFixed(1) : "0.0";
-                        const modeOpt = document.querySelector(`#mode option[value="${mode}"]`); const modeTxt = modeOpt ? modeOpt.textContent : mode;
-                        content += `<div class="stats-card p-2 md:p-3 rounded-md text-xs md:text-sm"><p class="font-bold text-indigo-600 dark:text-indigo-200">${modeTxt}</p><p>挑戦: ${ms.played}, 正答率: ${acc}% (${ms.correct}/${ms.answeredQ})</p></div>`;
-                    } content += `</div>`;
-                 }
-                const wordMasteryArray = Object.entries(stats.wordMastery).map(([word, data]) => ({ word, ...data, mastery: data.attempts > 0 ? (data.correct / data.attempts) : -1 }));
-                if (wordMasteryArray.length > 0) {
-                    content += `<h4 class="text-md md:text-lg font-semibold mt-6 mb-3">単語習熟度 (上位/下位 各5件)</h4>`;
-                    const sortedWords = wordMasteryArray.filter(w => w.attempts >= 3);
-                    const best = [...sortedWords].sort((a,b) => b.mastery - a.mastery || b.attempts - a.attempts).slice(0,5);
-                    const worst = [...sortedWords].sort((a,b) => a.mastery - b.mastery || b.attempts - a.attempts).slice(0,5);
-                    content += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4"><div><h5 class="text-sm md:text-base font-semibold text-green-600 dark:text-green-400 mb-2">得意な単語</h5><ul class="space-y-1 text-xs md:text-sm">`;
-                    best.forEach(w => content+=`<li class="stats-card p-1.5 rounded"><span class="font-semibold">${w.word}</span>: ${(w.mastery*100).toFixed(0)}% (${w.correct}/${w.attempts})</li>`);
-                    if(best.length === 0) content += `<li class="text-gray-500 dark:text-gray-400">データ僅少</li>`;
-                    content += `</ul></div><div><h5 class="text-sm md:text-base font-semibold text-red-600 dark:text-red-400 mb-2">苦手な単語</h5><ul class="space-y-1 text-xs md:text-sm">`;
-                    worst.forEach(w => content+=`<li class="stats-card p-1.5 rounded"><span class="font-semibold">${w.word}</span>: ${(w.mastery*100).toFixed(0)}% (${w.correct}/${w.attempts})</li>`);
-                    if(worst.length === 0) content += `<li class="text-gray-500 dark:text-gray-400">データ僅少</li>`;
-                    content += `</ul></div></div>`;
-                }
-                if (stats.quizHistory && stats.quizHistory.length > 0) {
-                    content += `<h4 class="text-md md:text-lg font-semibold mt-6 mb-3">最近の練習履歴</h4><div class="overflow-x-auto rounded-lg stats-card p-1 max-h-60"><table class="min-w-full text-xs md:text-sm text-left"><thead class="bg-gray-100/50 dark:bg-white/10 text-indigo-700 dark:text-indigo-200 sticky top-0 z-10"><tr><th class="p-1.5 sm:p-2">日付</th><th class="p-1.5 sm:p-2">L</th><th class="p-1.5 sm:p-2">M</th><th class="p-1.5 sm:p-2">スコア</th><th class="p-1.5 sm:p-2">正答率</th><th class="p-1.5 sm:p-2">時間</th></tr></thead><tbody>`;
-                    stats.quizHistory.forEach(h => {
-                        const lessonOpt = document.querySelector(`#lesson option[value="${h.lesson}"]`); const lessonTxt = lessonOpt ? lessonOpt.textContent.replace('レッスン','L') : h.lesson;
-                        const modeOpt = document.querySelector(`#mode option[value="${h.mode}"]`); const modeTxtShort = modeOpt ? modeOpt.textContent.substring(0,2) : h.mode;
-                        content += `<tr class="border-b border-gray-200 dark:border-white/10 hover:bg-gray-50/50 dark:hover:bg-white/5"><td class="p-1.5 sm:p-2 whitespace-nowrap">${new Date(h.date).toLocaleDateString([], {month:'numeric', day:'numeric'})} ${new Date(h.date).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</td><td class="p-1.5 sm:p-2" title="${lessonOpt ? lessonOpt.textContent : ''}">${lessonTxt}</td><td class="p-1.5 sm:p-2" title="${modeOpt ? modeOpt.textContent : ''}">${modeTxtShort}</td><td class="p-1.5 sm:p-2">${h.score}/${h.totalQuestionsInQuiz}</td><td class="p-1.5 sm:p-2">${h.accuracy}%</td><td class="p-1.5 sm:p-2">${h.timeSeconds.toFixed(0)}s</td></tr>`;
-                    }); content += `</tbody></table></div>`;
-                }
-                content += `<div class="mt-8 text-center"><button class="btn bg-gradient-to-br from-red-500 to-orange-600 text-white font-semibold py-2 px-5 rounded-full text-sm" onclick="StatsManager.confirmClearStats()">全統計をリセット</button></div>`;
-                UIManager.statsContent.innerHTML = content;
-                UIManager.statsModal.classList.remove('hidden');
-            }
-            static hideStats() { UIManager.statsModal.classList.add('hidden'); }
-            static confirmClearStats() { UIManager.hideStats(); setTimeout(() => { if (confirm("本当にすべての統計データを削除しますか？この操作は元に戻せません。")) this.clearStats(); }, 100); }
-            static clearStats() { StorageManager.remove(this.STATS_KEY); UIManager.showNotification('統計データがリセットされました。', 'warning'); }
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            UIManager.loadTheme();
-            const loaded = await VocabularyManager.loadVocabulary();
-            if (loaded) {
-                UIManager.populateLessonSelector(AllVocabularyData); // Populate lessons
-                UIManager.showWelcomeMessage();
-            } else {
-                 UIManager.quizContainer.innerHTML = `<p class="text-center text-red-500 dark:text-red-400 p-10">語彙データの読み込みに失敗しました。練習を開始できません。</p>`;
-            }
-
-            document.addEventListener('keydown', (event) => {
-                QuizManager.handleKeyPress(event);
-                if (event.key.toLowerCase() === 'r' && !QuizManager.state.isActive) {
-                     if (UIManager.statsModal.classList.contains('hidden') && UIManager.messageBox.classList.contains('hidden') && UIManager.generatedSentenceModal.classList.contains('hidden') ) {
-                        QuizManager.resetQuiz();
-                    }
-                }
-                if (event.key === 'Escape') {
-                    if (!UIManager.statsModal.classList.contains('hidden')) StatsManager.hideStats();
-                    else if (!UIManager.messageBox.classList.contains('hidden')) UIManager.hideMessageBox();
-                    else if (!UIManager.generatedSentenceModal.classList.contains('hidden')) UIManager.hideGeneratedSentenceModal();
-                }
+            const lessonKeys = Object.keys(allVocabulary);
+            lessonKeys.sort((a, b) => {
+                const numA = parseInt(a.replace('lesson', ''), 10);
+                const numB = parseInt(b.replace('lesson', ''), 10);
+                return numA - numB;
             });
-             const initialStats = StatsManager.loadStats();
-            if (initialStats && initialStats.totalQuizzes > 0) {
-                UIManager.showNotification(`ようこそ！総練習回数: ${initialStats.totalQuizzes}回`, 'success', 4000);
+
+            lessonKeys.forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.replace('lesson', 'レッスン');
+                lessonSelectElement.appendChild(option);
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            headerElement = document.querySelector('.header');
+            controlsElement = document.querySelector('.controls');
+            quizContainerElement = document.getElementById('quizContainer');
+            mainContainerElement = document.querySelector('.container');
+            startQuizButton = document.getElementById('startQuizButton'); // Moved here
+            lessonSelectElement = document.getElementById('lesson');
+
+            // --- MODIFICATION START ---
+            initializeApp(); // Initialize based on URL params
+            // --- MODIFICATION END ---
+            
+            const difficultySelect = document.getElementById('difficulty');
+            if (difficultySelect) {
+                difficultySelect.value = "20";
             }
         });
+
+        function showMessageBox(message) {
+            document.getElementById('messageBoxText').textContent = message;
+            document.getElementById('messageBox').classList.remove('hidden');
+        }
+
+        function hideMessageBox() {
+            document.getElementById('messageBox').classList.add('hidden');
+        }
+
+        function showGeneratedSentenceModal(sentence) {
+            document.getElementById('generatedSentenceText').textContent = sentence;
+            document.getElementById('sentenceLoadingSpinner').classList.add('hidden');
+            document.getElementById('generatedSentenceModal').classList.remove('hidden');
+        }
+
+        function hideGeneratedSentenceModal() {
+            document.getElementById('generatedSentenceModal').classList.add('hidden');
+            document.getElementById('generatedSentenceText').textContent = '';
+        }
+
+        function showSentenceLoadingSpinner() {
+            document.getElementById('generatedSentenceText').textContent = '';
+            document.getElementById('sentenceLoadingSpinner').classList.remove('hidden');
+            document.getElementById('generatedSentenceModal').classList.remove('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (selectedAnswer !== null || !document.getElementById('messageBox').classList.contains('hidden') || !document.getElementById('generatedSentenceModal').classList.contains('hidden')) {
+                return;
+            }
+            const key = e.key;
+            if (key >= '1' && key <= '4') {
+                const options = document.querySelectorAll('.option');
+                const index = parseInt(key) - 1;
+                if (options[index]) {
+                    selectAnswer(index);
+                }
+            } else if (key === 'Enter' && selectedAnswer !== null) {
+                submitAnswer();
+            }
+        });
+
+        function showKeyboardHint() {
+            const hint = document.getElementById('keyboardHint');
+            hint.classList.add('opacity-100');
+            setTimeout(() => {
+                hint.classList.remove('opacity-100');
+            }, 3000);
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function isReadingSameAsWord(vocab) {
+            return vocab.word === vocab.reading;
+        }
+
+        function generateQuestion(vocab, mode, allAvailableVocab) {
+            const correctAnswer = vocab;
+            let otherVocab = allAvailableVocab.filter(v => v.word !== vocab.word);
+            if (otherVocab.length < 3) {
+                const needed = 3 - otherVocab.length;
+                for (let i = 0; i < needed; i++) {
+                    let randomVocab;
+                    do {
+                         randomVocab = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
+                    } while (randomVocab.word === vocab.word || otherVocab.some(ov => ov.word === randomVocab.word));
+                    if (randomVocab) otherVocab.push(randomVocab);
+                }
+                otherVocab = otherVocab.filter(v => v.word !== vocab.word).slice(0,3);
+            }
+
+            const wrongAnswersPool = shuffleArray(otherVocab).slice(0, 3);
+            while(wrongAnswersPool.length < 3) {
+                let randomFallback = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
+                 if (randomFallback.word !== vocab.word && !wrongAnswersPool.some(w => w.word === randomFallback.word)) {
+                     wrongAnswersPool.push(randomFallback);
+                 } else if (randomFallback.word !== vocab.word) {
+                     wrongAnswersPool.push(randomFallback);
+                 } else if (allAvailableVocab.length > 1) {
+                     let anotherFallback;
+                     do {
+                         anotherFallback = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
+                     } while (anotherFallback.word === vocab.word && allAvailableVocab.length > 1);
+                     wrongAnswersPool.push(anotherFallback);
+                 } else { 
+                    wrongAnswersPool.push({word: "---", reading: "---", chineseMeaning: "---", meaning: "---"});
+                 }
+            }
+
+
+            if (mode === 'reading') {
+                if (isReadingSameAsWord(vocab)) {
+                    console.warn(`Skipping reading question for word where reading is same as word: ${vocab.word}. Falling back to meaning.`);
+                    const meaningQuestion = generateQuestion(vocab, 'meaning', allAvailableVocab);
+                    if (meaningQuestion) {
+                        meaningQuestion.originalIntendedMode = 'reading'; 
+                    }
+                    return meaningQuestion;
+                }
+                return {
+                    question: vocab.word,
+                    options: shuffleArray([
+                        { text: correctAnswer.reading, correct: true },
+                        { text: wrongAnswersPool[0] ? wrongAnswersPool[0].reading : '---', correct: false },
+                        { text: wrongAnswersPool[1] ? wrongAnswersPool[1].reading : '---', correct: false },
+                        { text: wrongAnswersPool[2] ? wrongAnswersPool[2].reading : '---', correct: false }
+                    ]),
+                    correctAnswer: correctAnswer.reading,
+                    vocab: vocab,
+                    mode: 'reading'
+                };
+            } else if (mode === 'meaning') {
+                const correctMeaning = correctAnswer.chineseMeaning || correctAnswer.meaning;
+                const wrongMeaning1 = wrongAnswersPool[0] ? (wrongAnswersPool[0].chineseMeaning || wrongAnswersPool[0].meaning) : '---';
+                const wrongMeaning2 = wrongAnswersPool[1] ? (wrongAnswersPool[1].chineseMeaning || wrongAnswersPool[1].meaning) : '---';
+                const wrongMeaning3 = wrongAnswersPool[2] ? (wrongAnswersPool[2].chineseMeaning || wrongAnswersPool[2].meaning) : '---';
+                return {
+                    question: vocab.word + (vocab.word !== vocab.reading ? ' (' + vocab.reading + ')' : ''),
+                    options: shuffleArray([
+                        { text: correctMeaning, correct: true },
+                        { text: wrongMeaning1, correct: false },
+                        { text: wrongMeaning2, correct: false },
+                        { text: wrongMeaning3, correct: false }
+                    ]),
+                    correctAnswer: correctMeaning,
+                    vocab: vocab,
+                    mode: 'meaning'
+                };
+            } else { // usage mode
+                if (!vocab.usage) {
+                     console.warn(`Skipping usage question for word: ${vocab.word} (no usage provided). Falling back to meaning.`);
+                     return generateQuestion(vocab, 'meaning', allAvailableVocab);
+                }
+                return {
+                    question: vocab.usage,
+                    options: shuffleArray([
+                        { text: correctAnswer.word, correct: true },
+                        { text: wrongAnswersPool[0] ? wrongAnswersPool[0].word : '---', correct: false },
+                        { text: wrongAnswersPool[1] ? wrongAnswersPool[1].word : '---', correct: false },
+                        { text: wrongAnswersPool[2] ? wrongAnswersPool[2].word : '---', correct: false }
+                    ]),
+                    correctAnswer: correctAnswer.word,
+                    vocab: vocab,
+                    mode: 'usage'
+                };
+            }
+        }
+
+
+        function startQuiz() {
+            if (Object.keys(allVocabulary).length === 0) {
+                showMessageBox(`語彙データ(${currentJLPTLevel})がまだ読み込まれていません。少々お待ちいただくか、ページを再読み込みしてください。`);
+                return;
+            }
+
+            if (headerElement) headerElement.classList.add('hidden-during-quiz');
+            if (controlsElement) controlsElement.classList.add('hidden-during-quiz');
+            document.body.classList.add('quiz-mode-active');
+            if (quizContainerElement) quizContainerElement.classList.add('immersive-active');
+
+            const selectedLesson = document.getElementById('lesson').value;
+            quizMode = document.getElementById('mode').value;
+            const difficulty = document.getElementById('difficulty').value;
+
+            let sourceVocab = [];
+            if (selectedLesson === 'all') {
+                for (const lessonKey in allVocabulary) {
+                    if (allVocabulary.hasOwnProperty(lessonKey) && Array.isArray(allVocabulary[lessonKey])) {
+                        sourceVocab = sourceVocab.concat(allVocabulary[lessonKey]);
+                    }
+                }
+            } else {
+                if (allVocabulary.hasOwnProperty(selectedLesson) && Array.isArray(allVocabulary[selectedLesson])) {
+                    sourceVocab = allVocabulary[selectedLesson];
+                } else {
+                    showMessageBox(`レッスン "${selectedLesson}" の単語が見つかりません (${currentJLPTLevel} データ)。`);
+                    resetQuizInterface();
+                    return;
+                }
+            }
+
+            if (sourceVocab.length === 0) {
+                showMessageBox(`選択されたレッスンには単語がありません (${currentJLPTLevel} データ)。`);
+                resetQuizInterface();
+                return;
+            }
+            sourceVocab = sourceVocab.filter(item => typeof item === 'object' && item !== null && item.word);
+
+
+            let questionCount;
+            if (difficulty === 'all') {
+                questionCount = sourceVocab.length;
+            } else {
+                questionCount = parseInt(difficulty);
+            }
+
+            if (sourceVocab.length < questionCount && difficulty !== 'all') {
+                showMessageBox(`選択されたレッスンには ${sourceVocab.length} 個の単語しかありません。問題数を調整しました。`);
+                questionCount = sourceVocab.length;
+            }
+            if (questionCount === 0 && sourceVocab.length > 0) {
+                questionCount = Math.min(10, sourceVocab.length);
+            }
+             if (questionCount === 0) { 
+                 showMessageBox('問題数が0です。問題数を選択してください。');
+                 resetQuizInterface();
+                 return;
+             }
+
+
+            const shuffledVocabForQuiz = shuffleArray(sourceVocab).slice(0, questionCount);
+
+            let generatedQuestions = [];
+            const modes = ['reading', 'meaning', 'usage'];
+
+            for (const vocab of shuffledVocabForQuiz) {
+                let question = null;
+                if (quizMode === 'mixed') {
+                    const shuffledModes = shuffleArray([...modes]);
+                    for (const mode of shuffledModes) {
+                        question = generateQuestion(vocab, mode, sourceVocab);
+                        if (question) break; 
+                    }
+                } else {
+                    question = generateQuestion(vocab, quizMode, sourceVocab);
+                }
+                 if (question) {
+                     generatedQuestions.push(question);
+                 } else {
+                     console.warn(`Could not generate a valid question for vocab: ${vocab.word} in mode: ${quizMode}`);
+                 }
+            }
+
+            currentQuiz = generatedQuestions;
+
+
+            if (currentQuiz.length === 0) {
+                showMessageBox('選択された条件で問題を作成できませんでした。別のモードまたはレッスンを試してください。');
+                resetQuiz();
+                return;
+            }
+
+            currentQuestion = 0;
+            score = 0;
+            streak = 0;
+            maxStreak = 0;
+            wrongAnswers = [];
+            selectedAnswer = null;
+            startTime = Date.now();
+            totalTime = 0;
+
+            showKeyboardHint();
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= currentQuiz.length) {
+                showFinalScore();
+                return;
+            }
+
+            const question = currentQuiz[currentQuestion];
+            const container = quizContainerElement;
+            questionStartTime = Date.now();
+
+            let questionTextHTML = `<div class="question text-2xl md:text-3xl mb-1 md:mb-2 font-semibold text-center text-gray-900 leading-tight" id="questionText">${question.question}</div>`;
+            let exampleSentenceHTML = `<div id="exampleSentenceDisplay" class="text-gray-700 text-mi px-2"></div>`; // Base classes, dark mode handled by CSS
+
+            container.innerHTML = `
+                <button class="exit-btn" onclick="resetQuiz()">✕</button>
+                <div class="progress-container mb-4 md:mb-8">
+                    <div class="progress-info flex justify-between mb-2 font-semibold text-indigo-600">
+                        <span>${currentQuestion + 1} / ${currentQuiz.length}</span>
+                        <!--<span>進捗: ${Math.round((currentQuestion / currentQuiz.length) * 100)}%</span>-->
+                    </div>
+                    <div class="progress-bar w-full h-2.5 bg-indigo-200 rounded-md overflow-hidden relative">
+                        <div class="progress-fill h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-md transition-all duration-500 ease-in-out relative" style="width: ${(currentQuestion / currentQuiz.length) * 100}%"></div>
+                    </div>
+                </div>
+                <div class="stats flex justify-between mb-3 md:mb-5 text-sm md:text-lg font-semibold flex-wrap gap-2">
+                    <span class="score text-green-600 flex items-center gap-1 md:gap-2">✅ 正解: ${score}</span>
+                    <span class="streak-counter text-red-500 flex items-center gap-1 md:gap-2">🔥 連続: ${streak}</span>
+                    <span class="timer text-orange-500 flex items-center gap-1 md:gap-2">⏱️ 経過: <span id="timer">0</span>s</span>
+                </div>
+                
+                <div class="question-area-wrapper">
+                    <div class="question-content-area">
+                        ${questionTextHTML}
+                        ${exampleSentenceHTML}
+                    </div>
+                </div>
+
+                <div class="options grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4">
+                    ${question.options.map((option, index) => `
+                        <button class="option relative overflow-hidden border-2 p-3 md:p-5 rounded-xl cursor-pointer transition-all duration-300 text-base md:text-lg text-center" onclick="selectAnswer(${index})" data-index="${index}">
+                            <span class="font-bold mr-2 ${isDarkMode ? 'text-indigo-300' : 'text-indigo-500'}">${index + 1}.</span>
+                            ${option.text}
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="feedback text-center text-lg md:text-xl font-semibold"></div>
+            `;
+
+            const feedbackElement = container.querySelector('.feedback');
+            if (feedbackElement) {
+                feedbackElement.style.visibility = 'hidden';
+                feedbackElement.innerHTML = '';
+            }
+
+            const questionTextElement = document.getElementById('questionText');
+            const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
+
+            // Reset example sentence display for the new question
+            if (exampleSentenceDisplayElement) {
+                exampleSentenceDisplayElement.classList.remove('visible');
+                exampleSentenceDisplayElement.textContent = ''; 
+            }
+            
+            const canShowExampleOnClick = question.vocab && question.vocab.exampleSentence;
+
+            if (questionTextElement && exampleSentenceDisplayElement && canShowExampleOnClick) {
+                questionTextElement.style.cursor = 'pointer';
+                questionTextElement.title = 'クリックして例文を表示/非表示';
+
+                questionTextElement.onclick = () => {
+                    if (selectedAnswer !== null) return; 
+                    
+                    if (!exampleSentenceDisplayElement.classList.contains('visible')) {
+                        exampleSentenceDisplayElement.textContent = question.vocab.exampleSentence;
+                        exampleSentenceDisplayElement.classList.add('visible');
+                    } else {
+                        exampleSentenceDisplayElement.classList.remove('visible');
+                    }
+                };
+            }
+            updateTimer();
+        }
+
+        function updateTimer() {
+            clearInterval(timerInterval);
+            if (currentQuestion >= currentQuiz.length || selectedAnswer !== null) return;
+
+            const timerElement = document.getElementById('timer');
+            if (timerElement && questionStartTime) {
+                const update = () => {
+                    if (selectedAnswer !== null || currentQuestion >= currentQuiz.length) {
+                        clearInterval(timerInterval);
+                        return;
+                    }
+                    const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
+                    timerElement.textContent = elapsed;
+                };
+                update();
+                timerInterval = setInterval(update, 1000);
+            }
+        }
+
+        function selectAnswer(index) {
+            if (selectedAnswer !== null) return;
+            selectedAnswer = index;
+            clearInterval(timerInterval);
+
+            const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
+            if (exampleSentenceDisplayElement) {
+                exampleSentenceDisplayElement.classList.remove('visible');
+            }
+
+            document.querySelectorAll('.option').forEach((optionEl, i) => {
+                optionEl.classList.remove('selected-option');
+                optionEl.classList.remove('bg-gradient-to-br', 'from-indigo-500', 'to-purple-600', 'text-white', 'border-indigo-500');
+                // Reset to base option style before applying selected style
+                optionEl.style.borderColor = ''; // Let CSS class handle it
+
+                if (i === index) {
+                    optionEl.classList.add('selected-option'); 
+                    // Apply temporary visual cue for selection - distinct from final correct/incorrect
+                    optionEl.classList.add('bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
+                     optionEl.style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8'; // Tailwind purple-400 / indigo-400
+                }
+            });
+            setTimeout(() => { submitAnswer(); }, 100); 
+        }
+
+        function submitAnswer() {
+            if (selectedAnswer === null) return;
+
+            document.querySelectorAll('.option').forEach(optionEl => {
+                optionEl.classList.remove('selected-option');
+                optionEl.classList.remove('bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
+                optionEl.style.borderColor = ''; 
+            });
+
+            const question = currentQuiz[currentQuestion];
+            const isCorrect = question.options[selectedAnswer].correct;
+            const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+            totalTime += timeSpent;
+
+            if (isCorrect) {
+                score++;
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+            } else {
+                streak = 0;
+                wrongAnswers.push({
+                    question: question.question,
+                    yourAnswer: question.options[selectedAnswer].text,
+                    correctAnswer: question.correctAnswer,
+                    questionNumber: currentQuestion + 1,
+                    vocab: question.vocab,
+                    timeSpent: timeSpent,
+                    mode: question.mode
+                });
+            }
+
+            document.querySelectorAll('.option').forEach((option, i) => {
+                if (question.options[i].correct) {
+                    // MODIFIED: Removed 'animate-[correctPulse_0.3s_ease]'
+                    option.classList.add('bg-gradient-to-br', 'from-green-500', 'to-lime-600', 'text-white', 'border-green-500'); 
+                } else if (i === selectedAnswer && !isCorrect) {
+                    option.classList.add('bg-gradient-to-br', 'from-red-500', 'to-orange-500', 'text-white', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]'); 
+                }
+                option.style.pointerEvents = 'none';
+            });
+
+            const feedbackElement = document.querySelector('.feedback');
+            feedbackElement.className = `feedback text-center text-lg md:text-xl font-semibold p-3 md:p-4 rounded-lg ${isCorrect ? 'text-green-600 bg-green-50 border-2 border-green-200' : 'text-red-600 bg-red-50 border-2 border-red-200'}`;
+            if (isDarkMode) { // Adjust feedback background for dark mode if needed
+                 if(isCorrect) feedbackElement.classList.add('dark:bg-green-900', 'dark:bg-opacity-30', 'dark:border-green-700');
+                 else feedbackElement.classList.add('dark:bg-red-900', 'dark:bg-opacity-30', 'dark:border-red-700');
+            }
+
+
+            let feedbackText = isCorrect ? `🎉 正解！ (${timeSpent}秒)` : `❌ 不正解。正解は“${question.correctAnswer}”。`;
+            if (!isCorrect && question.vocab) {
+                const displayMeaning = question.vocab.chineseMeaning || question.vocab.meaning;
+                feedbackText += `<br><small class="feedback-details text-sm md:text-base">
+                    ${question.vocab.word} ${question.vocab.word !== question.vocab.reading ? '('+question.vocab.reading+')' : ''} - ${displayMeaning}
+                    ${'' /* Example sentence removed from incorrect feedback */}
+                </small>`;
+            }
+            feedbackElement.innerHTML = feedbackText;
+
+            if (feedbackElement) {
+                feedbackElement.style.visibility = 'visible';
+            }
+
+            const delay = isCorrect ? 500 : 1200; 
+            setTimeout(() => {
+                nextQuestion();
+            }, delay);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            selectedAnswer = null;
+            showQuestion();
+        }
+
+        function resetQuizInterface() {
+            if (headerElement) headerElement.classList.remove('hidden-during-quiz');
+            if (controlsElement) controlsElement.classList.remove('hidden-during-quiz');
+            document.body.classList.remove('quiz-mode-active');
+            if (quizContainerElement) {
+                quizContainerElement.classList.remove('immersive-active');
+                quizContainerElement.style.paddingTop = '';
+                quizContainerElement.style.paddingBottom = '';
+                quizContainerElement.style.paddingLeft = '';
+                quizContainerElement.style.paddingRight = '';
+            }
+        }
+
+        function showFinalScore() {
+            resetQuizInterface();
+            clearInterval(timerInterval);
+            totalTime = Math.floor((Date.now() - startTime) / 1000);
+            const percentage = currentQuiz.length > 0 ? Math.round((score / currentQuiz.length) * 100) : 0;
+            const avgTime = currentQuiz.length > 0 ? Math.round(totalTime / currentQuiz.length) : 0;
+
+            let message = '';
+            let emoji = '';
+            if (percentage >= 90) {
+                message = '素晴らしい！';
+                emoji = '🏆';
+            } else if (percentage >= 70) {
+                message = 'よくできました！';
+                emoji = '🎉';
+            } else if (percentage >= 50) {
+                message = 'もう少し頑張りましょう。';
+                emoji = '💪';
+            } else {
+                message = '復習が必要です。';
+                emoji = '📚';
+            }
+
+            let wrongAnswersHtml = '';
+            if (wrongAnswers.length > 0) {
+                wrongAnswersHtml = `
+                    <div class="wrong-answers-section mt-8 text-left animate-[slideUp_0.8s_ease]">
+                        <h3 class="text-center text-2xl font-bold mb-5 text-red-600">${emoji} 復習が必要な単語 (${wrongAnswers.length}個)</h3>
+                        <div class="wrong-answers-list max-h-80 overflow-y-auto bg-red-50 dark:bg-red-900 dark:bg-opacity-30 rounded-lg p-5 border border-red-200 dark:border-red-700">
+                            ${wrongAnswers.map(wrong => `
+                                <div class="wrong-answer-item mb-4 p-4 bg-white dark:bg-gray-700 rounded-lg border-l-4 border-red-500 shadow-md transition-transform duration-200 hover:translate-x-1">
+                                    <div class="font-bold mb-2 text-gray-900 dark:text-gray-100 text-lg">問題${wrong.questionNumber}: ${wrong.question}</div>
+                                    <div class="text-red-600 dark:text-red-400 mb-1 flex items-center gap-2">❌ あなたの回答: ${wrong.yourAnswer} <span class="bg-red-500 text-white py-0.5 px-2 rounded-full text-xs">${wrong.timeSpent}秒</span></div>
+                                    <div class="text-green-600 dark:text-green-400 mb-2">✅ 正解: ${wrong.correctAnswer}</div>
+                                    ${wrong.vocab ? `<div class="bg-indigo-100 dark:bg-indigo-900 dark:bg-opacity-40 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300">
+                                        <strong>${wrong.vocab.word}</strong> ${wrong.vocab.word !== wrong.vocab.reading ? '('+wrong.vocab.reading+')' : ''}<br>
+                                        意味: ${wrong.vocab.chineseMeaning || wrong.vocab.meaning}<br>
+                                        元々の例文: ${wrong.vocab.usage || 'なし'}<br>
+                                        ${wrong.vocab.exampleSentence ? `収録例文: ${wrong.vocab.exampleSentence}<br>` : ''}
+                                        <button class="generate-sentence-btn mt-2 px-3 py-1.5 bg-blue-500 text-white text-sm rounded-full hover:bg-blue-600 transition-colors duration-200" onclick="generateExampleSentence(this, '${wrong.vocab.word.replace(/'/g, "\\'")}', '${wrong.vocab.reading.replace(/'/g, "\\'")}', '${(wrong.vocab.chineseMeaning || wrong.vocab.meaning).replace(/'/g, "\\'")}')">✨ 新しい例文を生成</button>
+                                    </div>` : ''}
+                                </div>`).join('')}
+                        </div>
+                    </div>`;
+            }
+
+            quizContainerElement.innerHTML = `
+                <div class="final-score text-center text-gray-900 dark:text-gray-100 text-3xl font-bold my-8 animate-[fadeIn_1s_ease]">
+                    <h2 class="text-4xl">${emoji} ${message}</h2>
+                    <div class="text-indigo-600 dark:text-indigo-400 my-5 text-2xl">${score} / ${currentQuiz.length} 正解</div>
+                    <div class="text-gray-600 dark:text-gray-400 text-xl mb-5">正答率: ${percentage}%</div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8 text-base">
+                        <div class="bg-green-50 dark:bg-green-900 dark:bg-opacity-30 p-4 rounded-lg text-center"><div class="text-green-600 dark:text-green-400 font-bold">🔥 最高連続正解</div><div class="text-2xl font-bold">${maxStreak}</div></div>
+                        <div class="bg-orange-50 dark:bg-orange-900 dark:bg-opacity-30 p-4 rounded-lg text-center"><div class="text-orange-600 dark:text-orange-400 font-bold">⏱️ 総時間</div><div class="text-2xl font-bold">${Math.floor(totalTime / 60)}:${(totalTime % 60).toString().padStart(2, '0')}</div></div>
+                        <div class="bg-indigo-50 dark:bg-indigo-900 dark:bg-opacity-30 p-4 rounded-lg text-center"><div class="text-indigo-600 dark:text-indigo-400 font-bold">📊 平均時間</div><div class="text-2xl font-bold">${avgTime}秒</div></div>
+                    </div>
+                    ${wrongAnswersHtml}
+                    <div class="flex gap-4 justify-center mt-8 flex-wrap">
+                        <button class="btn relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0" onclick="startQuiz()">もう一度</button>
+                        <button class="btn secondary relative overflow-hidden bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 ${wrongAnswers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="reviewWrongAnswers()" ${wrongAnswers.length === 0 ? 'disabled' : ''}>復習モード</button>
+                    </div>
+                </div>`;
+        }
+
+        function reviewWrongAnswers() {
+            if (wrongAnswers.length === 0) {
+                showMessageBox('復習する問題がありません！');
+                return;
+            }
+
+            if (headerElement) headerElement.classList.add('hidden-during-quiz');
+            if (controlsElement) controlsElement.classList.add('hidden-during-quiz');
+            document.body.classList.add('quiz-mode-active');
+            if (quizContainerElement) quizContainerElement.classList.add('immersive-active');
+
+            let allCombinedVocab = [];
+            for (const lessonKey in allVocabulary) {
+                if (allVocabulary.hasOwnProperty(lessonKey) && Array.isArray(allVocabulary[lessonKey])) {
+                    allCombinedVocab = allCombinedVocab.concat(allVocabulary[lessonKey]);
+                }
+            }
+            if (allCombinedVocab.length === 0) {
+                allCombinedVocab = wrongAnswers.map(w => w.vocab).filter(Boolean);
+            }
+            allCombinedVocab = allCombinedVocab.filter(item => typeof item === 'object' && item !== null && item.word);
+
+
+            currentQuiz = wrongAnswers.map(wrong => {
+                const vocab = wrong.vocab;
+                if (!vocab || typeof vocab.word === 'undefined') {
+                    console.error("Invalid vocab item in wrongAnswers:", wrong);
+                    return null;
+                }
+                const modes = ['reading', 'meaning', 'usage'];
+                const reviewMode = wrong.mode && modes.includes(wrong.mode) ? wrong.mode : modes[Math.floor(Math.random() * modes.length)];
+                const vocabSourceForOptions = allCombinedVocab.length > 0 ? allCombinedVocab : [vocab]; 
+                return generateQuestion(vocab, reviewMode, vocabSourceForOptions);
+            }).filter(Boolean); 
+
+
+            if (currentQuiz.length === 0) {
+                showMessageBox('復習問題の作成に失敗しました。');
+                resetQuiz();
+                return;
+            }
+
+            currentQuestion = 0;
+            score = 0;
+            streak = 0;
+            maxStreak = 0;
+            selectedAnswer = null;
+            startTime = Date.now();
+            totalTime = 0;
+            wrongAnswers = []; 
+
+            showQuestion();
+        }
+
+        function resetQuiz() {
+            resetQuizInterface();
+            clearInterval(timerInterval);
+            quizContainerElement.innerHTML = `
+                <div class="welcome-message">
+                    <h2 class="text-center text-2xl font-bold mb-5">練習モードを選んで開始してください</h2>
+                    <p class="text-center text-gray-600 dark:text-gray-300 text-lg mb-8">
+                        <strong>読み方:</strong> 漢字の読みを選択<br>
+                        <strong>意味:</strong> 単語の意味を選択<br>
+                        <strong>使い方:</strong> 文脈に合う単語を選択<br>
+                        <strong>ミックス:</strong> 全種類の問題をランダムに<br>
+                    </p>
+                    <div class="features glass-morphism mt-8 p-5 bg-indigo-100 dark:bg-indigo-900 dark:bg-opacity-40 rounded-xl">
+                        <h3 class="text-center text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">✨ 新機能</h3>
+                        <ul class="text-left text-gray-600 dark:text-gray-300 leading-relaxed list-none list-inside">
+                            <li>🎯 問題数選択（5/10/30/全て）</li>
+                            <li>🔥 連続正解カウンター</li>
+                            <li>⏱️ 問題別タイマー</li>
+                            <li>🌙 ダークモード対応</li>
+                            <li>⌨️ キーボードショートカット</li>
+                            <li>📱 完全レスポンシブ対応</li>
+                            <li>📚 レッスン選択機能</li>
+                            <li>🇨🇳 意味練習で中国語表示</li>
+                            <li>✨ AIによる新しい例文生成</li>
+                            <li>📖 問題文クリックで例文表示 (全モード対応)</li>
+                        </ul>
+                    </div>
+                </div>`;
+            currentQuiz = [];
+            currentQuestion = 0;
+            score = 0;
+            selectedAnswer = null;
+            streak = 0;
+            maxStreak = 0;
+            startTime = null;
+            questionStartTime = null;
+            totalTime = 0;
+            wrongAnswers = [];
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                body.classList.remove('text-gray-800');
+                button.textContent = '☀️';
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('text-gray-800'); 
+                button.textContent = '🌙';
+            }
+            // If a quiz is active, refresh the question to apply dark mode styles to dynamically generated option numbers
+            if (document.body.classList.contains('quiz-mode-active') && currentQuiz.length > 0 && currentQuestion < currentQuiz.length) {
+                const tempSelected = selectedAnswer; // Preserve selected answer if any (though unlikely during theme toggle)
+                const tempQuestion = currentQuestion;
+                showQuestion(); // Re-render the current question
+                currentQuestion = tempQuestion; // Restore question index
+                selectedAnswer = tempSelected; // Restore selection
+                if (selectedAnswer !== null) { // If an answer was selected, re-apply selection styling
+                    const options = document.querySelectorAll('.option');
+                    if (options[selectedAnswer]) {
+                         options[selectedAnswer].classList.add('selected-option');
+                         options[selectedAnswer].classList.add('bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
+                         options[selectedAnswer].style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8';
+                    }
+                }
+            }
+        }
+
+        async function generateExampleSentence(buttonElement, word, reading, meaning) {
+            buttonElement.disabled = true;
+            buttonElement.textContent = '生成中...';
+            showSentenceLoadingSpinner();
+
+            let chatHistory = [{ role: "user", parts: [{ text: `「${word} (${reading})」という日本語の単語（意味：${meaning}）を使って、JLPT N3/N2レベルの自然な例文を一つ生成してください。**例文のみを日本語で提供し、説明や他のテキストは一切含めないでください。**` }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = "YOUR_GEMINI_API_KEY"; // IMPORTANT: Replace with your actual API key
+
+            if (apiKey === "YOUR_GEMINI_API_KEY" || apiKey === "") {
+                showGeneratedSentenceModal('APIキーが設定されていません。');
+                console.error('Gemini API key is not set.');
+                buttonElement.disabled = false;
+                buttonElement.innerHTML = '✨ 新しい例文を生成';
+                const spinner = document.getElementById('sentenceLoadingSpinner');
+                if (spinner) spinner.classList.add('hidden');
+                return;
+            }
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    const errorResult = await response.json().catch(() => ({ error: { message: 'Unknown API error format.' } }));
+                    console.error('Gemini API error response:', errorResult);
+                    throw new Error(`Gemini API request failed: ${response.status} ${response.statusText}. ${errorResult.error?.message || ''}`);
+                }
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    const sentence = result.candidates[0].content.parts[0].text.trim();
+                    showGeneratedSentenceModal(sentence);
+                } else {
+                    showGeneratedSentenceModal('例文の生成に失敗しました。APIからの応答形式が予期しないものです。');
+                    console.error('Gemini API response structure unexpected:', result);
+                }
+            } catch (error) {
+                showGeneratedSentenceModal(`例文の生成中にエラーが発生しました。`);
+                console.error('Error calling Gemini API:', error);
+            } finally {
+                buttonElement.disabled = false;
+                buttonElement.innerHTML = '✨ 新しい例文を生成';
+            }
+        }
     </script>
 </body>
 </html>

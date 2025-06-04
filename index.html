@@ -9,8 +9,10 @@
     <!--
     <script src="./tailwind.css"></script>
     -->
-     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             /* === 主题颜色和背景 === */
@@ -396,7 +398,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding-top: 8rem;
+            padding-top: 5.5rem;
             align-items: center;
         }
 
@@ -625,6 +627,7 @@
                         <li>✨ AIによる新しい例文生成</li>
                         <li>📖 問題文クリックで例文表示 (全モード対応)</li>
                         <li>👆 左右スワイプで问题切替 (モバイル)</li>
+                        <li>🖱️ カード左右クリックで問題切替 (デスクトップ)</li>
                     </ul>
                 </div>
             </div>
@@ -806,7 +809,6 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            // 如果弹窗显示，或者当前题目是查看历史答案（选项被禁用），则不处理键盘事件
             if (!document.getElementById('messageBox').classList.contains('hidden') ||
                 !document.getElementById('generatedSentenceModal').classList.contains('hidden')) {
                 return;
@@ -815,17 +817,16 @@
             const optionsElements = document.querySelectorAll('.option');
             const isViewingPastAnswer = optionsElements.length > 0 && optionsElements[0].disabled;
 
-            if (isViewingPastAnswer && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') { // 历史查看模式下只允许左右箭头
+            if (isViewingPastAnswer && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
                 return;
             }
-            if (selectedAnswer !== null && !isViewingPastAnswer) { // 正常答题时，选了答案后只响应Enter
+            if (selectedAnswer !== null && !isViewingPastAnswer) {
                 if (e.key === 'Enter') submitAnswer();
                 return;
             }
-            if (isViewingPastAnswer && (e.key === 'Enter' || (e.key >= '1' && e.key <= '4'))) { // 历史查看模式不响应数字和Enter
+            if (isViewingPastAnswer && (e.key === 'Enter' || (e.key >= '1' && e.key <= '4'))) {
                 return;
             }
-
 
             const key = e.key;
             if (key >= '1' && key <= '4' && !isViewingPastAnswer) {
@@ -835,9 +836,13 @@
                 }
             } else if (key === 'Enter' && selectedAnswer !== null && !isViewingPastAnswer) {
                 submitAnswer();
+            } else if (key === 'ArrowLeft') {
+                navigateToPreviousQuestion();
+            } else if (key === 'ArrowRight') {
+                navigateToNextQuestion();
             }
-            // 左右箭头滑动由 swipe gesture 函数处理，这里不再重复
         });
+
 
         function showKeyboardHint() {
             const hint = document.getElementById('keyboardHint');
@@ -1055,13 +1060,9 @@
             startTime = Date.now();
             totalTime = 0;
 
-            // --- 新增: 初始化答题历史和最远进度 ---
             answerLog = [];
             maxQuestionReachedInSession = 0;
-            // --- 结束 ---
 
-
-            // --- 初始化滑动相关状态并添加监听器 ---
             touchstartX = 0;
             touchendX = 0;
             touchstartY = 0;
@@ -1070,8 +1071,8 @@
                 quizContainerElement.addEventListener('touchstart', handleTouchStart, { passive: false });
                 quizContainerElement.addEventListener('touchmove', handleTouchMove, { passive: false });
                 quizContainerElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+                quizContainerElement.addEventListener('click', handleCardClick); // Added
             }
-            // --- 滑动功能初始化结束 ---
 
             showKeyboardHint();
             showQuestion();
@@ -1086,18 +1087,10 @@
             const question = currentQuiz[currentQuestion];
             const container = quizContainerElement;
 
-            // --- 移除: 不再在这里通过滑动更新 maxQuestionReachedInSession ---
-            // maxQuestionReachedInSession 现在只在 nextQuestion() 中, 在成功回答问题后更新。
-            // if (selectedAnswer === null && currentQuestion > maxQuestionReachedInSession) {
-            //     maxQuestionReachedInSession = currentQuestion;
-            // }
-            // --- 结束移除 ---
-
-            const isPastQuestion = currentQuestion < maxQuestionReachedInSession; // 这主要用于辅助判断，核心状态依赖 historyEntry
             const historyEntry = answerLog.find(log => log.questionIndex === currentQuestion);
 
-            if (!historyEntry) { // 如果是新题或正在作答的题 (没有历史记录)
-                questionStartTime = Date.now(); // 仅为新问题或当前问题重置开始时间
+            if (!historyEntry) {
+                questionStartTime = Date.now();
             }
 
 
@@ -1141,8 +1134,8 @@
             const feedbackElement = container.querySelector('.feedback');
             const optionElements = container.querySelectorAll('.option');
 
-            if (historyEntry) { // 如果是已回答过的问题
-                clearInterval(timerInterval); // 停止计时器
+            if (historyEntry) {
+                clearInterval(timerInterval);
                 feedbackElement.className = `feedback text-center text-lg md:text-xl font-semibold p-3 md:p-4 rounded-lg ${historyEntry.isCorrect ? 'text-green-600 bg-green-50 border-2 border-green-200' : 'text-red-600 bg-red-50 border-2 border-red-200'}`;
                 if (isDarkMode) {
                     if (historyEntry.isCorrect) feedbackElement.classList.add('dark:bg-green-900', 'dark:bg-opacity-30', 'dark:border-green-700');
@@ -1160,7 +1153,7 @@
                 feedbackElement.style.visibility = 'visible';
 
                 optionElements.forEach((opt, i) => {
-                    opt.disabled = true; // 禁用选项
+                    opt.disabled = true;
                     opt.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white', 'border-indigo-500', 'from-green-500', 'to-lime-600', 'border-green-500', 'from-red-500', 'to-orange-500', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
                     opt.style.borderColor = '';
 
@@ -1169,22 +1162,20 @@
                     }
                     if (i === historyEntry.selectedOptionIndex && !historyEntry.isCorrect) {
                         opt.classList.add('bg-gradient-to-br', 'from-red-500', 'to-orange-500', 'text-white', 'border-red-500');
-                    } else if (i === historyEntry.selectedOptionIndex && historyEntry.isCorrect) {
-                        // Already handled by correct option styling
                     }
                 });
 
-            } else { // 新问题或正在作答的问题
+            } else {
                 if (feedbackElement) {
                     feedbackElement.style.visibility = 'hidden';
                     feedbackElement.innerHTML = '';
                 }
                 optionElements.forEach(opt => {
-                    opt.disabled = false; // 确保选项启用
+                    opt.disabled = false;
                     opt.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white', 'border-indigo-500', 'from-green-500', 'to-lime-600', 'border-green-500', 'from-red-500', 'to-orange-500', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
                     opt.style.borderColor = '';
                 });
-                updateTimer(); // 只有新问题或当前问题才更新计时器
+                updateTimer();
             }
 
 
@@ -1203,7 +1194,6 @@
                 questionTextElement.title = 'クリックして例文を表示/非表示';
 
                 questionTextElement.onclick = () => {
-                    // 如果是历史题目，或者已经选择了答案（在提交前），则不允许切换例文显示
                     const isViewingPast = optionElements.length > 0 && optionElements[0].disabled;
                     if (selectedAnswer !== null && !isViewingPast) return;
 
@@ -1219,7 +1209,6 @@
 
         function updateTimer() {
             clearInterval(timerInterval);
-            // 仅当不是查看历史答案，且测验未结束，且未选择答案时才启动计时器
             const isViewingPastAnswer = currentQuestion < maxQuestionReachedInSession && answerLog.find(log => log.questionIndex === currentQuestion);
 
             if (currentQuestion >= currentQuiz.length || selectedAnswer !== null || isViewingPastAnswer) {
@@ -1237,18 +1226,18 @@
                     const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
                     timerElement.textContent = elapsed;
                 };
-                update(); // Initial call
+                update();
                 timerInterval = setInterval(update, 1000);
             }
         }
 
         function selectAnswer(index) {
             const optionButton = document.querySelectorAll('.option')[index];
-            if (selectedAnswer !== null || (optionButton && optionButton.disabled)) { // 如果已选择或按钮禁用
+            if (selectedAnswer !== null || (optionButton && optionButton.disabled)) {
                 return;
             }
             selectedAnswer = index;
-            clearInterval(timerInterval); // 暂停计时器
+            clearInterval(timerInterval);
 
             const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
             if (exampleSentenceDisplayElement) {
@@ -1272,13 +1261,11 @@
         function submitAnswer() {
             if (selectedAnswer === null) return;
 
-            // 防止重复提交或在查看历史时提交
             const optionButton = document.querySelectorAll('.option')[selectedAnswer];
             if (optionButton && optionButton.disabled) {
-                selectedAnswer = null; // 重置selectedAnswer，因为这是无效提交
+                selectedAnswer = null;
                 return;
             }
-
 
             document.querySelectorAll('.option').forEach(optionEl => {
                 optionEl.classList.remove('selected-option');
@@ -1291,16 +1278,12 @@
             const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
             totalTime += timeSpent;
 
-            // --- 新增: 记录到 answerLog ---
             answerLog.push({
                 questionIndex: currentQuestion,
                 selectedOptionIndex: selectedAnswer,
                 isCorrect: isCorrect,
                 timeSpent: timeSpent,
-                // vocab: question.vocab, // 可选，如果showQuestion中需要更多vocab信息
-                // correctAnswerText: question.correctAnswer // 可选
             });
-            // --- 结束 ---
 
             if (isCorrect) {
                 score++;
@@ -1320,13 +1303,12 @@
             }
 
             document.querySelectorAll('.option').forEach((option, i) => {
-                option.disabled = true; // 提交后禁用选项
+                option.disabled = true;
                 if (question.options[i].correct) {
                     option.classList.add('bg-gradient-to-br', 'from-green-500', 'to-lime-600', 'text-white', 'border-green-500');
                 } else if (i === selectedAnswer && !isCorrect) {
                     option.classList.add('bg-gradient-to-br', 'from-red-500', 'to-orange-500', 'text-white', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
                 }
-                // option.style.pointerEvents = 'none'; // 使用 disabled 属性更好
             });
 
             const feedbackElement = document.querySelector('.feedback');
@@ -1335,7 +1317,6 @@
                 if (isCorrect) feedbackElement.classList.add('dark:bg-green-900', 'dark:bg-opacity-30', 'dark:border-green-700');
                 else feedbackElement.classList.add('dark:bg-red-900', 'dark:bg-opacity-30', 'dark:border-red-700');
             }
-
 
             let feedbackText = isCorrect ? `🎉 正解！ (${timeSpent}秒)` : `❌ 不正解。正解は“${question.correctAnswer}”。`;
             if (!isCorrect && question.vocab) {
@@ -1360,13 +1341,9 @@
             currentQuestion++;
             selectedAnswer = null;
 
-            // --- 修改: 更新 maxQuestionReachedInSession ---
-            // 如果进入的是一道全新的题（索引大于之前记录的最大索引）
             if (currentQuestion > maxQuestionReachedInSession) {
                 maxQuestionReachedInSession = currentQuestion;
             }
-            // --- 修改结束 ---
-
             showQuestion();
         }
 
@@ -1380,18 +1357,16 @@
                 quizContainerElement.style.paddingBottom = '';
                 quizContainerElement.style.paddingLeft = '';
                 quizContainerElement.style.paddingRight = '';
-            }
-            // --- 新增: 移除滑动监听器 ---
-            if (quizContainerElement) {
+
                 quizContainerElement.removeEventListener('touchstart', handleTouchStart);
                 quizContainerElement.removeEventListener('touchmove', handleTouchMove);
                 quizContainerElement.removeEventListener('touchend', handleTouchEnd);
+                quizContainerElement.removeEventListener('click', handleCardClick); // Added
             }
-            // --- 移除监听器结束 ---
         }
 
         function showFinalScore() {
-            resetQuizInterface(); // resetQuizInterface 内部会移除监听器
+            resetQuizInterface();
             clearInterval(timerInterval);
             totalTime = Math.floor((Date.now() - startTime) / 1000);
             const percentage = currentQuiz.length > 0 ? Math.round((score / currentQuiz.length) * 100) : 0;
@@ -1505,12 +1480,9 @@
             totalTime = 0;
             wrongAnswers = [];
 
-            // --- 新增: 初始化答题历史和最远进度 (复习模式) ---
             answerLog = [];
             maxQuestionReachedInSession = 0;
-            // --- 结束 ---
 
-            // --- 初始化滑动相关状态并添加监听器 (复习模式) ---
             touchstartX = 0;
             touchendX = 0;
             touchstartY = 0;
@@ -1519,14 +1491,13 @@
                 quizContainerElement.addEventListener('touchstart', handleTouchStart, { passive: false });
                 quizContainerElement.addEventListener('touchmove', handleTouchMove, { passive: false });
                 quizContainerElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+                quizContainerElement.addEventListener('click', handleCardClick); // Added
             }
-            // --- 滑动功能初始化结束 ---
-
             showQuestion();
         }
 
         function resetQuiz() {
-            resetQuizInterface(); // resetQuizInterface 内部会移除监听器
+            resetQuizInterface();
             clearInterval(timerInterval);
             quizContainerElement.innerHTML = `
             <div class="welcome-message">
@@ -1551,6 +1522,7 @@
                         <li>✨ AIによる新しい例文生成</li>
                         <li>📖 問題文クリックで例文表示 (全モード対応)</li>
                         <li>👆 左右スワイプで问题切替 (モバイル)</li>
+                        <li>🖱️ カード左右クリックで問題切替 (デスクトップ)</li>
                     </ul>
                 </div>
             </div>`;
@@ -1565,10 +1537,8 @@
             totalTime = 0;
             wrongAnswers = [];
 
-            // --- 新增: 重置答题历史和最远进度 ---
             answerLog = [];
             maxQuestionReachedInSession = 0;
-            // --- 结束 ---
         }
 
         function toggleTheme() {
@@ -1584,20 +1554,15 @@
                 body.classList.add('text-gray-800');
                 button.textContent = '🌙';
             }
-            // 如果在测验中切换主题，需要重新渲染当前问题以应用新样式
-            // 并且要保留其当前状态（例如，如果是已回答的历史问题，则保持禁用和历史反馈）
             if (document.body.classList.contains('quiz-mode-active') && currentQuiz.length > 0 && currentQuestion < currentQuiz.length) {
-                // selectedAnswer 状态会在 showQuestion 中根据 historyEntry 决定是否重置或使用
-                // 因此，直接调用 showQuestion 即可
                 const tempSelected = selectedAnswer;
                 const tempCurrentQ = currentQuestion;
 
-                showQuestion(); // This will use answerLog to restore state if it's a past question
+                showQuestion();
 
-                // If it was an active question and an answer was selected (but not submitted), restore that temporary selection visual
                 const isViewingPast = answerLog.find(log => log.questionIndex === tempCurrentQ);
                 if (!isViewingPast && tempSelected !== null) {
-                    selectedAnswer = tempSelected; // Restore for visual consistency before submission
+                    selectedAnswer = tempSelected;
                     const options = document.querySelectorAll('.option');
                     if (options[selectedAnswer] && !options[selectedAnswer].disabled) {
                         options[selectedAnswer].classList.add('selected-option');
@@ -1605,7 +1570,7 @@
                         options[selectedAnswer].style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8';
                     }
                 } else {
-                    selectedAnswer = null; // Ensure selectedAnswer is null if viewing past or no selection was made
+                    selectedAnswer = null;
                 }
             }
         }
@@ -1617,7 +1582,7 @@
 
             let chatHistory = [{ role: "user", parts: [{ text: `「${word} (${reading})」という日本語の単語（意味：${meaning}）を使って、JLPT N3/N2レベルの自然な例文を一つ生成してください。**例文のみを日本語で提供し、説明や他のテキストは一切含めないでください。**` }] }];
             const payload = { contents: chatHistory };
-            const apiKey = "YOUR_GEMINI_API_KEY"; // IMPORTANT: Replace with your actual API key
+            const apiKey = "YOUR_GEMINI_API_KEY"; 
 
             if (apiKey === "YOUR_GEMINI_API_KEY" || apiKey === "") {
                 showGeneratedSentenceModal('APIキーが設定されていません。');
@@ -1658,11 +1623,49 @@
             }
         }
 
-        // --- 滑动处理函数 ---
+        // --- Navigation Helper Functions ---
+        function navigateToPreviousQuestion() {
+            // Check if navigation is appropriate (not while an answer is being processed for a new question)
+            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
+            if (selectedAnswer !== null && !currentQuestionHasBeenAnswered) {
+                 return;
+            }
+
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                selectedAnswer = null; // Reset selection state as we are navigating
+                showQuestion();
+            }
+        }
+
+        function navigateToNextQuestion() {
+            // Check if navigation is appropriate
+            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
+            if (selectedAnswer !== null && !currentQuestionHasBeenAnswered) {
+                 return;
+            }
+
+            if (currentQuestion < currentQuiz.length - 1) {
+                const targetQuestionIndex = currentQuestion + 1;
+                // Allow navigation if:
+                // 1. The target question is within the already "reached" part of the quiz.
+                // "Reached" means maxQuestionReachedInSession has been updated to at least this index,
+                // typically after answering the question before it.
+                if (targetQuestionIndex <= maxQuestionReachedInSession) {
+                    currentQuestion = targetQuestionIndex;
+                    selectedAnswer = null; // Reset selection state
+                    showQuestion();
+                }
+                // Note: Users cannot use click/swipe to advance to a *brand new, unanswered* question.
+                // That only happens via submitAnswer() -> nextQuestion().
+            }
+        }
+
+        // --- Event Handlers for Navigation ---
         function handleTouchStart(event) {
-            // 如果不是在答题模式，或者已经作答完毕等待下一题（selectedAnswer 不为 null 且不是历史查看），则不处理滑动
-            const isViewingPastAnswer = currentQuestion < maxQuestionReachedInSession && answerLog.find(log => log.questionIndex === currentQuestion);
-            if (!document.body.classList.contains('quiz-mode-active') || (selectedAnswer !== null && !isViewingPastAnswer) ) {
+            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
+            if (!document.body.classList.contains('quiz-mode-active') || (selectedAnswer !== null && !currentQuestionHasBeenAnswered)) {
+                touchstartX = 0; // Prevent swipe processing
                 return;
             }
             touchstartX = event.changedTouches[0].screenX;
@@ -1670,29 +1673,25 @@
         }
 
         function handleTouchMove(event) {
-            const isViewingPastAnswer = currentQuestion < maxQuestionReachedInSession && answerLog.find(log => log.questionIndex === currentQuestion);
-            if (!document.body.classList.contains('quiz-mode-active') || (selectedAnswer !== null && !isViewingPastAnswer) || touchstartX === 0) {
-                return;
-            }
+            if (touchstartX === 0) return; // Swipe not initiated or blocked
+
             const currentX = event.changedTouches[0].screenX;
             const currentY = event.changedTouches[0].screenY;
             const deltaX = currentX - touchstartX;
             const deltaY = currentY - touchstartY;
 
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (Math.abs(deltaX) > Math.abs(deltaY)) { // Prefer horizontal swipe
                 event.preventDefault();
             }
         }
 
         function handleTouchEnd(event) {
-            const isViewingPastAnswer = currentQuestion < maxQuestionReachedInSession && answerLog.find(log => log.questionIndex === currentQuestion);
-            if (!document.body.classList.contains('quiz-mode-active') || (selectedAnswer !== null && !isViewingPastAnswer) || touchstartX === 0) {
-                return;
-            }
+            if (touchstartX === 0) return; // Swipe not initiated or blocked
+
             touchendX = event.changedTouches[0].screenX;
             touchendY = event.changedTouches[0].screenY;
             handleSwipeGesture();
-            touchstartX = 0;
+            touchstartX = 0; // Reset for next swipe
             touchstartY = 0;
         }
 
@@ -1701,27 +1700,55 @@
             const deltaY = touchendY - touchstartY;
 
             if (Math.abs(deltaX) > swipeThreshold && Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX < 0) { // 向左滑动 (下一题)
-                    if (currentQuestion < currentQuiz.length - 1) { // 确保不是最后一题
-                        const targetQuestionIndex = currentQuestion + 1;
-                        // 新增约束：只有当目标题目索引小于或等于已达到的最远题目索引时，才允许向前滑动
-                        if (targetQuestionIndex <= maxQuestionReachedInSession) {
-                            currentQuestion = targetQuestionIndex;
-                            selectedAnswer = null;
-                            showQuestion();
-                        }
-                        // 如果 targetQuestionIndex > maxQuestionReachedInSession，则滑动被阻止，用户不能跳过当前应答题目
-                    }
-                } else if (deltaX > 0) { // 向右滑动 (上一题)
-                    if (currentQuestion > 0) { // 确保不是第一题
-                        currentQuestion--;
-                        selectedAnswer = null;
-                        showQuestion();
-                    }
+                if (deltaX < 0) { // Swipe Left (Next Question)
+                    navigateToNextQuestion();
+                } else if (deltaX > 0) { // Swipe Right (Previous Question)
+                    navigateToPreviousQuestion();
                 }
             }
         }
-        // --- 滑动处理函数结束 ---
+
+        function handleCardClick(event) {
+            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
+            
+            if (!document.body.classList.contains('quiz-mode-active') || 
+                (selectedAnswer !== null && !currentQuestionHasBeenAnswered)) {
+                return;
+            }
+
+            const target = event.target;
+            if (target.closest('.option') ||
+                target.closest('.exit-btn') ||
+                target.closest('#questionText') || 
+                target.closest('.feedback') ||
+                target.closest('.progress-container') ||
+                target.closest('.stats')) {
+                return; 
+            }
+
+            const optionsDiv = quizContainerElement.querySelector('.options');
+            if (optionsDiv) {
+                const optionsRect = optionsDiv.getBoundingClientRect();
+                if (event.clientY >= optionsRect.top) { 
+                    return; 
+                }
+            }
+
+            if (!quizContainerElement) return;
+            const rect = quizContainerElement.getBoundingClientRect();
+            const clickX = event.clientX - rect.left; 
+            const elementWidth = rect.width;
+            
+            // 定义可点击的右侧区域：卡片宽度的后30%
+            const clickZoneWidth = elementWidth * 0.30; 
+
+            // 只处理点击右侧区域 (下一题)
+            if (clickX > (elementWidth - clickZoneWidth)) { 
+                navigateToNextQuestion();
+            }
+            // 左侧点击不再处理
+        }
+
     </script>
 
 </body>

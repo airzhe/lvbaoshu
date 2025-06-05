@@ -9,26 +9,19 @@
     <!--
     <script src="./tailwind.css"></script>
     -->
-
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             /* === 主题颜色和背景 === */
             --body-bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --body-text-color: #2d3748;
-            /* 基础文本颜色 (深灰，Tailwind gray-800 类似) */
             --container-bg: rgba(255, 255, 255, 0.95);
             --container-border-color: rgba(255, 255, 255, 0.2);
             --container-text-color: inherit;
-            /* 继承 body 或特定颜色 */
-
 
             --controls-bg-white-override: initial;
-
             --gradient-text-bg: linear-gradient(45deg, #667eea, #764ba2);
-
             --btn-before-bg: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 
             --exit-btn-bg: linear-gradient(to bottom right, #e5e7eb, #d1d5db);
@@ -36,116 +29,77 @@
             --exit-btn-hover-bg: linear-gradient(to bottom right, #d1d5db, #b3b7c1);
 
             --progress-bar-bg: #e9d5ff;
-            /* 浅色模式进度条背景 (Tailwind purple-200 类似) */
             --progress-fill-bg: linear-gradient(to right, #3b82f6, #8b5cf6);
 
             --option-bg: rgba(255, 255, 255, 0.8);
             --option-border-color: #93c5fd;
-            /* Tailwind blue-300 */
             --option-text-color: inherit;
             --option-hover-bg: rgba(239, 246, 255, 0.95);
             --option-hover-border-color: #818cf8;
             --option-hover-text-color: var(--text-body);
 
             --feedback-text-color-default: #374151;
-            /* Tailwind gray-700 */
 
-            --text-green-600-val: #059669;
-            --text-red-600-val: #dc2626;
+            --text-green-600-val: #047857;
+            --text-red-600-val: #b91c1c;
             --text-red-500-val: #ef4444;
             --text-orange-500-val: #f97316;
             --text-gray-900-val: #111827;
             --text-color-example-sentence-val: #4b5563;
-            /* Tailwind gray-700 */
 
             --glass-morphism-bg: rgba(233, 236, 241, 0.6);
-            /* Tailwind gray-100 with opacity (for .features bg-indigo-100) */
             --glass-morphism-border: 1px solid rgba(229, 231, 235, 0.5);
-            /* Tailwind gray-200 with opacity */
             --glass-morphism-header-text: #4f46e5;
-            /* Tailwind indigo-600 for .features h3 */
 
-            /* 反馈特定颜色 (浅色) */
             --feedback-green-text: var(--text-green-600-val);
             --feedback-green-bg: rgba(220, 252, 231, 0.9);
-            /* Tailwind green-100, more opaque */
             --feedback-green-border: rgba(110, 231, 183, 0.7);
-            /* Tailwind green-300, more opaque */
             --feedback-green-shadow: 0 4px 12px rgba(52, 211, 153, 0.15);
 
             --feedback-red-text: var(--text-red-600-val);
             --feedback-red-bg: rgba(254, 226, 226, 0.9);
-            /* Tailwind red-100, more opaque */
             --feedback-red-border: rgba(252, 165, 165, 0.7);
-            /* Tailwind red-300, more opaque */
             --feedback-red-shadow: 0 4px 12px rgba(248, 113, 113, 0.15);
 
             --immersive-quiz-container-bg: rgba(255, 255, 255, 0.25);
-            /* from your original */
         }
 
         body.dark-mode {
             --body-bg-gradient: linear-gradient(135deg, #1a2634 0%, #2c3e50 100%);
             --body-text-color: #e2e8f0;
-            /* Tailwind slate-200 */
             --container-bg: rgba(45, 55, 72, 0.95);
-            /* Tailwind slate-700 */
             --container-border-color: rgba(255, 255, 255, 0.3);
             --container-text-color: #e2e8f0;
-
             --controls-bg-white-override: rgba(255, 255, 255, 0.1);
-
-            /* --gradient-text-bg: linear-gradient(45deg, #93c5fd, #c4b5fd); */
-
             --btn-before-bg: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-
             --exit-btn-bg: linear-gradient(to bottom right, #4b5563, #6b7280);
             --exit-btn-text-color: #e2e8f0;
             --exit-btn-hover-bg: linear-gradient(to bottom right, #6b7280, #9ca3af);
-
             --progress-bar-bg: #4b5563;
-            /* Tailwind gray-600 */
-            /* --progress-fill-bg: linear-gradient(to right, #3b82f6, #8b5cf6); /* 保持不变或按需修改 */
-
             --option-bg: rgba(55, 65, 81, 0.8);
-            /* Tailwind gray-700 */
             --option-border-color: #60a5fa;
-            /* Tailwind blue-400 */
             --option-text-color: #e2e8f0;
             --option-hover-bg: rgba(69, 71, 90, 0.9);
-            /* 例如：Catppuccin Surface1，比基础背景稍亮 */
             --option-hover-border-color: #89b4fa;
             --option-hover-text-color: var(--text-body);
-
             --text-green-600-val: #34d399;
             --text-red-600-val: #f87171;
-            /* Note: original was text-red-600, but value seems for text-red-400/500 */
             --text-red-500-val: #f87171;
             --text-orange-500-val: #fb923c;
             --text-gray-900-val: #e2e8f0;
             --text-color-example-sentence-val: #cbd5e1;
-            /* Tailwind slate-300 */
-
             --glass-morphism-bg: rgba(45, 55, 72, 0.6);
-            /* Tailwind slate-700 with opacity (for .features dark:bg-indigo-900 dark:bg-opacity-40) */
             --glass-morphism-border: 1px solid rgba(255, 255, 255, 0.15);
             --glass-morphism-header-text: #818cf8;
-            /* Tailwind indigo-400 for .features h3 dark:text-indigo-400 */
-
-            /* 反馈特定颜色 (深色) */
             --feedback-green-text: #6ee7b7;
             --feedback-green-bg: rgba(16, 185, 129, 0.8);
             --feedback-green-border: rgba(52, 211, 153, 0.5);
             --feedback-green-shadow: 0 4px 12px rgba(52, 211, 153, 0.25);
-
             --feedback-red-text: #fca5a5;
             --feedback-red-bg: rgba(220, 38, 38, 0.8);
             --feedback-red-border: rgba(248, 113, 113, 0.5);
             --feedback-red-shadow: 0 4px 12px rgba(248, 113, 113, 0.25);
-
             --immersive-quiz-container-bg: rgba(30, 41, 59, 0.6);
-            /* dark variant of your original, slate-800 like*/
-
         }
 
         /* --- 基础和组件样式 --- */
@@ -160,16 +114,12 @@
         .header,
         .controls,
         .quiz-container:not(.immersive-active) {
-            /* Exclude immersive for its own bg */
             background: var(--container-bg);
-            /* border-color: var(--container-border-color); Apply if these elements have a border styled e.g., border: 1px solid; */
             color: var(--container-text-color);
         }
 
         body.dark-mode .controls .bg-white {
-            /* Handles Tailwind .bg-white inside .controls */
             background: var(--controls-bg-white-override) !important;
-            /* Important if .bg-white has high specificity */
         }
 
         .gradient-text {
@@ -224,7 +174,6 @@
 
         .theme-toggle {
             z-index: 50;
-            /* Base styles for theme-toggle if not covered by Tailwind and needed here */
         }
 
         body.quiz-mode-active .theme-toggle {
@@ -235,9 +184,7 @@
             background: var(--progress-bar-bg);
             width: 100%;
             height: 0.625rem;
-            /* 2.5 in Tailwind, h-2.5 */
             border-radius: 0.375rem;
-            /* rounded-md */
             overflow: hidden;
             position: relative;
         }
@@ -246,11 +193,8 @@
             background: var(--progress-fill-bg);
             height: 100%;
             border-radius: 0.375rem;
-            /* rounded-md */
             transition: width 0.5s ease-in-out;
-            /* width comes from JS style */
             position: relative;
-            /* For ::after positioning */
         }
 
         .progress-fill::after {
@@ -288,9 +232,7 @@
             transition: background-color 0.2s ease, border-color 0.2s ease;
             background: var(--option-bg);
             border-color: var(--option-border-color);
-            /* Needs 'border-width' and 'border-style' to be visible */
             color: var(--option-text-color);
-            /* Ensure other Tailwind classes like p-*, rounded-*, border-2 are on the HTML element */
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -303,10 +245,8 @@
 
         .option.selected-option {
             border-width: 2px;
-            /* This makes the border visible if other border properties are set */
         }
 
-        /* 新增: 禁用选项的样式 */
         .option:disabled {
             opacity: 0.7;
             cursor: not-allowed;
@@ -367,7 +307,6 @@
             padding: 0;
             max-width: 100%;
             height: 100dvh;
-            /* Use dvh for dynamic viewport height */
             display: flex;
         }
 
@@ -389,7 +328,7 @@
             background: var(--immersive-quiz-container-bg);
         }
 
-        #quizContainer.immersive-active>div:not(.progress-container):not(.stats):not(.options):not(.feedback):not(.question-area-wrapper) {
+        #quizContainer.immersive-active>div:not(.progress-container):not(.stats):not(.options):not(#inlineFeedback):not(.question-area-wrapper) {
             flex-grow: 1;
         }
 
@@ -398,7 +337,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding-top: 5.5rem;
+            padding-top: 5.5rem; /* Adjusted padding */
             align-items: center;
         }
 
@@ -409,13 +348,15 @@
             width: 100%;
         }
 
+
         #quizContainer.immersive-active .options {
-            margin-top: auto;
-            padding-bottom: 2rem;
+            margin-top: auto; /* Push options to the bottom */
+            padding-bottom: 2rem; /* Space at the very bottom */
             width: 100%;
         }
 
-        #quizContainer.immersive-active .feedback {
+
+        #quizContainer.immersive-active .feedback { /* OLD feedback box style */
             position: absolute;
             bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
             left: 50%;
@@ -425,8 +366,7 @@
             margin-top: 0;
             margin-bottom: 0;
             z-index: 100;
-            visibility: hidden;
-            /* Controlled by JS */
+            visibility: hidden; /* Initially hidden, controlled by JS */
         }
 
         .header.hidden-during-quiz,
@@ -434,117 +374,110 @@
             display: none !important;
         }
 
-        .feedback {
+        .feedback { /* OLD feedback box style */
             text-align: center;
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             word-break: break-word;
             color: var(--feedback-text-color-default);
-            /* Other base styles for feedback like padding, border-radius if not handled by Tailwind */
         }
-
-        /* Assumes JS adds 'text-green-600' or 'text-red-600' for feedback states */
         .feedback.text-green-600 {
             color: var(--feedback-green-text) !important;
-            /* Important to override Tailwind if needed */
             background-color: var(--feedback-green-bg);
             border-color: var(--feedback-green-border);
-            /* Needs border-width and style */
             box-shadow: var(--feedback-green-shadow);
         }
-
         .feedback.text-red-600 {
             color: var(--feedback-red-text) !important;
-            /* Important to override Tailwind if needed */
             background-color: var(--feedback-red-bg);
             border-color: var(--feedback-red-border);
-            /* Needs border-width and style */
             box-shadow: var(--feedback-red-shadow);
         }
 
-        /* For .features div in welcome message */
         .features.glass-morphism {
             background: var(--glass-morphism-bg);
             border: var(--glass-morphism-border);
-            /* color for text inside .features.glass-morphism ul li can inherit or be set */
         }
-
         .features.glass-morphism h3 {
             color: var(--glass-morphism-header-text);
         }
-
-
-        .feedback small {
+        .feedback small { /* OLD feedback box style */
             display: block;
             margin-top: 0.5rem;
             line-height: 1.4;
-            /* color for small text can also be a variable */
         }
 
-        /* Stats colors - these override Tailwind text color classes in dark mode */
-        body.dark-mode .stats .score.text-green-600 {
-            color: var(--text-green-600-val) !important;
-        }
-
-        body.dark-mode .stats .streak-counter.text-red-500 {
-            color: var(--text-red-500-val) !important;
-        }
-
-        body.dark-mode .stats .timer.text-orange-500 {
-            color: var(--text-orange-500-val) !important;
-        }
-
-        /* Question text color */
-        body.dark-mode .question.text-gray-900 {
-            /* Handles custom .question with Tailwind .text-gray-900 */
-            color: var(--text-gray-900-val) !important;
-        }
+        body.dark-mode .stats .score.text-green-600 { color: var(--text-green-600-val) !important; }
+        body.dark-mode .stats .streak-counter.text-red-500 { color: var(--text-red-500-val) !important; }
+        body.dark-mode .stats .timer.text-orange-500 { color: var(--text-orange-500-val) !important; }
+        body.dark-mode .question.text-gray-900 { color: var(--text-gray-900-val) !important; }
 
         #exampleSentenceDisplay {
             max-height: 0;
             opacity: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
-            word-break: normal;
+            word-break: normal; /* Changed from break-word to normal for better readability */
             line-height: 1.6;
-            text-align: center;
-            margin-top: 0;
+            text-align: center; /* Center the example sentence */
+            margin-top: 0; /* No margin when hidden */
             color: var(--text-color-example-sentence-val);
         }
-
         #exampleSentenceDisplay.visible {
-            max-height: 10em;
+            max-height: 10em; /* Allow more space for longer sentences */
             opacity: 1;
-            margin-top: 0.5rem;
+            margin-top: 0.5rem; /* Add some space when visible */
         }
-
-        /* Option selection gradient overrides for dark mode - specific to your JS logic */
         body.dark-mode .option.bg-gradient-to-br.from-indigo-500.to-purple-600 {
             background: linear-gradient(to bottom right, #60a5fa, #a78bfa);
         }
-
         body.dark-mode .option.bg-gradient-to-br.from-green-500.to-lime-600 {
             background: linear-gradient(to bottom right, #34d399, #86efac);
         }
-
         body.dark-mode .option.bg-gradient-to-br.from-red-500.to-orange-500 {
             background: linear-gradient(to bottom right, #f87171, #fb923c);
         }
-
         #keyboardHint {
             position: fixed;
             bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
             right: 1rem;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             font-size: 0.875rem;
             opacity: 0;
-            /* Controlled by JS */
             transition: opacity 0.3s ease;
             z-index: 50;
         }
+
+        /* --- Styles for Inline Feedback (No Animation) --- */
+        .inline-feedback-area {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 600;
+            padding: 8px 0; /* Vertical padding */
+            margin-bottom: 15px; /* Space below feedback before options */
+            min-height: 1.6em; /* Reserve space to prevent layout shift, approx one line */
+            line-height: 1.4;
+            visibility: hidden; /* Initially hidden */
+        }
+
+        .inline-feedback-area.show {
+            visibility: visible; /* Show when .show class is added */
+        }
+
+        .inline-feedback-area.correct-inline {
+            color: var(--feedback-green-text);
+        }
+
+        .inline-feedback-area.incorrect-inline {
+            color: var(--feedback-red-text);
+        }
+        .inline-feedback-area small { /* Style for the detailed explanation in incorrect feedback */
+            font-weight: normal;
+        }
+
     </style>
 
 </head>
@@ -557,7 +490,6 @@
     <div class="container mx-auto p-5 max-w-4xl">
         <div
             class="header bg-opacity-95 backdrop-blur-md rounded-2xl p-8 mb-8 text-center shadow-lg border border-white border-opacity-20 animate-[slideDown_0.8s_ease]">
-            <!-- H1 will be set by JavaScript -->
             <h1 class="text-4xl font-bold mb-2 gradient-text">語彙練習</h1>
             <p class="text-gray-600 text-lg">日本語能力試験スタイル語彙練習</p>
         </div>
@@ -587,9 +519,9 @@
                     class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
                     <option value="5">5問</option>
                     <option value="10">10問</option>
-                    <option value="20" selected>20問</option>
+                    <option value="20">20問</option>
                     <option value="30">30問</option>
-                    <option value="all">全て</option>
+                    <option selected value="all">全て</option>
                 </select>
             </div>
             <div>
@@ -625,9 +557,8 @@
                         <li>📚 レッスン選択機能</li>
                         <li>🇨🇳 意味練習で中国語表示</li>
                         <li>✨ AIによる新しい例文生成</li>
-                        <li>📖 問題文クリックで例文表示 (全モード対応)</li>
-                        <li>👆 左右スワイプで问题切替 (モバイル)</li>
-                        <li>🖱️ カード左右クリックで問題切替 (デスクトップ)</li>
+                        <li>📖 問題文クリックで例文表示</li>
+                        <li>👆 左右スワイプで问题切替</li>
                     </ul>
                 </div>
             </div>
@@ -685,18 +616,16 @@
         let mainContainerElement;
         let startQuizButton;
         let lessonSelectElement;
-        let currentJLPTLevel = 'N2'; // Default level
+        let currentJLPTLevel = 'N2';
 
-        // --- 滑动功能相关变量 ---
         let touchstartX = 0;
         let touchendX = 0;
         let touchstartY = 0;
         let touchendY = 0;
-        const swipeThreshold = 50; // 滑动最小像素阈值
+        const swipeThreshold = 50;
 
-        // --- 新增: 记录答题历史和最远进度的变量 ---
-        let answerLog = []; // 存储每道题的作答情况
-        let maxQuestionReachedInSession = 0; // 本轮测验中用户达到过的最远题目索引 (已回答或正在回答)
+        let answerLog = [];
+        let maxQuestionReachedInSession = 0;
 
 
         async function loadVocabularyData(fileNameToLoad) {
@@ -725,7 +654,6 @@
             const urlParams = new URLSearchParams(window.location.search);
             const levelParam = urlParams.get('level');
             const allowedLevels = ['n1', 'n2', 'n3'];
-
             let determinedLevel = 'n2';
 
             if (levelParam && allowedLevels.includes(levelParam.toLowerCase())) {
@@ -736,27 +664,23 @@
 
             currentJLPTLevel = determinedLevel.toUpperCase();
             const jsonFileName = `${determinedLevel}.json`;
-
             document.title = `新無敵緑宝書${currentJLPTLevel}単語練習`;
             const h1Element = document.querySelector('.header h1.gradient-text');
             if (h1Element) {
                 h1Element.textContent = `新無敵緑宝書${currentJLPTLevel}語彙練習`;
             }
-
             loadVocabularyData(jsonFileName);
         }
 
         function populateLessonSelect() {
             if (!lessonSelectElement) return;
             lessonSelectElement.innerHTML = '<option value="all">全てのレッスン</option>';
-
             const lessonKeys = Object.keys(allVocabulary);
             lessonKeys.sort((a, b) => {
                 const numA = parseInt(a.replace('lesson', ''), 10);
                 const numB = parseInt(b.replace('lesson', ''), 10);
                 return numA - numB;
             });
-
             lessonKeys.forEach(key => {
                 const option = document.createElement('option');
                 option.value = key;
@@ -765,7 +689,6 @@
             });
         }
 
-
         document.addEventListener('DOMContentLoaded', () => {
             headerElement = document.querySelector('.header');
             controlsElement = document.querySelector('.controls');
@@ -773,13 +696,8 @@
             mainContainerElement = document.querySelector('.container');
             startQuizButton = document.getElementById('startQuizButton');
             lessonSelectElement = document.getElementById('lesson');
-
             initializeApp();
-
             const difficultySelect = document.getElementById('difficulty');
-            if (difficultySelect) {
-                difficultySelect.value = "20";
-            }
         });
 
         function showMessageBox(message) {
@@ -813,7 +731,6 @@
                 !document.getElementById('generatedSentenceModal').classList.contains('hidden')) {
                 return;
             }
-
             const optionsElements = document.querySelectorAll('.option');
             const isViewingPastAnswer = optionsElements.length > 0 && optionsElements[0].disabled;
 
@@ -827,7 +744,6 @@
             if (isViewingPastAnswer && (e.key === 'Enter' || (e.key >= '1' && e.key <= '4'))) {
                 return;
             }
-
             const key = e.key;
             if (key >= '1' && key <= '4' && !isViewingPastAnswer) {
                 const index = parseInt(key) - 1;
@@ -842,7 +758,6 @@
                 navigateToNextQuestion();
             }
         });
-
 
         function showKeyboardHint() {
             const hint = document.getElementById('keyboardHint');
@@ -879,7 +794,6 @@
                 }
                 otherVocab = otherVocab.filter(v => v.w !== vocab.w).slice(0, 3);
             }
-
             const wrongAnswersPool = shuffleArray(otherVocab).slice(0, 3);
             while (wrongAnswersPool.length < 3) {
                 let randomFallback = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
@@ -898,10 +812,8 @@
                 }
             }
 
-
             if (mode === 'reading') {
                 if (isReadingSameAsWord(vocab)) {
-                    console.warn(`Skipping reading question for word where reading is same as word: ${vocab.w}. Falling back to meaning.`);
                     const meaningQuestion = generateQuestion(vocab, 'meaning', allAvailableVocab);
                     if (meaningQuestion) {
                         meaningQuestion.originalIntendedMode = 'reading';
@@ -916,9 +828,7 @@
                         { text: wrongAnswersPool[1] ? wrongAnswersPool[1].r : '---', correct: false },
                         { text: wrongAnswersPool[2] ? wrongAnswersPool[2].r : '---', correct: false }
                     ]),
-                    correctAnswer: correctAnswer.r,
-                    vocab: vocab,
-                    mode: 'reading'
+                    correctAnswer: correctAnswer.r, vocab: vocab, mode: 'reading'
                 };
             } else if (mode === 'meaning') {
                 const correctMeaning = correctAnswer.c || correctAnswer.m;
@@ -933,13 +843,10 @@
                         { text: wrongMeaning2, correct: false },
                         { text: wrongMeaning3, correct: false }
                     ]),
-                    correctAnswer: correctMeaning,
-                    vocab: vocab,
-                    mode: 'meaning'
+                    correctAnswer: correctMeaning, vocab: vocab, mode: 'meaning'
                 };
-            } else { // usage mode
+            } else {
                 if (!vocab.u) {
-                    console.warn(`Skipping usage question for word: ${vocab.w} (no usage provided). Falling back to meaning.`);
                     return generateQuestion(vocab, 'meaning', allAvailableVocab);
                 }
                 return {
@@ -950,20 +857,16 @@
                         { text: wrongAnswersPool[1] ? wrongAnswersPool[1].w : '---', correct: false },
                         { text: wrongAnswersPool[2] ? wrongAnswersPool[2].w : '---', correct: false }
                     ]),
-                    correctAnswer: correctAnswer.w,
-                    vocab: vocab,
-                    mode: 'usage'
+                    correctAnswer: correctAnswer.w, vocab: vocab, mode: 'usage'
                 };
             }
         }
-
 
         function startQuiz() {
             if (Object.keys(allVocabulary).length === 0) {
                 showMessageBox(`語彙データ(${currentJLPTLevel})がまだ読み込まれていません。少々お待ちいただくか、ページを再読み込みしてください。`);
                 return;
             }
-
             if (headerElement) headerElement.classList.add('hidden-during-quiz');
             if (controlsElement) controlsElement.classList.add('hidden-during-quiz');
             document.body.classList.add('quiz-mode-active');
@@ -972,7 +875,6 @@
             const selectedLesson = document.getElementById('lesson').value;
             quizMode = document.getElementById('mode').value;
             const difficulty = document.getElementById('difficulty').value;
-
             let sourceVocab = [];
             if (selectedLesson === 'all') {
                 for (const lessonKey in allVocabulary) {
@@ -985,28 +887,21 @@
                     sourceVocab = allVocabulary[selectedLesson];
                 } else {
                     showMessageBox(`レッスン "${selectedLesson}" の単語が見つかりません (${currentJLPTLevel} データ)。`);
-                    resetQuizInterface();
-                    return;
+                    resetQuizInterface(); return;
                 }
             }
-
             if (sourceVocab.length === 0) {
                 showMessageBox(`選択されたレッスンには単語がありません (${currentJLPTLevel} データ)。`);
-                resetQuizInterface();
-                return;
+                resetQuizInterface(); return;
             }
             sourceVocab = sourceVocab.filter(item => typeof item === 'object' && item !== null && item.w);
-
-
             let questionCount;
             if (difficulty === 'all') {
                 questionCount = sourceVocab.length;
             } else {
                 questionCount = parseInt(difficulty);
             }
-
             if (sourceVocab.length < questionCount && difficulty !== 'all') {
-                showMessageBox(`選択されたレッスンには ${sourceVocab.length} 個の単語しかありません。問題数を調整しました。`);
                 questionCount = sourceVocab.length;
             }
             if (questionCount === 0 && sourceVocab.length > 0) {
@@ -1014,16 +909,12 @@
             }
             if (questionCount === 0) {
                 showMessageBox('問題数が0です。問題数を選択してください。');
-                resetQuizInterface();
-                return;
+                resetQuizInterface(); return;
             }
 
-
             const shuffledVocabForQuiz = shuffleArray(sourceVocab).slice(0, questionCount);
-
             let generatedQuestions = [];
             const modes = ['reading', 'meaning', 'usage'];
-
             for (const vocab of shuffledVocabForQuiz) {
                 let question = null;
                 if (quizMode === 'mixed') {
@@ -1037,62 +928,40 @@
                 }
                 if (question) {
                     generatedQuestions.push(question);
-                } else {
-                    console.warn(`Could not generate a valid question for vocab: ${vocab.w} in mode: ${quizMode}`);
                 }
             }
-
             currentQuiz = generatedQuestions;
-
-
             if (currentQuiz.length === 0) {
                 showMessageBox('選択された条件で問題を作成できませんでした。別のモードまたはレッスンを試してください。');
-                resetQuiz();
-                return;
+                resetQuiz(); return;
             }
-
-            currentQuestion = 0;
-            score = 0;
-            streak = 0;
-            maxStreak = 0;
-            wrongAnswers = [];
-            selectedAnswer = null;
-            startTime = Date.now();
-            totalTime = 0;
-
-            answerLog = [];
-            maxQuestionReachedInSession = 0;
-
-            touchstartX = 0;
-            touchendX = 0;
-            touchstartY = 0;
-            touchendY = 0;
+            currentQuestion = 0; score = 0; streak = 0; maxStreak = 0; wrongAnswers = []; selectedAnswer = null; startTime = Date.now(); totalTime = 0;
+            answerLog = []; 
+            maxQuestionReachedInSession = 0; // Initialize to the first question's index (0)
+            touchstartX = 0; touchendX = 0; touchstartY = 0; touchendY = 0;
             if (quizContainerElement) {
                 quizContainerElement.addEventListener('touchstart', handleTouchStart, { passive: false });
                 quizContainerElement.addEventListener('touchmove', handleTouchMove, { passive: false });
                 quizContainerElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-                quizContainerElement.addEventListener('click', handleCardClick); // Added
+                quizContainerElement.addEventListener('click', handleCardClick);
             }
-
             showKeyboardHint();
             showQuestion();
         }
 
         function showQuestion() {
             if (currentQuestion >= currentQuiz.length) {
-                showFinalScore();
-                return;
+                showFinalScore(); return;
             }
-
             const question = currentQuiz[currentQuestion];
             const container = quizContainerElement;
-
             const historyEntry = answerLog.find(log => log.questionIndex === currentQuestion);
-
-            if (!historyEntry) {
+            
+            if (!historyEntry) { 
                 questionStartTime = Date.now();
             }
-
+            // maxQuestionReachedInSession is primarily updated by nextQuestion() and navigateToNextQuestion() when moving to a new frontier.
+            // startQuiz initializes it to 0.
 
             let questionTextHTML = `<div class="question text-2xl md:text-3xl mb-1 md:mb-2 font-semibold text-center text-gray-900 leading-tight" id="questionText">${question.question}</div>`;
             let exampleSentenceHTML = `<div id="exampleSentenceDisplay" class="text-gray-700 text-mi px-2"></div>`;
@@ -1112,14 +981,13 @@
                 <span class="streak-counter text-red-500 flex items-center gap-1 md:gap-2">🔥 連続: ${streak}</span>
                 <span class="timer text-orange-500 flex items-center gap-1 md:gap-2">⏱️ 経過: <span id="timer">${historyEntry ? historyEntry.timeSpent : 0}</span>s</span>
             </div>
-            
             <div class="question-area-wrapper">
                 <div class="question-content-area">
                     ${questionTextHTML}
                     ${exampleSentenceHTML}
                 </div>
             </div>
-
+            <div id="inlineFeedback" class="inline-feedback-area"></div>
             <div class="options grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4">
                 ${question.options.map((option, index) => `
                     <button class="option relative overflow-hidden border-2 p-3 md:p-5 rounded-xl cursor-pointer transition-all duration-300 text-base md:text-lg text-center" onclick="selectAnswer(${index})" data-index="${index}">
@@ -1127,36 +995,40 @@
                         ${option.text}
                     </button>
                 `).join('')}
-            </div>
-            <div class="feedback text-center text-lg md:text-xl font-semibold"></div>
-        `;
+            </div>`;
 
-            const feedbackElement = container.querySelector('.feedback');
+            const inlineFeedbackElement = container.querySelector('#inlineFeedback');
             const optionElements = container.querySelectorAll('.option');
 
             if (historyEntry) {
                 clearInterval(timerInterval);
-                feedbackElement.className = `feedback text-center text-lg md:text-xl font-semibold p-3 md:p-4 rounded-lg ${historyEntry.isCorrect ? 'text-green-600 bg-green-50 border-2 border-green-200' : 'text-red-600 bg-red-50 border-2 border-red-200'}`;
-                if (isDarkMode) {
-                    if (historyEntry.isCorrect) feedbackElement.classList.add('dark:bg-green-900', 'dark:bg-opacity-30', 'dark:border-green-700');
-                    else feedbackElement.classList.add('dark:bg-red-900', 'dark:bg-opacity-30', 'dark:border-red-700');
+                if (inlineFeedbackElement) {
+                    inlineFeedbackElement.classList.remove('correct-inline', 'incorrect-inline', 'show');
+                    inlineFeedbackElement.innerHTML = ''; 
+                    let feedbackHTML = '';
+                    if (historyEntry.isCorrect) {
+                        // feedbackHTML = `🎉 正解！ (${historyEntry.timeSpent}秒)`;
+                        // inlineFeedbackElement.classList.add('correct-inline');
+                    } else {
+                        feedbackHTML = `不正解。正解は“${question.correctAnswer}”。`;
+                        inlineFeedbackElement.classList.add('incorrect-inline');
+                        if (question.vocab) {
+                            const displayMeaning = question.vocab.c || question.vocab.m;
+                            const detailTextColorClass = isDarkMode ? 'text-slate-300' : 'text-gray-700';
+                            feedbackHTML += `<br><small class="block mt-1 ${detailTextColorClass} opacity-85 text-sm md:text-base">
+                                ${question.vocab.w} ${question.vocab.w !== question.vocab.r ? '(' + question.vocab.r + ')' : ''} - ${displayMeaning}
+                            </small>`;
+                        }
+                    }
+                    if (feedbackHTML) { 
+                        inlineFeedbackElement.innerHTML = feedbackHTML;
+                        inlineFeedbackElement.classList.add('show');
+                    }
                 }
-
-                let feedbackText = historyEntry.isCorrect ? `🎉 正解！ (${historyEntry.timeSpent}秒)` : `❌ 不正解。正解は“${question.correctAnswer}”。`;
-                if (!historyEntry.isCorrect && question.vocab) {
-                    const displayMeaning = question.vocab.c || question.vocab.m;
-                    feedbackText += `<br><small class="text-gray-600 dark:text-slate-400 opacity-90 dark:opacity-85 text-sm md:text-base">
-                    ${question.vocab.w} ${question.vocab.w !== question.vocab.r ? '(' + question.vocab.r + ')' : ''} - ${displayMeaning}
-                </small>`;
-                }
-                feedbackElement.innerHTML = feedbackText;
-                feedbackElement.style.visibility = 'visible';
-
                 optionElements.forEach((opt, i) => {
                     opt.disabled = true;
                     opt.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white', 'border-indigo-500', 'from-green-500', 'to-lime-600', 'border-green-500', 'from-red-500', 'to-orange-500', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
                     opt.style.borderColor = '';
-
                     if (question.options[i].correct) {
                         opt.classList.add('bg-gradient-to-br', 'from-green-500', 'to-lime-600', 'text-white', 'border-green-500');
                     }
@@ -1164,11 +1036,10 @@
                         opt.classList.add('bg-gradient-to-br', 'from-red-500', 'to-orange-500', 'text-white', 'border-red-500');
                     }
                 });
-
-            } else {
-                if (feedbackElement) {
-                    feedbackElement.style.visibility = 'hidden';
-                    feedbackElement.innerHTML = '';
+            } else { 
+                if (inlineFeedbackElement) {
+                    inlineFeedbackElement.innerHTML = '';
+                    inlineFeedbackElement.classList.remove('show', 'correct-inline', 'incorrect-inline');
                 }
                 optionElements.forEach(opt => {
                     opt.disabled = false;
@@ -1178,25 +1049,19 @@
                 updateTimer();
             }
 
-
             const questionTextElement = document.getElementById('questionText');
             const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
-
             if (exampleSentenceDisplayElement) {
                 exampleSentenceDisplayElement.classList.remove('visible');
                 exampleSentenceDisplayElement.textContent = '';
             }
-
             const canShowExampleOnClick = question.vocab && question.vocab.e;
-
             if (questionTextElement && exampleSentenceDisplayElement && canShowExampleOnClick) {
                 questionTextElement.style.cursor = 'pointer';
                 questionTextElement.title = 'クリックして例文を表示/非表示';
-
                 questionTextElement.onclick = () => {
                     const isViewingPast = optionElements.length > 0 && optionElements[0].disabled;
-                    if (selectedAnswer !== null && !isViewingPast) return;
-
+                    if (selectedAnswer !== null && !isViewingPast) return; 
                     if (!exampleSentenceDisplayElement.classList.contains('visible')) {
                         exampleSentenceDisplayElement.textContent = question.vocab.e;
                         exampleSentenceDisplayElement.classList.add('visible');
@@ -1207,21 +1072,20 @@
             }
         }
 
+
         function updateTimer() {
             clearInterval(timerInterval);
-            const isViewingPastAnswer = currentQuestion < maxQuestionReachedInSession && answerLog.find(log => log.questionIndex === currentQuestion);
+            const historyEntry = answerLog.find(log => log.questionIndex === currentQuestion);
 
-            if (currentQuestion >= currentQuiz.length || selectedAnswer !== null || isViewingPastAnswer) {
+            if (currentQuestion >= currentQuiz.length || selectedAnswer !== null || historyEntry) {
                 return;
             }
-
             const timerElement = document.getElementById('timer');
             if (timerElement && questionStartTime) {
                 const update = () => {
-                    const isStillViewingPastAnswer = currentQuestion < maxQuestionReachedInSession && answerLog.find(log => log.questionIndex === currentQuestion);
-                    if (selectedAnswer !== null || currentQuestion >= currentQuiz.length || isStillViewingPastAnswer) {
-                        clearInterval(timerInterval);
-                        return;
+                    const stillHistoryEntry = answerLog.find(log => log.questionIndex === currentQuestion);
+                    if (selectedAnswer !== null || currentQuestion >= currentQuiz.length || stillHistoryEntry) {
+                        clearInterval(timerInterval); return;
                     }
                     const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
                     timerElement.textContent = elapsed;
@@ -1237,39 +1101,30 @@
                 return;
             }
             selectedAnswer = index;
-            clearInterval(timerInterval);
-
+            clearInterval(timerInterval); 
             const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
             if (exampleSentenceDisplayElement) {
-                exampleSentenceDisplayElement.classList.remove('visible');
+                exampleSentenceDisplayElement.classList.remove('visible'); 
             }
-
             document.querySelectorAll('.option').forEach((optionEl, i) => {
-                optionEl.classList.remove('selected-option');
-                optionEl.classList.remove('bg-gradient-to-br', 'from-indigo-500', 'to-purple-600', 'text-white', 'border-indigo-500');
-                optionEl.style.borderColor = '';
-
+                optionEl.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-500', 'to-purple-600', 'text-white', 'border-indigo-500');
+                optionEl.style.borderColor = ''; 
                 if (i === index) {
-                    optionEl.classList.add('selected-option');
-                    optionEl.classList.add('bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
+                    optionEl.classList.add('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
                     optionEl.style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8';
                 }
             });
-            setTimeout(() => { submitAnswer(); }, 100);
+            setTimeout(() => { submitAnswer(); }, 100); 
         }
 
         function submitAnswer() {
             if (selectedAnswer === null) return;
-
             const optionButton = document.querySelectorAll('.option')[selectedAnswer];
-            if (optionButton && optionButton.disabled) {
-                selectedAnswer = null;
-                return;
+            if (optionButton && optionButton.disabled) { 
+                selectedAnswer = null; return;
             }
-
             document.querySelectorAll('.option').forEach(optionEl => {
-                optionEl.classList.remove('selected-option');
-                optionEl.classList.remove('bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
+                optionEl.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
                 optionEl.style.borderColor = '';
             });
 
@@ -1279,26 +1134,19 @@
             totalTime += timeSpent;
 
             answerLog.push({
-                questionIndex: currentQuestion,
-                selectedOptionIndex: selectedAnswer,
-                isCorrect: isCorrect,
-                timeSpent: timeSpent,
+                questionIndex: currentQuestion, selectedOptionIndex: selectedAnswer,
+                isCorrect: isCorrect, timeSpent: timeSpent,
             });
 
             if (isCorrect) {
-                score++;
-                streak++;
+                score++; streak++;
                 if (streak > maxStreak) maxStreak = streak;
             } else {
                 streak = 0;
                 wrongAnswers.push({
-                    question: question.question,
-                    yourAnswer: question.options[selectedAnswer].text,
-                    correctAnswer: question.correctAnswer,
-                    questionNumber: currentQuestion + 1,
-                    vocab: question.vocab,
-                    timeSpent: timeSpent,
-                    mode: question.mode
+                    question: question.question, yourAnswer: question.options[selectedAnswer].text,
+                    correctAnswer: question.correctAnswer, questionNumber: currentQuestion + 1,
+                    vocab: question.vocab, timeSpent: timeSpent, mode: question.mode
                 });
             }
 
@@ -1311,41 +1159,50 @@
                 }
             });
 
-            const feedbackElement = document.querySelector('.feedback');
-            feedbackElement.className = `feedback text-center text-lg md:text-xl font-semibold p-3 md:p-4 rounded-lg ${isCorrect ? 'text-green-600 bg-green-50 border-2 border-green-200' : 'text-red-600 bg-red-50 border-2 border-red-200'}`;
-            if (isDarkMode) {
-                if (isCorrect) feedbackElement.classList.add('dark:bg-green-900', 'dark:bg-opacity-30', 'dark:border-green-700');
-                else feedbackElement.classList.add('dark:bg-red-900', 'dark:bg-opacity-30', 'dark:border-red-700');
+            const inlineFeedbackElement = document.getElementById('inlineFeedback');
+            if (inlineFeedbackElement) {
+                inlineFeedbackElement.classList.remove('show', 'correct-inline', 'incorrect-inline');
+                inlineFeedbackElement.innerHTML = ''; 
             }
 
-            let feedbackText = isCorrect ? `🎉 正解！ (${timeSpent}秒)` : `❌ 不正解。正解は“${question.correctAnswer}”。`;
-            if (!isCorrect && question.vocab) {
-                const displayMeaning = question.vocab.c || question.vocab.m;
-                feedbackText += `<br><small class="text-gray-600 dark:text-slate-400 opacity-90 dark:opacity-85 text-sm md:text-base">
-                ${question.vocab.w} ${question.vocab.w !== question.vocab.r ? '(' + question.vocab.r + ')' : ''} - ${displayMeaning}
-            </small>`;
-            }
-            feedbackElement.innerHTML = feedbackText;
+            let delay;
 
-            if (feedbackElement) {
-                feedbackElement.style.visibility = 'visible';
+            if (isCorrect) {
+                delay = 150; 
+            } else {
+                if (inlineFeedbackElement) {
+                    let feedbackHTML = `不正解。正解は“${question.correctAnswer}”。`;
+                    inlineFeedbackElement.classList.add('incorrect-inline');
+                    if (question.vocab) {
+                        const displayMeaning = question.vocab.c || question.vocab.m;
+                        const detailTextColorClass = isDarkMode ? 'text-slate-300' : 'text-gray-700';
+                        feedbackHTML += `<br><small class="block mt-1 ${detailTextColorClass} opacity-85 text-sm md:text-base">
+                            ${question.vocab.w} ${question.vocab.w !== question.vocab.r ? '(' + question.vocab.r + ')' : ''} - ${displayMeaning}
+                        </small>`;
+                    }
+                    inlineFeedbackElement.innerHTML = feedbackHTML;
+                    inlineFeedbackElement.classList.add('show');
+                }
+                delay = 1800; 
             }
 
-            const delay = isCorrect ? 500 : 1200;
             setTimeout(() => {
-                nextQuestion();
+                nextQuestion(); 
             }, delay);
         }
 
+        // This function is called after submitAnswer
         function nextQuestion() {
             currentQuestion++;
-            selectedAnswer = null;
-
+            selectedAnswer = null; 
+            // When moving to the next question after answering,
+            // this new question index is now the furthest reached.
             if (currentQuestion > maxQuestionReachedInSession) {
                 maxQuestionReachedInSession = currentQuestion;
             }
             showQuestion();
         }
+
 
         function resetQuizInterface() {
             if (headerElement) headerElement.classList.remove('hidden-during-quiz');
@@ -1357,11 +1214,10 @@
                 quizContainerElement.style.paddingBottom = '';
                 quizContainerElement.style.paddingLeft = '';
                 quizContainerElement.style.paddingRight = '';
-
                 quizContainerElement.removeEventListener('touchstart', handleTouchStart);
                 quizContainerElement.removeEventListener('touchmove', handleTouchMove);
                 quizContainerElement.removeEventListener('touchend', handleTouchEnd);
-                quizContainerElement.removeEventListener('click', handleCardClick); // Added
+                quizContainerElement.removeEventListener('click', handleCardClick);
             }
         }
 
@@ -1372,21 +1228,11 @@
             const percentage = currentQuiz.length > 0 ? Math.round((score / currentQuiz.length) * 100) : 0;
             const avgTime = currentQuiz.length > 0 ? Math.round(totalTime / currentQuiz.length) : 0;
 
-            let message = '';
-            let emoji = '';
-            if (percentage >= 90) {
-                message = '素晴らしい！';
-                emoji = '🏆';
-            } else if (percentage >= 70) {
-                message = 'よくできました！';
-                emoji = '🎉';
-            } else if (percentage >= 50) {
-                message = 'もう少し頑張りましょう。';
-                emoji = '💪';
-            } else {
-                message = '復習が必要です。';
-                emoji = '📚';
-            }
+            let message = ''; let emoji = '';
+            if (percentage >= 90) { message = '素晴らしい！'; emoji = '🏆'; }
+            else if (percentage >= 70) { message = 'よくできました！'; emoji = '🎉'; }
+            else if (percentage >= 50) { message = 'もう少し頑張りましょう。'; emoji = '💪'; }
+            else { message = '復習が必要です。'; emoji = '📚'; }
 
             let wrongAnswersHtml = '';
             if (wrongAnswers.length > 0) {
@@ -1431,10 +1277,8 @@
 
         function reviewWrongAnswers() {
             if (wrongAnswers.length === 0) {
-                showMessageBox('復習する問題がありません！');
-                return;
+                showMessageBox('復習する問題がありません！'); return;
             }
-
             if (headerElement) headerElement.classList.add('hidden-during-quiz');
             if (controlsElement) controlsElement.classList.add('hidden-during-quiz');
             document.body.classList.add('quiz-mode-active');
@@ -1451,19 +1295,14 @@
             }
             allCombinedVocab = allCombinedVocab.filter(item => typeof item === 'object' && item !== null && item.w);
 
-
             currentQuiz = wrongAnswers.map(wrong => {
                 const vocab = wrong.vocab;
-                if (!vocab || typeof vocab.w === 'undefined') {
-                    console.error("Invalid vocab item in wrongAnswers:", wrong);
-                    return null;
-                }
+                if (!vocab || typeof vocab.w === 'undefined') { return null; }
                 const modes = ['reading', 'meaning', 'usage'];
                 const reviewMode = wrong.mode && modes.includes(wrong.mode) ? wrong.mode : modes[Math.floor(Math.random() * modes.length)];
                 const vocabSourceForOptions = allCombinedVocab.length > 0 ? allCombinedVocab : [vocab];
                 return generateQuestion(vocab, reviewMode, vocabSourceForOptions);
             }).filter(Boolean);
-
 
             if (currentQuiz.length === 0) {
                 showMessageBox('復習問題の作成に失敗しました。');
@@ -1471,27 +1310,16 @@
                 return;
             }
 
-            currentQuestion = 0;
-            score = 0;
-            streak = 0;
-            maxStreak = 0;
-            selectedAnswer = null;
-            startTime = Date.now();
-            totalTime = 0;
-            wrongAnswers = [];
+            currentQuestion = 0; score = 0; streak = 0; maxStreak = 0; selectedAnswer = null; startTime = Date.now(); totalTime = 0; wrongAnswers = [];
+            answerLog = []; 
+            maxQuestionReachedInSession = 0; // Reset for review session
+            touchstartX = 0; touchendX = 0; touchstartY = 0; touchendY = 0;
 
-            answerLog = [];
-            maxQuestionReachedInSession = 0;
-
-            touchstartX = 0;
-            touchendX = 0;
-            touchstartY = 0;
-            touchendY = 0;
             if (quizContainerElement) {
                 quizContainerElement.addEventListener('touchstart', handleTouchStart, { passive: false });
                 quizContainerElement.addEventListener('touchmove', handleTouchMove, { passive: false });
                 quizContainerElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-                quizContainerElement.addEventListener('click', handleCardClick); // Added
+                quizContainerElement.addEventListener('click', handleCardClick);
             }
             showQuestion();
         }
@@ -1499,6 +1327,7 @@
         function resetQuiz() {
             resetQuizInterface();
             clearInterval(timerInterval);
+
             quizContainerElement.innerHTML = `
             <div class="welcome-message">
                 <h2 class="text-center text-2xl font-bold mb-5">練習モードを選んで開始してください</h2>
@@ -1520,26 +1349,17 @@
                         <li>📚 レッスン選択機能</li>
                         <li>🇨🇳 意味練習で中国語表示</li>
                         <li>✨ AIによる新しい例文生成</li>
-                        <li>📖 問題文クリックで例文表示 (全モード対応)</li>
-                        <li>👆 左右スワイプで问题切替 (モバイル)</li>
-                        <li>🖱️ カード左右クリックで問題切替 (デスクトップ)</li>
+                        <li>📖 問題文クリックで例文表示</li>
+                        <li>👆 左右スワイプで问题切替</li>
                     </ul>
                 </div>
             </div>`;
-            currentQuiz = [];
-            currentQuestion = 0;
-            score = 0;
-            selectedAnswer = null;
-            streak = 0;
-            maxStreak = 0;
-            startTime = null;
-            questionStartTime = null;
-            totalTime = 0;
-            wrongAnswers = [];
 
-            answerLog = [];
-            maxQuestionReachedInSession = 0;
+            currentQuiz = []; currentQuestion = 0; score = 0; selectedAnswer = null; streak = 0; maxStreak = 0;
+            startTime = null; questionStartTime = null; totalTime = 0; wrongAnswers = [];
+            answerLog = []; maxQuestionReachedInSession = 0;
         }
+
 
         function toggleTheme() {
             isDarkMode = !isDarkMode;
@@ -1557,16 +1377,13 @@
             if (document.body.classList.contains('quiz-mode-active') && currentQuiz.length > 0 && currentQuestion < currentQuiz.length) {
                 const tempSelected = selectedAnswer;
                 const tempCurrentQ = currentQuestion;
-
                 showQuestion();
-
                 const isViewingPast = answerLog.find(log => log.questionIndex === tempCurrentQ);
                 if (!isViewingPast && tempSelected !== null) {
                     selectedAnswer = tempSelected;
                     const options = document.querySelectorAll('.option');
                     if (options[selectedAnswer] && !options[selectedAnswer].disabled) {
-                        options[selectedAnswer].classList.add('selected-option');
-                        options[selectedAnswer].classList.add('bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
+                        options[selectedAnswer].classList.add('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
                         options[selectedAnswer].style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8';
                     }
                 } else {
@@ -1579,14 +1396,12 @@
             buttonElement.disabled = true;
             buttonElement.textContent = '生成中...';
             showSentenceLoadingSpinner();
-
             let chatHistory = [{ role: "user", parts: [{ text: `「${word} (${reading})」という日本語の単語（意味：${meaning}）を使って、JLPT N3/N2レベルの自然な例文を一つ生成してください。**例文のみを日本語で提供し、説明や他のテキストは一切含めないでください。**` }] }];
             const payload = { contents: chatHistory };
             const apiKey = "YOUR_GEMINI_API_KEY"; 
 
             if (apiKey === "YOUR_GEMINI_API_KEY" || apiKey === "") {
                 showGeneratedSentenceModal('APIキーが設定されていません。');
-                console.error('Gemini API key is not set.');
                 buttonElement.disabled = false;
                 buttonElement.innerHTML = '✨ 新しい例文を生成';
                 const spinner = document.getElementById('sentenceLoadingSpinner');
@@ -1594,7 +1409,6 @@
                 return;
             }
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -1603,154 +1417,142 @@
                 });
                 if (!response.ok) {
                     const errorResult = await response.json().catch(() => ({ error: { message: 'Unknown API error format.' } }));
-                    console.error('Gemini API error response:', errorResult);
                     throw new Error(`Gemini API request failed: ${response.status} ${response.statusText}. ${errorResult.error?.message || ''}`);
                 }
                 const result = await response.json();
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
                     const sentence = result.candidates[0].content.parts[0].text.trim();
                     showGeneratedSentenceModal(sentence);
                 } else {
                     showGeneratedSentenceModal('例文の生成に失敗しました。APIからの応答形式が予期しないものです。');
-                    console.error('Gemini API response structure unexpected:', result);
                 }
             } catch (error) {
+                console.error('Error generating sentence:', error);
                 showGeneratedSentenceModal(`例文の生成中にエラーが発生しました。`);
-                console.error('Error calling Gemini API:', error);
             } finally {
                 buttonElement.disabled = false;
                 buttonElement.innerHTML = '✨ 新しい例文を生成';
             }
         }
 
-        // --- Navigation Helper Functions ---
+        // Allows navigating to previous questions
         function navigateToPreviousQuestion() {
-            // Check if navigation is appropriate (not while an answer is being processed for a new question)
-            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
-            if (selectedAnswer !== null && !currentQuestionHasBeenAnswered) {
-                 return;
-            }
-
             if (currentQuestion > 0) {
                 currentQuestion--;
-                selectedAnswer = null; // Reset selection state as we are navigating
+                selectedAnswer = null; 
+                clearInterval(timerInterval); 
                 showQuestion();
             }
         }
 
+        // MODIFIED FUNCTION - Allows moving to the next new question if current is answered
         function navigateToNextQuestion() {
-            // Check if navigation is appropriate
-            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
-            if (selectedAnswer !== null && !currentQuestionHasBeenAnswered) {
-                 return;
-            }
-
-            if (currentQuestion < currentQuiz.length - 1) {
+            if (currentQuestion < currentQuiz.length - 1) { // If not the last question
                 const targetQuestionIndex = currentQuestion + 1;
-                // Allow navigation if:
-                // 1. The target question is within the already "reached" part of the quiz.
-                // "Reached" means maxQuestionReachedInSession has been updated to at least this index,
-                // typically after answering the question before it.
+                const currentQuestionIsAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
+
+                // Condition 1: Moving within already reached/unlocked questions
                 if (targetQuestionIndex <= maxQuestionReachedInSession) {
                     currentQuestion = targetQuestionIndex;
-                    selectedAnswer = null; // Reset selection state
+                    selectedAnswer = null;
+                    clearInterval(timerInterval);
+                    showQuestion();
+                } 
+                // Condition 2: Moving from an ANSWERED current question to the VERY NEXT NEW question
+                // This allows proceeding to the next question if the current one has been completed.
+                else if (currentQuestionIsAnswered && targetQuestionIndex === maxQuestionReachedInSession + 1) {
+                    currentQuestion = targetQuestionIndex;
+                    maxQuestionReachedInSession = currentQuestion; // Advance the frontier because we are moving to a new question
+                    selectedAnswer = null;
+                    clearInterval(timerInterval);
                     showQuestion();
                 }
-                // Note: Users cannot use click/swipe to advance to a *brand new, unanswered* question.
-                // That only happens via submitAnswer() -> nextQuestion().
+                // Else: User is trying to skip an unanswered question to a new one, or jump too far. Block this.
+                // No action needed here, navigation is simply not performed.
+                // else {
+                //    console.log("Navigation blocked: Cannot skip current unanswered question to a new one OR jump too far ahead.");
+                // }
             }
         }
 
-        // --- Event Handlers for Navigation ---
+
         function handleTouchStart(event) {
             const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
-            if (!document.body.classList.contains('quiz-mode-active') || (selectedAnswer !== null && !currentQuestionHasBeenAnswered)) {
-                touchstartX = 0; // Prevent swipe processing
+            // Allow touch start for navigation if quiz is active.
+            // The decision to navigate or not will be handled by navigateToNext/PreviousQuestion.
+            if (!document.body.classList.contains('quiz-mode-active')) {
+                touchstartX = 0; 
                 return;
             }
+            // If an answer is selected but not yet submitted (very short window for auto-submit),
+            // we might want to prevent swipe until submission or allow swipe to cancel.
+            // Current navigateTo functions clear selectedAnswer, so swipe will effectively cancel pending auto-submit.
+            // Thus, no specific block needed here based on selectedAnswer.
             touchstartX = event.changedTouches[0].screenX;
             touchstartY = event.changedTouches[0].screenY;
         }
 
         function handleTouchMove(event) {
-            if (touchstartX === 0) return; // Swipe not initiated or blocked
-
+            if (touchstartX === 0) return; 
             const currentX = event.changedTouches[0].screenX;
             const currentY = event.changedTouches[0].screenY;
             const deltaX = currentX - touchstartX;
             const deltaY = currentY - touchstartY;
-
-            if (Math.abs(deltaX) > Math.abs(deltaY)) { // Prefer horizontal swipe
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 event.preventDefault();
             }
         }
 
         function handleTouchEnd(event) {
-            if (touchstartX === 0) return; // Swipe not initiated or blocked
-
+            if (touchstartX === 0) return; 
             touchendX = event.changedTouches[0].screenX;
             touchendY = event.changedTouches[0].screenY;
             handleSwipeGesture();
-            touchstartX = 0; // Reset for next swipe
+            touchstartX = 0; 
             touchstartY = 0;
         }
 
         function handleSwipeGesture() {
             const deltaX = touchendX - touchstartX;
             const deltaY = touchendY - touchstartY;
-
             if (Math.abs(deltaX) > swipeThreshold && Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX < 0) { // Swipe Left (Next Question)
+                if (deltaX < 0) { 
                     navigateToNextQuestion();
-                } else if (deltaX > 0) { // Swipe Right (Previous Question)
+                } else if (deltaX > 0) { 
                     navigateToPreviousQuestion();
                 }
             }
         }
 
         function handleCardClick(event) {
-            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
-            
-            if (!document.body.classList.contains('quiz-mode-active') || 
-                (selectedAnswer !== null && !currentQuestionHasBeenAnswered)) {
+            // Similar to touch, card click navigation relies on navigateToNextQuestion's logic.
+            if (!document.body.classList.contains('quiz-mode-active')) {
                 return;
             }
-
             const target = event.target;
-            if (target.closest('.option') ||
-                target.closest('.exit-btn') ||
-                target.closest('#questionText') || 
-                target.closest('.feedback') ||
-                target.closest('.progress-container') ||
-                target.closest('.stats')) {
-                return; 
+            if (target.closest('.option') || target.closest('.exit-btn') || target.closest('#questionText') || target.closest('#inlineFeedback') || target.closest('.progress-container') || target.closest('.stats')) {
+                return;
             }
-
             const optionsDiv = quizContainerElement.querySelector('.options');
             if (optionsDiv) {
                 const optionsRect = optionsDiv.getBoundingClientRect();
-                if (event.clientY >= optionsRect.top) { 
-                    return; 
+                if (event.clientY >= optionsRect.top) {
+                    return;
                 }
             }
-
             if (!quizContainerElement) return;
             const rect = quizContainerElement.getBoundingClientRect();
-            const clickX = event.clientX - rect.left; 
+            const clickX = event.clientX - rect.left;
             const elementWidth = rect.width;
-            
-            // 定义可点击的右侧区域：卡片宽度的后30%
             const clickZoneWidth = elementWidth * 0.30; 
-
-            // 只处理点击右侧区域 (下一题)
-            if (clickX > (elementWidth - clickZoneWidth)) { 
+             if (clickX > (elementWidth - clickZoneWidth)) {
                 navigateToNextQuestion();
             }
-            // 左侧点击不再处理
         }
 
     </script>
 
 </body>
-
 </html>

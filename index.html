@@ -10,7 +10,7 @@
       这种方式适合开发和测试。
       对于最终的线上版本，推荐使用Tailwind CLI构建一个静态的CSS文件，并用 <link> 标签引入。
     -->
-     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = { darkMode: 'class' }
@@ -358,7 +358,7 @@
 
 <body class="min-h-screen text-gray-800 dark:text-gray-200 relative">
 
-    <!-- HTML (与之前相同，无改动) -->
+    <!-- HTML -->
     <button id="themeToggleBtn"
         class="theme-toggle fixed top-5 right-5 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-80 rounded-full w-12 h-12 flex items-center justify-center text-2xl cursor-pointer shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg z-50"></button>
     <main class="container mx-auto p-5 max-w-4xl">
@@ -415,17 +415,21 @@
             class="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
             <header class="p-6 border-b border-gray-200 dark:border-slate-700 flex-shrink-0">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3"><svg
-                            xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-500" viewBox="0 0 20 20"
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-500" viewBox="0 0 20 20"
                             fill="currentColor">
                             <path
                                 d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" />
-                        </svg>错词本管理</h3><button id="wrongWordsCloseBtn"
+                        </svg>
+                        错词本管理
+                    </h3>
+                    <button id="wrongWordsCloseBtn"
                         class="text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl transition-colors">✕</button>
                 </div>
-                <div class="flex mt-4" id="wrongWordsTabs"><button class="tab-button active"
-                        data-tab="wrong-list">错误列表</button><button class="tab-button"
-                        data-tab="statistics">统计分析</button></div>
+                <div class="flex mt-4" id="wrongWordsTabs">
+                    <button class="tab-button active" data-tab="wrong-list">错误列表</button>
+                    <button class="tab-button" data-tab="statistics">统计分析</button>
+                </div>
             </header>
             <main class="overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-900">
                 <div id="tab-wrong-list" class="tab-content p-6">
@@ -450,22 +454,56 @@
                     </div>
                     <div id="wrongWordsList" class="space-y-4"></div>
                 </div>
+                <!-- ▼▼▼ [改动] 新的统计页面HTML结构 ▼▼▼ -->
                 <div id="tab-statistics" class="tab-content hidden p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
-                            <h4 class="font-bold text-red-600 dark:text-red-400 mb-2">📊 总体统计</h4>
-                            <div id="overallStats" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="statistics-grid">
+                        <!-- 总体统计 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                            <h4 class="flex items-center text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                总体统计
+                            </h4>
+                            <div id="overallStats" class="grid grid-cols-2 gap-4 text-center">
+                                <!-- JS will populate this area -->
+                            </div>
                         </div>
-                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
-                            <h4 class="font-bold text-yellow-600 dark:text-yellow-400 mb-2">🎯 掌握度分布</h4>
-                            <div id="masteryStats" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></div>
+
+                        <!-- 掌握度分布 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                            <h4 class="flex items-center text-lg font-bold text-purple-600 dark:text-purple-400 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                掌握度分布
+                            </h4>
+                            <div id="masteryStats" class="space-y-4">
+                                <!-- JS will populate this area with progress bars -->
+                            </div>
                         </div>
-                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
-                            <h4 class="font-bold text-purple-600 dark:text-purple-400 mb-2">💪 难度分布</h4>
-                            <div id="difficultyStats" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></div>
+
+                        <!-- 难度分布 (横跨两栏) -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm md:col-span-2">
+                            <h4 class="flex items-center text-lg font-bold text-yellow-600 dark:text-yellow-400 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                难度分布
+                            </h4>
+                            <div id="difficultyStats" class="space-y-3">
+                                <!-- JS will populate this area with bar charts -->
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- ▲▲▲ [改动结束] ▲▲▲ -->
             </main>
         </div>
     </div>
@@ -533,7 +571,106 @@
             populateFilters() { this.app.elements.wrongWordFilter.innerHTML = `<option value="all">全部错误单词</option><option value="new">新错误</option><option value="learning">学习中</option><option value="familiar">熟悉</option><option value="difficulty-1">难度 1</option><option value="difficulty-2">难度 2</option><option value="difficulty-3">难度 3</option><option value="difficulty-4">难度 4</option><option value="difficulty-5">难度 5</option>`; this.app.elements.wrongWordSort.innerHTML = `<option value="recent">最近错误</option><option value="frequency">错误频率</option><option value="difficulty">难度</option><option value="alphabetical">字母顺序</option>`; },
             getFilteredAndSorted() { const filter = this.app.elements.wrongWordFilter.value; const sort = this.app.elements.wrongWordSort.value; let words = this.get(); words = words.filter(word => { if (filter === 'all') return true; if (['new', 'learning', 'familiar'].includes(filter)) return word.masteryLevel === filter; if (filter.startsWith('difficulty-')) return word.difficulty === parseInt(filter.split('-')[1]); return true; }); return words.sort((a, b) => { switch (sort) { case 'recent': return new Date(b.lastWrongTimestamp) - new Date(a.lastWrongTimestamp); case 'frequency': return b.wrongCount - a.wrongCount; case 'difficulty': return b.difficulty - a.difficulty; case 'alphabetical': return (a.vocabObject.r || a.vocabObject.w).localeCompare(b.vocabObject.r || b.vocabObject.w, 'ja'); default: return 0; } }); },
             renderList() { const listContainer = this.app.elements.wrongWordsListContainer; const cardTemplate = this.app.elements.wrongWordCardTemplate; const words = this.getFilteredAndSorted(); listContainer.innerHTML = ''; if (words.length === 0) { listContainer.innerHTML = `<div class="text-center text-gray-500 dark:text-gray-400 py-16"><svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg><h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-200">没有符合条件的单词</h3><p class="mt-1 text-sm text-gray-500 dark:text-gray-400">请更改筛选条件，或去练习添加新的错词吧！</p></div>`; return; } const masteryLevels = { new: '新错误', learning: '学习中', familiar: '熟悉' }; const masteryStyles = { new: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300', learning: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300', familiar: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300' }; const difficultyStyles = { 1: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300', 2: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300', 3: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-400', 4: 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-400', 5: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300' }; const fragment = document.createDocumentFragment(); words.forEach(word => { const card = cardTemplate.content.cloneNode(true); const cardRoot = card.querySelector('[data-word]'); cardRoot.dataset.word = word.word; card.querySelector('[data-field="word"]').textContent = word.vocabObject.w; card.querySelector('[data-field="reading"]').textContent = word.vocabObject.r; card.querySelector('[data-field="meaning"]').textContent = `含义：${word.vocabObject.c || word.vocabObject.m}`; const exampleContainer = card.querySelector('[data-field="exampleContainer"]'); const exampleText = word.vocabObject.e || word.vocabObject.u; if (exampleText) { card.querySelector('[data-field="example"]').textContent = `“${exampleText}”`; exampleContainer.classList.remove('hidden'); } const masterySelect = card.querySelector('[data-field="masterySelect"]'); masterySelect.innerHTML = Object.entries(masteryLevels).map(([k, v]) => `<option value="${k}" ${word.masteryLevel === k ? 'selected' : ''}>${v}</option>`).join(''); masterySelect.className += ` ${masteryStyles[word.masteryLevel] || ''}`; const difficultySelect = card.querySelector('[data-field="difficultySelect"]'); difficultySelect.innerHTML = [1, 2, 3, 4, 5].map(d => `<option value="${d}" ${word.difficulty === d ? 'selected' : ''}>难度 ${d}</option>`).join(''); difficultySelect.className += ` ${difficultyStyles[word.difficulty] || ''}`; card.querySelector('[data-field="wrongCount"]').textContent = `错误 ${word.wrongCount} 次`; card.querySelector('[data-field="lastWrongDate"]').textContent = `上次 ${new Date(word.lastWrongTimestamp).toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}`; fragment.appendChild(card); }); listContainer.appendChild(fragment); },
-            renderStatistics() { const words = this.get(); const { overallStatsContainer, masteryStatsContainer, difficultyStatsContainer } = this.app.elements; if (words.length === 0) { const noDataMsg = `<p>暂无数据</p>`; overallStatsContainer.innerHTML = masteryStatsContainer.innerHTML = difficultyStatsContainer.innerHTML = noDataMsg; return; } const totalWords = words.length; const totalMistakes = words.reduce((sum, word) => sum + word.wrongCount, 0); overallStatsContainer.innerHTML = `<p><strong>总计独特单词:</strong> ${totalWords} 个</p><p><strong>总计错误次数:</strong> ${totalMistakes} 次</p>`; const masteryCounts = words.reduce((acc, word) => { acc[word.masteryLevel] = (acc[word.masteryLevel] || 0) + 1; return acc; }, { new: 0, learning: 0, familiar: 0 }); masteryStatsContainer.innerHTML = Object.entries(masteryCounts).map(([level, count]) => `<p><strong>${{ new: '新错误', learning: '学习中', familiar: '熟悉' }[level]}:</strong> ${count} 个</p>`).join(''); const difficultyCounts = words.reduce((acc, word) => { acc[word.difficulty] = (acc[word.difficulty] || 0) + 1; return acc; }, {}); difficultyStatsContainer.innerHTML = [1, 2, 3, 4, 5].map(level => `<p><strong>难度 ${level}:</strong> ${difficultyCounts[level] || 0} 个</p>`).join(''); },
+
+            // ▼▼▼ [改动] 新的renderStatistics函数 ▼▼▼
+            renderStatistics() {
+                const words = this.get();
+                const { overallStatsContainer, masteryStatsContainer, difficultyStatsContainer } = this.app.elements;
+                const statsGrid = document.getElementById('statistics-grid');
+
+                // 清空容器
+                overallStatsContainer.innerHTML = '';
+                masteryStatsContainer.innerHTML = '';
+                difficultyStatsContainer.innerHTML = '';
+
+                if (words.length === 0) {
+                    const noDataMsg = `<div class="md:col-span-2 text-center text-gray-500 dark:text-gray-400 py-16">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-200">暂无统计数据</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">开始练习以生成您的学习报告吧！</p>
+                </div>`;
+                    statsGrid.innerHTML = noDataMsg;
+                    return;
+                } else if (statsGrid.children.length < 3) {
+                    // 如果没有数据时清空了，现在需要恢复结构
+                    statsGrid.innerHTML = `
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                        <h4 class="flex items-center text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>总体统计</h4>
+                        <div id="overallStats" class="grid grid-cols-2 gap-4 text-center"></div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                        <h4 class="flex items-center text-lg font-bold text-purple-600 dark:text-purple-400 mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>掌握度分布</h4>
+                        <div id="masteryStats" class="space-y-4"></div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm md:col-span-2">
+                        <h4 class="flex items-center text-lg font-bold text-yellow-600 dark:text-yellow-400 mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>难度分布</h4>
+                        <div id="difficultyStats" class="space-y-3"></div>
+                    </div>
+                `;
+                    // 重新获取容器引用
+                    this.app.elements.overallStatsContainer = document.getElementById('overallStats');
+                    this.app.elements.masteryStatsContainer = document.getElementById('masteryStats');
+                    this.app.elements.difficultyStatsContainer = document.getElementById('difficultyStats');
+                }
+
+                // 1. 渲染总体统计
+                const totalWords = words.length;
+                const totalMistakes = words.reduce((sum, word) => sum + word.wrongCount, 0);
+                this.app.elements.overallStatsContainer.innerHTML = `
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">总计独特单词</p>
+                    <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">${totalWords}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">总计错误次数</p>
+                    <p class="text-3xl font-bold text-red-500 dark:text-red-400">${totalMistakes}</p>
+                </div>
+            `;
+
+                // 2. 渲染掌握度分布
+                const masteryCounts = words.reduce((acc, word) => { acc[word.masteryLevel] = (acc[word.masteryLevel] || 0) + 1; return acc; }, { new: 0, learning: 0, familiar: 0 });
+                const masteryInfo = {
+                    new: { label: '新错误', color: 'bg-blue-500', count: masteryCounts.new || 0 },
+                    learning: { label: '学习中', color: 'bg-purple-500', count: masteryCounts.learning || 0 },
+                    familiar: { label: '熟悉', color: 'bg-green-500', count: masteryCounts.familiar || 0 },
+                };
+
+                this.app.elements.masteryStatsContainer.innerHTML = Object.values(masteryInfo).map(item => {
+                    const percentage = totalWords > 0 ? (item.count / totalWords) * 100 : 0;
+                    return `
+                    <div>
+                        <div class="flex justify-between mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <span>${item.label}</span>
+                            <span>${item.count} 个</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="${item.color} h-2.5 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+
+                // 3. 渲染难度分布
+                const difficultyCounts = words.reduce((acc, word) => { acc[word.difficulty] = (acc[word.difficulty] || 0) + 1; return acc; }, {});
+                const maxDifficultyCount = Math.max(...Object.values(difficultyCounts), 1);
+
+                this.app.elements.difficultyStatsContainer.innerHTML = [1, 2, 3, 4, 5].map(level => {
+                    const count = difficultyCounts[level] || 0;
+                    const percentage = (count / maxDifficultyCount) * 100;
+                    return `
+                    <div class="flex items-center gap-4">
+                        <span class="w-16 text-sm font-medium text-gray-600 dark:text-gray-400 text-right">难度 ${level}</span>
+                        <div class="flex-grow bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                            <div class="bg-yellow-400 dark:bg-yellow-500 h-4 rounded-full text-xs font-bold text-slate-800 flex items-center justify-end pr-2 transition-all duration-500" style="width: ${percentage}%">
+                                ${count > 0 ? count : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+            },
+            // ▲▲▲ [改动结束] ▲▲▲
+
             startQuiz() { const wordsToPractice = this.getFilteredAndSorted(); if (wordsToPractice.length === 0) { this.app.showMessageBox("没有符合当前筛选条件的错词可供练习。"); return; } this.closeModal(); this.app.initializeAndRunQuiz(wordsToPractice.map(item => item.vocabObject), 'mixed'); },
             export() { const words = this.getFilteredAndSorted(); if (words.length === 0) { this.app.showMessageBox('没有可导出的错词。'); return; } let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; csvContent += "单词,假名,含义,错误次数,难度,掌握度,首次错误时间,上次错误时间\n"; words.forEach(word => { const row = [`"${word.word}"`, `"${word.vocabObject.r}"`, `"${(word.vocabObject.c || word.vocabObject.m).replace(/"/g, '""')}"`, word.wrongCount, word.difficulty, word.masteryLevel, `"${new Date(word.firstWrongTimestamp).toLocaleString()}"`, `"${new Date(word.lastWrongTimestamp).toLocaleString()}"`].join(','); csvContent += row + "\n"; }); const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", `wrong_words_${this.app.state.currentJLPTLevel}_${new Date().toISOString().split('T')[0]}.csv`); document.body.appendChild(link); link.click(); document.body.removeChild(link); },
         };
@@ -554,7 +691,6 @@
                 this.initializeTheme();
                 this.initializeAppBasedOnURL();
                 WrongWordsManager.init(this);
-                // 为演示添加一些模拟数据
                 if (WrongWordsManager.get().length === 0) {
                     WrongWordsManager.addOrUpdate({ w: "植物", r: "しょくぶつ", c: "植物", m: "植物", u: "私たちは貴重な植物を守らなければならない", e: "私たちは貴重な植物を守らなければならない" }, "meaning");
                 }
@@ -608,12 +744,6 @@
                     confirmBtn.focus();
                 });
             },
-        };
-
-        // ===================================================================
-        // 关键修正: 补全所有核心函数
-        // ===================================================================
-        Object.assign(VocabularyApp, {
             async initializeAppBasedOnURL() { const urlParams = new URLSearchParams(window.location.search); const levelParam = urlParams.get('level'); const allowedLevels = ['n1', 'n2', 'n3']; let determinedLevel = 'n2'; if (levelParam && allowedLevels.includes(levelParam.toLowerCase())) { determinedLevel = levelParam.toLowerCase(); } else if (levelParam) { console.warn(`Invalid level parameter '${levelParam}' provided. Defaulting to N2.`); } this.state.currentJLPTLevel = determinedLevel.toUpperCase(); const titlePrefix = this.state.currentJLPTLevel === 'N2' ? '新無敵緑宝書' : '語彙練習'; const pageTitle = `${titlePrefix}${this.state.currentJLPTLevel}単語練習`; const headerTitle = `${titlePrefix}${this.state.currentJLPTLevel}語彙練習`; document.title = pageTitle; this.elements.mainTitle.textContent = headerTitle; const jsonFileName = `./${determinedLevel}.json`; await this.loadVocabularyData(jsonFileName); },
             async loadVocabularyData(fileName) { try { this.elements.startQuizButton.disabled = true; this.elements.startQuizButton.textContent = 'データ読込中...'; const response = await fetch(fileName); if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); this.state.allVocabulary = await response.json(); console.log(`Vocabulary for ${this.state.currentJLPTLevel} loaded successfully`); this.populateLessonSelect(); this.elements.startQuizButton.disabled = false; this.elements.startQuizButton.textContent = '練習開始'; } catch (error) { console.error(`Could not load vocabulary from ${fileName}:`, error); this.showMessageBox(`語彙データ(${fileName})の読み込みに失敗しました。`); this.elements.startQuizButton.textContent = '読込失敗'; } },
             populateLessonSelect() { const select = this.elements.lessonSelect; select.innerHTML = '<option value="all">全てのレッスン</option>'; const lessonKeys = Object.keys(this.state.allVocabulary).sort((a, b) => parseInt(a.replace('lesson', '')) - parseInt(b.replace('lesson', ''))); lessonKeys.forEach(key => { const option = document.createElement('option'); option.value = key; option.textContent = key.replace('lesson', 'レッスン'); select.appendChild(option); }); },
@@ -644,7 +774,7 @@
             handleTouchMove(e) { if (this.state.touchstartX !== 0 && Math.abs(e.changedTouches[0].screenX - this.state.touchstartX) > Math.abs(e.changedTouches[0].screenY - this.state.touchstartY)) e.preventDefault(); },
             handleTouchEnd(e) { if (this.state.touchstartX === 0) return; const deltaX = e.changedTouches[0].screenX - this.state.touchstartX; if (Math.abs(deltaX) > this.constants.SWIPE_THRESHOLD) { if (deltaX < 0) this.navigateToNextQuestion(); else this.navigateToPreviousQuestion(); } this.state.touchstartX = 0; },
             shuffleArray(array) { const shuffled = [...array]; for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; } return shuffled; },
-        });
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             VocabularyApp.init();

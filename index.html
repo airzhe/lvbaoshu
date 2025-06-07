@@ -4,105 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- Title will be set by JavaScript -->
     <title>単語練習</title>
-    <!--
-    <script src="./tailwind.css"></script>
-    -->
-     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 使用Tailwind的JIT模式，可以直接使用dark:修饰符 -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        // 为Tailwind JIT编译器启用暗黑模式 'class' 策略
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>    
     <style>
+        /* CSS变量定义 - 亮色和暗色模式 */
         :root {
-            /* === 主题颜色和背景 === */
             --body-bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --body-text-color: #2d3748;
             --container-bg: rgba(255, 255, 255, 0.95);
-            --container-border-color: rgba(255, 255, 255, 0.2);
-            --container-text-color: inherit;
-
-            --controls-bg-white-override: initial;
             --gradient-text-bg: linear-gradient(45deg, #667eea, #764ba2);
-            --btn-before-bg: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-
-            --exit-btn-bg: linear-gradient(to bottom right, #e5e7eb, #d1d5db);
-            --exit-btn-text-color: #374151;
-            --exit-btn-hover-bg: linear-gradient(to bottom right, #d1d5db, #b3b7c1);
-
             --progress-bar-bg: #e9d5ff;
             --progress-fill-bg: linear-gradient(to right, #3b82f6, #8b5cf6);
-
-            --option-bg: rgba(255, 255, 255, 0.8);
-            --option-border-color: #93c5fd;
-            --option-text-color: inherit;
-            --option-hover-bg: rgba(239, 246, 255, 0.95);
-            --option-hover-border-color: #818cf8;
-            --option-hover-text-color: var(--text-body);
-
-            --feedback-text-color-default: #374151;
-
-            --text-green-600-val: #047857;
-            --text-red-600-val: #b91c1c;
-            --text-red-500-val: #ef4444;
-            --text-orange-500-val: #f97316;
-            --text-gray-900-val: #111827;
-            --text-color-example-sentence-val: #4b5563;
-
+            --feedback-green-text: #047857;
+            --feedback-red-text: #b91c1c;
             --glass-morphism-bg: rgba(233, 236, 241, 0.6);
             --glass-morphism-border: 1px solid rgba(229, 231, 235, 0.5);
             --glass-morphism-header-text: #4f46e5;
-
-            --feedback-green-text: var(--text-green-600-val);
-            --feedback-green-bg: rgba(220, 252, 231, 0.9);
-            --feedback-green-border: rgba(110, 231, 183, 0.7);
-            --feedback-green-shadow: 0 4px 12px rgba(52, 211, 153, 0.15);
-
-            --feedback-red-text: var(--text-red-600-val);
-            --feedback-red-bg: rgba(254, 226, 226, 0.9);
-            --feedback-red-border: rgba(252, 165, 165, 0.7);
-            --feedback-red-shadow: 0 4px 12px rgba(248, 113, 113, 0.15);
-
             --immersive-quiz-container-bg: rgba(255, 255, 255, 0.25);
         }
 
-        body.dark-mode {
+        body.dark {
             --body-bg-gradient: linear-gradient(135deg, #1a2634 0%, #2c3e50 100%);
             --body-text-color: #e2e8f0;
             --container-bg: rgba(45, 55, 72, 0.95);
-            --container-border-color: rgba(255, 255, 255, 0.3);
-            --container-text-color: #e2e8f0;
-            --controls-bg-white-override: rgba(255, 255, 255, 0.1);
-            --btn-before-bg: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            --exit-btn-bg: linear-gradient(to bottom right, #4b5563, #6b7280);
-            --exit-btn-text-color: #e2e8f0;
-            --exit-btn-hover-bg: linear-gradient(to bottom right, #6b7280, #9ca3af);
+            --gradient-text-bg: linear-gradient(45deg, #818cf8, #c084fc);
             --progress-bar-bg: #4b5563;
-            --option-bg: rgba(55, 65, 81, 0.8);
-            --option-border-color: #60a5fa;
-            --option-text-color: #e2e8f0;
-            --option-hover-bg: rgba(69, 71, 90, 0.9);
-            --option-hover-border-color: #89b4fa;
-            --option-hover-text-color: var(--text-body);
-            --text-green-600-val: #34d399;
-            --text-red-600-val: #f87171;
-            --text-red-500-val: #f87171;
-            --text-orange-500-val: #fb923c;
-            --text-gray-900-val: #e2e8f0;
-            --text-color-example-sentence-val: #cbd5e1;
+            --feedback-green-text: #34d399;
+            --feedback-red-text: #f87171;
             --glass-morphism-bg: rgba(45, 55, 72, 0.6);
             --glass-morphism-border: 1px solid rgba(255, 255, 255, 0.15);
             --glass-morphism-header-text: #818cf8;
-            --feedback-green-text: #6ee7b7;
-            --feedback-green-bg: rgba(16, 185, 129, 0.8);
-            --feedback-green-border: rgba(52, 211, 153, 0.5);
-            --feedback-green-shadow: 0 4px 12px rgba(52, 211, 153, 0.25);
-            --feedback-red-text: #fca5a5;
-            --feedback-red-bg: rgba(220, 38, 38, 0.8);
-            --feedback-red-border: rgba(248, 113, 113, 0.5);
-            --feedback-red-shadow: 0 4px 12px rgba(248, 113, 113, 0.25);
             --immersive-quiz-container-bg: rgba(30, 41, 59, 0.6);
         }
 
-        /* --- 基础和组件样式 --- */
+        /* --- 基础和组件样式 (已大幅简化) --- */
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
             background: var(--body-bg-gradient);
@@ -111,1448 +54,976 @@
             overscroll-behavior-y: contain;
         }
 
-        .header,
-        .controls,
-        .quiz-container:not(.immersive-active) {
+        .header, .controls {
             background: var(--container-bg);
-            color: var(--container-text-color);
-        }
-
-        body.dark-mode .controls .bg-white {
-            background: var(--controls-bg-white-override) !important;
         }
 
         .gradient-text {
             background: var(--gradient-text-bg);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: transparent;
         }
 
         .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--btn-before-bg);
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: left 0.5s;
         }
+        .btn:hover::before { left: 100%; }
+        
+        body.quiz-mode-active .theme-toggle { display: none !important; }
 
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .exit-btn {
-            position: absolute;
-            top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
-            right: 0.75rem;
-            width: 2.5rem;
-            height: 2.5rem;
-            background: var(--exit-btn-bg);
-            color: var(--exit-btn-text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 9999px;
-            font-size: 1.25rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-            z-index: 50;
-        }
-
-        .exit-btn:hover {
-            background: var(--exit-btn-hover-bg);
-            transform: scale(1.05);
-        }
-
-        .exit-btn:active {
-            transform: scale(0.95);
-        }
-
-        .theme-toggle {
-            z-index: 50;
-        }
-
-        body.quiz-mode-active .theme-toggle {
-            display: none !important;
-        }
-
-        .progress-bar {
-            background: var(--progress-bar-bg);
-            width: 100%;
-            height: 0.625rem;
-            border-radius: 0.375rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            background: var(--progress-fill-bg);
-            height: 100%;
-            border-radius: 0.375rem;
-            transition: width 0.5s ease-in-out;
-            position: relative;
-        }
-
+        .progress-bar { background: var(--progress-bar-bg); }
+        .progress-fill { background: var(--progress-fill-bg); }
         .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
+            content: ''; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
             background-image: linear-gradient(-45deg,
-                    rgba(255, 255, 255, 0.2) 25%,
-                    transparent 25%,
-                    transparent 50%,
-                    rgba(255, 255, 255, 0.2) 50%,
-                    rgba(255, 255, 255, 0.2) 75%,
-                    transparent 75%,
-                    transparent);
+                    rgba(255, 255, 255, 0.2) 25%, transparent 25%,
+                    transparent 50%, rgba(255, 255, 255, 0.2) 50%,
+                    rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
             background-size: 30px 30px;
             animation: move 2s linear infinite;
         }
-
-        @keyframes move {
-            0% {
-                background-position: 0 0;
-            }
-
-            100% {
-                background-position: 30px 30px;
-            }
-        }
-
-        .option {
-            position: relative;
-            overflow: hidden;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            background: var(--option-bg);
-            border-color: var(--option-border-color);
-            color: var(--option-text-color);
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .option:hover:not(:disabled) {
-                background-color: var(--option-hover-bg);
-                border-color: var(--option-hover-border-color);
-                color: var(--option-hover-text-color);
-            }
-        }
-
-        .option.selected-option {
-            border-width: 2px;
-        }
-
-        .option:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes incorrectShake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-4px);
-            }
-
-            75% {
-                transform: translateX(4px);
-            }
-        }
-
-        body.quiz-mode-active .container {
-            padding: 0;
-            max-width: 100%;
-            height: 100dvh;
-            display: flex;
-        }
-
+        @keyframes move { from { background-position: 0 0; } to { background-position: 30px 30px; } }
+        
+        /* 动画 */
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes incorrectShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+        
+        /* 沉浸式Quiz模式布局 */
+        body.quiz-mode-active main.container { padding: 0; max-width: 100%; height: 100dvh; display: flex; }
         #quizContainer.immersive-active {
-            width: 100%;
-            height: 100dvh;
-            min-height: 100dvh;
-            margin: 0 !important;
-            border-radius: 0;
-            box-shadow: none;
+            width: 100%; height: 100dvh; min-height: 100dvh; margin: 0 !important; border-radius: 0; box-shadow: none;
             padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem) !important;
             padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem) !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            position: relative;
+            padding-left: 1rem !important; padding-right: 1rem !important;
+            display: flex; flex-direction: column; overflow-y: auto; position: relative;
             background: var(--immersive-quiz-container-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
+        #quizContainer.immersive-active .question-area-wrapper { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 5.5rem; align-items: center; }
+        #quizContainer.immersive-active .question-content-area { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        #quizContainer.immersive-active .options { margin-top: auto; padding-bottom: 2rem; width: 100%; }
+        .header.hidden-during-quiz, .controls.hidden-during-quiz { display: none !important; }
 
-        #quizContainer.immersive-active>div:not(.progress-container):not(.stats):not(.options):not(#inlineFeedback):not(.question-area-wrapper) {
-            flex-grow: 1;
-        }
-
-        #quizContainer.immersive-active .question-area-wrapper {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            padding-top: 5.5rem; /* Adjusted padding */
-            align-items: center;
-        }
-
-        #quizContainer.immersive-active .question-content-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-
-        #quizContainer.immersive-active .options {
-            margin-top: auto; /* Push options to the bottom */
-            padding-bottom: 2rem; /* Space at the very bottom */
-            width: 100%;
-        }
-
-
-        #quizContainer.immersive-active .feedback { /* OLD feedback box style */
-            position: absolute;
-            bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            margin-top: 0;
-            margin-bottom: 0;
-            z-index: 100;
-            visibility: hidden; /* Initially hidden, controlled by JS */
-        }
-
-        .header.hidden-during-quiz,
-        .controls.hidden-during-quiz {
-            display: none !important;
-        }
-
-        .feedback { /* OLD feedback box style */
-            text-align: center;
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease-out;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            word-break: break-word;
-            color: var(--feedback-text-color-default);
-        }
-        .feedback.text-green-600 {
-            color: var(--feedback-green-text) !important;
-            background-color: var(--feedback-green-bg);
-            border-color: var(--feedback-green-border);
-            box-shadow: var(--feedback-green-shadow);
-        }
-        .feedback.text-red-600 {
-            color: var(--feedback-red-text) !important;
-            background-color: var(--feedback-red-bg);
-            border-color: var(--feedback-red-border);
-            box-shadow: var(--feedback-red-shadow);
-        }
-
-        .features.glass-morphism {
-            background: var(--glass-morphism-bg);
-            border: var(--glass-morphism-border);
-        }
-        .features.glass-morphism h3 {
-            color: var(--glass-morphism-header-text);
-        }
-        .feedback small { /* OLD feedback box style */
-            display: block;
-            margin-top: 0.5rem;
-            line-height: 1.4;
-        }
-
-        body.dark-mode .stats .score.text-green-600 { color: var(--text-green-600-val) !important; }
-        body.dark-mode .stats .streak-counter.text-red-500 { color: var(--text-red-500-val) !important; }
-        body.dark-mode .stats .timer.text-orange-500 { color: var(--text-orange-500-val) !important; }
-        body.dark-mode .question.text-gray-900 { color: var(--text-gray-900-val) !important; }
-
+        .features.glass-morphism { background: var(--glass-morphism-bg); border: var(--glass-morphism-border); }
+        .features.glass-morphism h3 { color: var(--glass-morphism-header-text); }
+        
         #exampleSentenceDisplay {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
+            max-height: 0; opacity: 0; overflow: hidden;
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
-            word-break: normal; /* Changed from break-word to normal for better readability */
-            line-height: 1.6;
-            text-align: center; /* Center the example sentence */
-            margin-top: 0; /* No margin when hidden */
-            color: var(--text-color-example-sentence-val);
+            word-break: normal; line-height: 1.6; text-align: center; margin-top: 0;
         }
-        #exampleSentenceDisplay.visible {
-            max-height: 10em; /* Allow more space for longer sentences */
-            opacity: 1;
-            margin-top: 0.5rem; /* Add some space when visible */
-        }
-        body.dark-mode .option.bg-gradient-to-br.from-indigo-500.to-purple-600 {
-            background: linear-gradient(to bottom right, #60a5fa, #a78bfa);
-        }
-        body.dark-mode .option.bg-gradient-to-br.from-green-500.to-lime-600 {
-            background: linear-gradient(to bottom right, #34d399, #86efac);
-        }
-        body.dark-mode .option.bg-gradient-to-br.from-red-500.to-orange-500 {
-            background: linear-gradient(to bottom right, #f87171, #fb923c);
-        }
-        #keyboardHint {
-            position: fixed;
-            bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
-            right: 1rem;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 50;
-        }
+        #exampleSentenceDisplay.visible { max-height: 10em; opacity: 1; margin-top: 0.5rem; }
 
-        /* --- Styles for Inline Feedback (No Animation) --- */
+        /* 内联反馈样式 */
         .inline-feedback-area {
-            text-align: center;
-            font-size: 1.1em;
-            font-weight: 600;
-            padding: 8px 0; /* Vertical padding */
-            margin-bottom: 15px; /* Space below feedback before options */
-            min-height: 1.6em; /* Reserve space to prevent layout shift, approx one line */
-            line-height: 1.4;
-            visibility: hidden; /* Initially hidden */
+            text-align: center; font-size: 1.1em; font-weight: 600; padding: 8px 0; margin-bottom: 15px;
+            min-height: 1.6em; line-height: 1.4; visibility: hidden;
         }
+        .inline-feedback-area.show { visibility: visible; }
+        .inline-feedback-area.correct-inline { color: var(--feedback-green-text); }
+        .inline-feedback-area.incorrect-inline { color: var(--feedback-red-text); }
+        .inline-feedback-area small { font-weight: normal; }
 
-        .inline-feedback-area.show {
-            visibility: visible; /* Show when .show class is added */
-        }
+        /* Tab样式 */
+        .tab-button { padding: 0.75rem 1rem; font-weight: 600; transition: all 0.2s ease-in-out; border-bottom: 3px solid transparent; color: #6b7280; }
+        .tab-button.active { color: #4f46e5; border-color: #4f46e5; }
+        body.dark .tab-button { color: #9ca3af; }
+        body.dark .tab-button.active { color: #818cf8; border-color: #818cf8; }
 
-        .inline-feedback-area.correct-inline {
-            color: var(--feedback-green-text);
+        /* Loading Spinner */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%;
+            border-left-color: #6366f1; animation: spin 1s linear infinite;
         }
+        body.dark .loading-spinner { border-left-color: #a5b4fc; }
 
-        .inline-feedback-area.incorrect-inline {
-            color: var(--feedback-red-text);
+        /* 新增：在小屏幕设备上隐藏键盘提示 */
+        @media (max-width: 768px) {
+            #keyboardHint {
+                display: none !important;
+            }
         }
-        .inline-feedback-area small { /* Style for the detailed explanation in incorrect feedback */
-            font-weight: normal;
-        }
-
     </style>
-
 </head>
 
-<body class="min-h-screen text-gray-800 relative">
-    <button
-        class="theme-toggle fixed top-5 right-5 bg-white bg-opacity-90 rounded-full w-12 h-12 flex items-center justify-center text-2xl cursor-pointer shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg z-50"
-        onclick="toggleTheme()">🌙</button>
+<body class="min-h-screen text-gray-800 dark:text-gray-200 relative">
+    <button id="themeToggleBtn"
+        class="theme-toggle fixed top-5 right-5 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-80 rounded-full w-12 h-12 flex items-center justify-center text-2xl cursor-pointer shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg z-50">
+        🌙
+    </button>
 
-    <div class="container mx-auto p-5 max-w-4xl">
-        <div
-            class="header bg-opacity-95 backdrop-blur-md rounded-2xl p-8 mb-8 text-center shadow-lg border border-white border-opacity-20 animate-[slideDown_0.8s_ease]">
-            <h1 class="text-4xl font-bold mb-2 gradient-text">語彙練習</h1>
-            <p class="text-gray-600 text-lg">日本語能力試験スタイル語彙練習</p>
+    <main class="container mx-auto p-5 max-w-4xl">
+        <div class="header bg-opacity-95 backdrop-blur-md rounded-2xl p-8 mb-8 text-center shadow-lg border border-white border-opacity-20 animate-[slideDown_0.8s_ease]">
+            <h1 id="mainTitle" class="text-4xl font-bold mb-2 gradient-text">語彙練習</h1>
+            <p class="text-gray-600 dark:text-gray-300 text-lg">日本語能力試験スタイル語彙練習</p>
         </div>
 
-        <div
-            class="controls bg-opacity-95 backdrop-blur-md rounded-xl p-5 mb-8 flex flex-wrap gap-4 items-center justify-center shadow-lg border border-white border-opacity-20 animate-[slideUp_0.8s_ease]">
-            <div class="lesson-selector flex items-center gap-2">
-                <label for="lesson" class="font-semibold text-indigo-600">レッスン:</label>
-                <select id="lesson"
-                    class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
-                    <option value="all">全てのレッスン</option>
-                </select>
+        <div class="controls bg-opacity-95 backdrop-blur-md rounded-xl p-5 mb-8 flex flex-wrap gap-4 items-center justify-center shadow-lg border border-white border-opacity-20 animate-[slideUp_0.8s_ease]">
+            <div class="flex items-center gap-2">
+                <label for="lesson" class="font-semibold text-indigo-600 dark:text-indigo-400">レッスン:</label>
+                <select id="lesson" class="p-2.5 rounded-lg border-2 border-indigo-300 dark:border-indigo-500 bg-white dark:bg-gray-700 text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-800"></select>
             </div>
-            <div class="mode-selector flex items-center gap-2">
-                <label for="mode" class="font-semibold text-indigo-600">練習モード:</label>
-                <select id="mode"
-                    class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+            <div class="flex items-center gap-2">
+                <label for="mode" class="font-semibold text-indigo-600 dark:text-indigo-400">練習モード:</label>
+                <select id="mode" class="p-2.5 rounded-lg border-2 border-indigo-300 dark:border-indigo-500 bg-white dark:bg-gray-700 text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-800">
                     <option value="reading">読み方</option>
                     <option value="meaning">意味</option>
                     <option value="usage">使い方</option>
                     <option value="mixed">ミックス</option>
                 </select>
             </div>
-            <div class="difficulty-selector flex items-center gap-2">
-                <label for="difficulty" class="font-semibold text-indigo-600">問題数:</label>
-                <select id="difficulty"
-                    class="p-2.5 rounded-lg border-2 border-indigo-300 bg-white text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
-                    <option value="5">5問</option>
+            <div class="flex items-center gap-2">
+                <label for="difficulty" class="font-semibold text-indigo-600 dark:text-indigo-400">問題数:</label>
+                <select id="difficulty" class="p-2.5 rounded-lg border-2 border-indigo-300 dark:border-indigo-500 bg-white dark:bg-gray-700 text-base cursor-pointer transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-800">
+                    <option value="5" selected>5問</option>
                     <option value="10">10問</option>
                     <option value="20">20問</option>
                     <option value="30">30問</option>
-                    <option selected value="all">全て</option>
+                    <option value="all">全て</option>
                 </select>
             </div>
-            <div>
-                <button id="startQuizButton"
-                    class="btn relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
-                    onclick="startQuiz()" disabled>練習開始</button>
-                <button
-                    class="btn secondary relative overflow-hidden bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
-                    onclick="resetQuiz()">リセット</button>
+            <div class="flex flex-wrap gap-2 justify-center">
+                 <button id="startQuizButton" class="btn relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed" disabled>練習開始</button>
+                <button id="wrongWordsOpenBtn" class="btn relative overflow-hidden bg-gradient-to-br from-yellow-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0">
+                    📚 错词本
+                </button>
             </div>
         </div>
 
-        <div class="quiz-container bg-opacity-95 backdrop-blur-md rounded-2xl p-10 shadow-lg border border-white border-opacity-20 min-h-[400px] animate-[fadeIn_0.5s_ease]"
-            id="quizContainer">
-            <div class="welcome-message">
-                <h2 class="text-center text-2xl font-bold mb-5">練習モードを選んで開始してください</h2>
-                <p class="text-center text-gray-600 dark:text-gray-300 text-lg mb-8">
-                    <strong>読み方:</strong> 漢字の読みを選択<br>
-                    <strong>意味:</strong> 単語の意味を選択<br>
-                    <strong>使い方:</strong> 文脈に合う単語を選択<br>
-                    <strong>ミックス:</strong> 全種類の問題をランダムに<br>
-                </p>
-                <div
-                    class="features glass-morphism mt-8 p-5 bg-indigo-100 dark:bg-indigo-900 dark:bg-opacity-40 rounded-xl">
-                    <h3 class="text-center text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">✨ 新機能</h3>
-                    <ul class="text-left text-gray-600 dark:text-gray-300 leading-relaxed list-none list-inside">
-                        <li>🎯 問題数選択（5/10/30/全て）</li>
-                        <li>🔥 連続正解カウンター</li>
-                        <li>⏱️ 問題別タイマー</li>
-                        <li>🌙 ダークモード対応</li>
-                        <li>⌨️ キーボードショートカット</li>
-                        <li>📱 完全レスポンシブ対応</li>
-                        <li>📚 レッスン選択機能</li>
-                        <li>🇨🇳 意味練習で中国語表示</li>
-                        <li>✨ AIによる新しい例文生成</li>
-                        <li>📖 問題文クリックで例文表示</li>
-                        <li>👆 左右スワイプで问题切替</li>
-                    </ul>
-                </div>
-            </div>
+        <div id="quizContainer" class="bg-white dark:bg-slate-800 rounded-2xl p-10 shadow-lg min-h-[400px] animate-[fadeIn_0.5s_ease]">
+            <!-- JS将在此处动态生成欢迎信息或问题 -->
         </div>
+    </main>
+
+    <div id="keyboardHint" class="fixed bottom-5 right-5 bg-gray-800 text-white py-2.5 px-4 rounded-xl text-xs opacity-0 transition-opacity duration-300 z-50">
+        キーボード: 1-4で選択 | ←/→で切替
     </div>
 
-    <div class="keyboard-shortcut fixed bottom-5 right-5 bg-gray-800 text-white py-2.5 px-4 rounded-xl text-xs opacity-0 transition-opacity duration-300 z-50"
-        id="keyboardHint">
-        キーボード: 1-4で選択, Enterで確定
-    </div>
-
+    <!-- 模态框 -->
     <div id="messageBox" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
-            <p id="messageBoxText" class="text-lg font-semibold mb-4"></p>
-            <button
-                class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full"
-                onclick="hideMessageBox()">OK</button>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+            <p id="messageBoxText" class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200"></p>
+            <button id="messageBoxOkBtn" class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full">OK</button>
         </div>
     </div>
 
-    <div id="generatedSentenceModal"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full text-center">
-            <h3 class="text-xl font-bold mb-4 text-indigo-700">✨ 新しい例文</h3>
-            <p id="generatedSentenceText" class="text-lg text-gray-800 mb-4"></p>
-            <div id="sentenceLoadingSpinner" class="hidden">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
-                <p class="text-gray-600 text-sm mt-2">生成中...</p>
-            </div>
-            <button
-                class="btn bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full"
-                onclick="hideGeneratedSentenceModal()">閉じる</button>
+    <div id="wrongWordsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
+            <header class="p-6 border-b border-gray-200 dark:border-slate-700 flex-shrink-0">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-500" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" /></svg>
+                        错词本管理
+                    </h3>
+                    <button id="wrongWordsCloseBtn" class="text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl transition-colors">✕</button>
+                </div>
+                <div class="flex mt-4" id="wrongWordsTabs">
+                    <button class="tab-button active" data-tab="wrong-list">错误列表</button>
+                    <button class="tab-button" data-tab="statistics">统计分析</button>
+                </div>
+            </header>
+            
+            <main class="overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-900">
+                <div id="tab-wrong-list" class="tab-content p-6">
+                    <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
+                        <div class="flex items-center gap-4">
+                            <select id="wrongWordFilter" class="p-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"></select>
+                            <select id="wrongWordSort" class="p-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"></select>
+                        </div>
+                         <div class="flex space-x-2">
+                            <button id="startWrongWordsQuizBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                开始学习
+                            </button>
+                            <button id="exportWrongWordsBtn" class="bg-white hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 font-semibold px-4 py-2 rounded-lg transition-colors">导出</button>
+                            <button id="clearAllWrongWordsBtn" class="bg-white hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 font-semibold px-4 py-2 rounded-lg transition-colors">清空</button>
+                        </div>
+                    </div>
+                    <div id="wrongWordsList" class="space-y-4"></div>
+                </div>
+                
+                <div id="tab-statistics" class="tab-content hidden p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-red-600 dark:text-red-400 mb-2">📊 总体统计</h4>
+                            <div id="overallStats" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-yellow-600 dark:text-yellow-400 mb-2">🎯 掌握度分布</h4>
+                            <div id="masteryStats" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-purple-600 dark:text-purple-400 mb-2">💪 难度分布</h4>
+                            <div id="difficultyStats" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
-    <script>
-        let allVocabulary = {};
-        let currentQuiz = [];
-        let currentQuestion = 0;
-        let score = 0;
-        let selectedAnswer = null;
-        let quizMode = 'reading';
-        let streak = 0;
-        let maxStreak = 0;
-        let startTime = null;
-        let questionStartTime = null;
-        let totalTime = 0;
-        let wrongAnswers = [];
-        let isDarkMode = false;
-        let timerInterval;
 
-        let headerElement;
-        let controlsElement;
-        let quizContainerElement;
-        let mainContainerElement;
-        let startQuizButton;
-        let lessonSelectElement;
-        let currentJLPTLevel = 'N2';
+<script>
+    // Module to encapsulate the entire application
+    const VocabularyApp = {
+        state: {
+            allVocabulary: {},
+            currentQuiz: [],
+            currentQuestion: 0,
+            score: 0,
+            streak: 0,
+            maxStreak: 0,
+            selectedAnswer: null,
+            startTime: null,
+            questionStartTime: null,
+            totalTime: 0,
+            wrongAnswers: [],
+            answerLog: [],
+            maxQuestionReachedInSession: 0,
+            isInputLocked: false,
+            currentJLPTLevel: 'N2',
+            touchstartX: 0,
+            touchstartY: 0,
+            timerInterval: null,
+            nextQuestionTimeoutId: null,
+            sessionHintShown: false,
+        },
+        constants: {
+            WRONG_WORDS_KEY_PREFIX: 'wrongWordsNotebook_',
+            SWIPE_THRESHOLD: 50,
+        },
+        elements: {},
 
-        let touchstartX = 0;
-        let touchendX = 0;
-        let touchstartY = 0;
-        let touchendY = 0;
-        const swipeThreshold = 50;
+        init() {
+            this.cacheDOMElements();
+            this.bindEvents();
+            this.renderWelcomeMessage();
+            this.initializeTheme();
+            this.initializeAppBasedOnURL();
+            this.initializeWrongWordsModal();
+        },
 
-        let answerLog = [];
-        let maxQuestionReachedInSession = 0;
-
-
-        async function loadVocabularyData(fileNameToLoad) {
-            try {
-                if (!startQuizButton) {
-                    startQuizButton = document.getElementById('startQuizButton');
-                }
-                if (startQuizButton) startQuizButton.disabled = true;
-
-                const response = await fetch(fileNameToLoad);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} while fetching ${fileNameToLoad}`);
-                }
-                allVocabulary = await response.json();
-                console.log(`Vocabulary for ${currentJLPTLevel} loaded successfully from ${fileNameToLoad}:`, allVocabulary);
-                populateLessonSelect();
-                if (startQuizButton) startQuizButton.disabled = false;
-            } catch (error) {
-                console.error(`Could not load vocabulary from ${fileNameToLoad}:`, error);
-                showMessageBox(`語彙データ(${fileNameToLoad})の読み込みに失敗しました。ファイルが存在するか、内容が正しいJSON形式か確認してください。`);
-                if (startQuizButton) startQuizButton.disabled = true;
-            }
-        }
-
-        function initializeApp() {
+        cacheDOMElements() {
+            this.elements = {
+                body: document.body,
+                mainTitle: document.getElementById('mainTitle'),
+                themeToggleBtn: document.getElementById('themeToggleBtn'),
+                header: document.querySelector('.header'),
+                controls: document.querySelector('.controls'),
+                quizContainer: document.getElementById('quizContainer'),
+                startQuizButton: document.getElementById('startQuizButton'),
+                lessonSelect: document.getElementById('lesson'),
+                modeSelect: document.getElementById('mode'),
+                difficultySelect: document.getElementById('difficulty'),
+                keyboardHint: document.getElementById('keyboardHint'),
+                messageBox: document.getElementById('messageBox'),
+                messageBoxText: document.getElementById('messageBoxText'),
+                messageBoxOkBtn: document.getElementById('messageBoxOkBtn'),
+                wrongWordsModal: document.getElementById('wrongWordsModal'),
+                wrongWordsOpenBtn: document.getElementById('wrongWordsOpenBtn'),
+                wrongWordsCloseBtn: document.getElementById('wrongWordsCloseBtn'),
+                wrongWordsTabs: document.getElementById('wrongWordsTabs'),
+                wrongWordsListContainer: document.getElementById('wrongWordsList'),
+                wrongWordFilter: document.getElementById('wrongWordFilter'),
+                wrongWordSort: document.getElementById('wrongWordSort'),
+                startWrongWordsQuizBtn: document.getElementById('startWrongWordsQuizBtn'),
+                exportWrongWordsBtn: document.getElementById('exportWrongWordsBtn'),
+                clearAllWrongWordsBtn: document.getElementById('clearAllWrongWordsBtn'),
+                overallStatsContainer: document.getElementById('overallStats'),
+                masteryStatsContainer: document.getElementById('masteryStats'),
+                difficultyStatsContainer: document.getElementById('difficultyStats'),
+            };
+        },
+        
+        bindEvents() {
+            this.elements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
+            this.elements.startQuizButton.addEventListener('click', () => this.startQuiz());
+            this.elements.messageBoxOkBtn.addEventListener('click', () => this.hideMessageBox());
+            document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+            this.elements.quizContainer.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+            this.elements.quizContainer.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+            this.elements.quizContainer.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
+        },
+        
+        async initializeAppBasedOnURL() {
             const urlParams = new URLSearchParams(window.location.search);
             const levelParam = urlParams.get('level');
             const allowedLevels = ['n1', 'n2', 'n3'];
             let determinedLevel = 'n2';
-
             if (levelParam && allowedLevels.includes(levelParam.toLowerCase())) {
                 determinedLevel = levelParam.toLowerCase();
             } else if (levelParam) {
                 console.warn(`Invalid level parameter '${levelParam}' provided. Defaulting to N2.`);
             }
-
-            currentJLPTLevel = determinedLevel.toUpperCase();
+            this.state.currentJLPTLevel = determinedLevel.toUpperCase();
+            
+            const titlePrefix = this.state.currentJLPTLevel === 'N2' ? '新無敵緑宝書' : '語彙練習';
+            const pageTitle = `${titlePrefix}${this.state.currentJLPTLevel}単語練習`;
+            const headerTitle = `${titlePrefix}${this.state.currentJLPTLevel}語彙練習`;
+            
+            document.title = pageTitle;
+            this.elements.mainTitle.textContent = headerTitle;
+            
             const jsonFileName = `${determinedLevel}.json`;
-            document.title = `新無敵緑宝書${currentJLPTLevel}単語練習`;
-            const h1Element = document.querySelector('.header h1.gradient-text');
-            if (h1Element) {
-                h1Element.textContent = `新無敵緑宝書${currentJLPTLevel}語彙練習`;
-            }
-            loadVocabularyData(jsonFileName);
-        }
+            await this.loadVocabularyData(jsonFileName);
+        },
 
-        function populateLessonSelect() {
-            if (!lessonSelectElement) return;
-            lessonSelectElement.innerHTML = '<option value="all">全てのレッスン</option>';
-            const lessonKeys = Object.keys(allVocabulary);
-            lessonKeys.sort((a, b) => {
-                const numA = parseInt(a.replace('lesson', ''), 10);
-                const numB = parseInt(b.replace('lesson', ''), 10);
-                return numA - numB;
-            });
+        async loadVocabularyData(fileName) {
+            try {
+                this.elements.startQuizButton.disabled = true;
+                const response = await fetch(fileName);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                this.state.allVocabulary = await response.json();
+                console.log(`Vocabulary for ${this.state.currentJLPTLevel} loaded successfully`);
+                this.populateLessonSelect();
+                this.elements.startQuizButton.disabled = false;
+            } catch (error) {
+                console.error(`Could not load vocabulary from ${fileName}:`, error);
+                this.showMessageBox(`語彙データ(${fileName})の読み込みに失敗しました。`);
+            }
+        },
+
+        populateLessonSelect() {
+            const select = this.elements.lessonSelect;
+            select.innerHTML = '<option value="all">全てのレッスン</option>';
+            const lessonKeys = Object.keys(this.state.allVocabulary).sort((a, b) => 
+                parseInt(a.replace('lesson', '')) - parseInt(b.replace('lesson', ''))
+            );
             lessonKeys.forEach(key => {
                 const option = document.createElement('option');
                 option.value = key;
                 option.textContent = key.replace('lesson', 'レッスン');
-                lessonSelectElement.appendChild(option);
+                select.appendChild(option);
             });
-        }
+        },
 
-        document.addEventListener('DOMContentLoaded', () => {
-            headerElement = document.querySelector('.header');
-            controlsElement = document.querySelector('.controls');
-            quizContainerElement = document.getElementById('quizContainer');
-            mainContainerElement = document.querySelector('.container');
-            startQuizButton = document.getElementById('startQuizButton');
-            lessonSelectElement = document.getElementById('lesson');
-            initializeApp();
-            const difficultySelect = document.getElementById('difficulty');
-        });
-
-        function showMessageBox(message) {
-            document.getElementById('messageBoxText').textContent = message;
-            document.getElementById('messageBox').classList.remove('hidden');
-        }
-
-        function hideMessageBox() {
-            document.getElementById('messageBox').classList.add('hidden');
-        }
-
-        function showGeneratedSentenceModal(sentence) {
-            document.getElementById('generatedSentenceText').textContent = sentence;
-            document.getElementById('sentenceLoadingSpinner').classList.add('hidden');
-            document.getElementById('generatedSentenceModal').classList.remove('hidden');
-        }
-
-        function hideGeneratedSentenceModal() {
-            document.getElementById('generatedSentenceModal').classList.add('hidden');
-            document.getElementById('generatedSentenceText').textContent = '';
-        }
-
-        function showSentenceLoadingSpinner() {
-            document.getElementById('generatedSentenceText').textContent = '';
-            document.getElementById('sentenceLoadingSpinner').classList.remove('hidden');
-            document.getElementById('generatedSentenceModal').classList.remove('hidden');
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (!document.getElementById('messageBox').classList.contains('hidden') ||
-                !document.getElementById('generatedSentenceModal').classList.contains('hidden')) {
-                return;
+        startQuiz() {
+            if (Object.keys(this.state.allVocabulary).length === 0) {
+                this.showMessageBox(`語彙データがまだ読み込まれていません。`); return;
             }
-            const optionsElements = document.querySelectorAll('.option');
-            const isViewingPastAnswer = optionsElements.length > 0 && optionsElements[0].disabled;
+            const selectedLesson = this.elements.lessonSelect.value;
+            const selectedMode = this.elements.modeSelect.value;
+            const difficulty = this.elements.difficultySelect.value;
+            let sourceVocab = (selectedLesson === 'all') ? Object.values(this.state.allVocabulary).flat() : this.state.allVocabulary[selectedLesson] || [];
+            sourceVocab = sourceVocab.filter(item => typeof item === 'object' && item !== null && item.w);
+            if (sourceVocab.length === 0) {
+                this.showMessageBox(`選択したレッスンに単語がありません。`); return;
+            }
+            // ▼▼▼ 修复后的逻辑 ▼▼▼
+            const questionCount = (difficulty === 'all') 
+                ? sourceVocab.length 
+                : Math.min(sourceVocab.length, parseInt(difficulty));
+            // ▲▲▲ 修复后的逻辑 ▲▲▲
 
-            if (isViewingPastAnswer && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
-                return;
+            const quizVocab = this.shuffleArray(sourceVocab).slice(0, questionCount);
+            this.initializeAndRunQuiz(quizVocab, selectedMode);
+        },
+        
+        initializeAndRunQuiz(vocabList, mode) {
+            if (!vocabList || vocabList.length === 0) {
+                this.showMessageBox('練習用の単語がありません。'); return;
             }
-            if (selectedAnswer !== null && !isViewingPastAnswer) {
-                if (e.key === 'Enter') submitAnswer();
-                return;
-            }
-            if (isViewingPastAnswer && (e.key === 'Enter' || (e.key >= '1' && e.key <= '4'))) {
-                return;
-            }
-            const key = e.key;
-            if (key >= '1' && key <= '4' && !isViewingPastAnswer) {
-                const index = parseInt(key) - 1;
-                if (optionsElements[index] && !optionsElements[index].disabled) {
-                    selectAnswer(index);
-                }
-            } else if (key === 'Enter' && selectedAnswer !== null && !isViewingPastAnswer) {
-                submitAnswer();
-            } else if (key === 'ArrowLeft') {
-                navigateToPreviousQuestion();
-            } else if (key === 'ArrowRight') {
-                navigateToNextQuestion();
-            }
-        });
-
-        function showKeyboardHint() {
-            const hint = document.getElementById('keyboardHint');
-            hint.classList.add('opacity-100');
+            this.showLoadingScreen();
             setTimeout(() => {
-                hint.classList.remove('opacity-100');
-            }, 3000);
-        }
+                const generatedQuestions = this.generateQuestions(vocabList, mode);
+                if (generatedQuestions.length === 0) {
+                    this.showMessageBox('選択した単語で問題を作成できませんでした。');
+                    this.resetQuiz(); return;
+                }
+                Object.assign(this.state, {
+                    currentQuiz: generatedQuestions, currentQuestion: 0, score: 0, streak: 0, maxStreak: 0,
+                    wrongAnswers: [], selectedAnswer: null, startTime: Date.now(), totalTime: 0,
+                    answerLog: [], maxQuestionReachedInSession: 0,
+                });
+                this.elements.body.classList.add('quiz-mode-active');
+                this.elements.header.classList.add('hidden-during-quiz');
+                this.elements.controls.classList.add('hidden-during-quiz');
+                const qc = this.elements.quizContainer;
+                qc.classList.remove('bg-white', 'dark:bg-slate-800', 'p-10', 'shadow-lg');
+                qc.classList.add('immersive-active');
+                this.showKeyboardHint();
+                this.showQuestion();
+            }, 50); // Reduced delay for faster feeling
+        },
+        
+        generateQuestions(vocabList, mode) {
+            const allSourceVocabForOptions = Object.values(this.state.allVocabulary).flat();
+            const shuffledWrongOptionPool = this.shuffleArray(allSourceVocabForOptions);
+            let wrongOptionIndex = 0;
+            const questions = vocabList.map(vocab => {
+                const currentMode = mode === 'mixed' ? this.shuffleArray(['reading', 'meaning', 'usage'])[0] : mode;
+                let question;
+                if (currentMode === 'reading' && vocab.w !== vocab.r) {
+                    question = this.generateSingleQuestion(vocab, 'reading', 'w', 'r', shuffledWrongOptionPool, wrongOptionIndex);
+                } else if (currentMode === 'usage' && vocab.u) {
+                    question = this.generateSingleQuestion(vocab, 'usage', 'u', 'w', shuffledWrongOptionPool, wrongOptionIndex);
+                } else {
+                    question = this.generateSingleQuestion(vocab, 'meaning', `${vocab.w} ${vocab.w !== vocab.r ? `(${vocab.r})` : ''}`, 'c', shuffledWrongOptionPool, wrongOptionIndex, 'm');
+                }
+                if (question) wrongOptionIndex = (wrongOptionIndex + 3) % shuffledWrongOptionPool.length;
+                return question;
+            }).filter(Boolean);
+            return this.shuffleArray(questions);
+        },
 
-        function shuffleArray(array) {
+        generateSingleQuestion(vocab, mode, questionKeyOrText, answerKey, shuffledPool, poolIndex, fallbackAnswerKey) {
+            const questionText = vocab[questionKeyOrText] || questionKeyOrText;
+            const correctAnswer = vocab[answerKey] || vocab[fallbackAnswerKey];
+            const wrongOptions = [];
+            let currentIndex = poolIndex;
+            while (wrongOptions.length < 3 && currentIndex < shuffledPool.length) {
+                const potentialWrongVocab = shuffledPool[currentIndex];
+                if(potentialWrongVocab) { // Guard against undefined
+                    const potentialWrongAnswer = potentialWrongVocab[answerKey] || potentialWrongVocab[fallbackAnswerKey];
+                    if (potentialWrongAnswer !== correctAnswer && !wrongOptions.includes(potentialWrongAnswer)) {
+                        wrongOptions.push(potentialWrongAnswer);
+                    }
+                }
+                currentIndex++;
+            }
+            if (wrongOptions.length < 3) return null;
+            const options = this.shuffleArray([
+                { text: correctAnswer, correct: true },
+                ...wrongOptions.map(text => ({ text, correct: false }))
+            ]);
+            return { question: questionText, options, correctAnswer, vocab, mode };
+        },
+        
+        showQuestion() {
+            clearTimeout(this.state.nextQuestionTimeoutId);
+            if (this.state.currentQuestion >= this.state.currentQuiz.length) {
+                this.showFinalScore(); return;
+            }
+            const question = this.state.currentQuiz[this.state.currentQuestion];
+            const historyEntry = this.state.answerLog.find(log => log.questionIndex === this.state.currentQuestion);
+            if (!historyEntry) this.state.questionStartTime = Date.now();
+            this.elements.quizContainer.innerHTML = this.createQuizHTML(question, historyEntry);
+            this.bindQuizViewEvents(question, historyEntry);
+            this.state.isInputLocked = false;
+        },
+
+        createQuizHTML(question, historyEntry) {
+            const progress = (this.state.currentQuestion / this.state.currentQuiz.length) * 100;
+            const optionsHTML = question.options.map((option, index) => {
+                let classes = 'option relative overflow-hidden border-2 p-3 md:p-5 rounded-xl cursor-pointer transition-all duration-300 text-base md:text-lg text-center bg-white/80 dark:bg-gray-700/80 border-indigo-300 dark:border-indigo-600 hover:border-indigo-500 dark:hover:border-indigo-400 disabled:opacity-70 disabled:cursor-not-allowed';
+                if(historyEntry){
+                    classes += ' disabled:opacity-100';
+                    if(option.correct) classes += ' !bg-green-500 !text-white !border-green-600';
+                    if(!option.correct && index === historyEntry.selectedOptionIndex) classes += ' !bg-red-500 !text-white !border-red-600 animate-[incorrectShake_0.3s_ease]';
+                }
+                return `<button class="${classes}" data-index="${index}" ${historyEntry ? 'disabled' : ''}>
+                    <span class="font-bold mr-2 text-indigo-500 dark:text-indigo-300">${index + 1}.</span>
+                    ${option.text}
+                </button>`;
+            }).join('');
+            
+            let feedbackHTML = '';
+            if(historyEntry && !historyEntry.isCorrect) {
+                const detail = `${question.vocab.w} ${question.vocab.w !== question.vocab.r ? `(${question.vocab.r})` : ''} - ${question.vocab.c || question.vocab.m}`;
+                feedbackHTML = `不正解。正解は“${question.correctAnswer}”。<br><small class="block mt-1 text-gray-700 dark:text-gray-300 opacity-85 text-sm md:text-base">${detail}</small>`;
+            }
+
+            return `
+                <button class="exit-btn absolute top-3 right-3 w-10 h-10 bg-gray-200/50 dark:bg-gray-800/50 flex items-center justify-center rounded-full text-xl font-semibold z-50 transition hover:scale-110 active:scale-95">✕</button>
+                <div class="mb-4 md:mb-8">
+                    <div class="flex justify-between mb-2 font-semibold text-indigo-600 dark:text-indigo-400"><span>${this.state.currentQuestion + 1} / ${this.state.currentQuiz.length}</span></div>
+                    <div class="progress-bar w-full h-2.5 rounded-md overflow-hidden relative"><div class="progress-fill h-full rounded-md" style="width: ${progress}%"></div></div>
+                </div>
+                <div class="stats flex justify-between mb-3 md:mb-5 text-sm md:text-lg font-semibold flex-wrap gap-2">
+                    <span class="text-green-600 dark:text-green-400 flex items-center gap-2">✅ 正解: ${this.state.score}</span>
+                    <span class="text-red-500 dark:text-red-400 flex items-center gap-2">🔥 連続: ${this.state.streak}</span>
+                    <span class="text-orange-500 dark:text-orange-400 flex items-center gap-2">⏱️ 経過: <span id="timer">${historyEntry ? historyEntry.timeSpent : 0}</span>s</span>
+                </div>
+                <div class="question-area-wrapper">
+                    <div class="question-content-area">
+                        <div class="question text-2xl md:text-3xl mb-1 md:mb-2 font-semibold text-center text-gray-900 dark:text-white leading-tight" id="questionText">${question.question}</div>
+                        <div id="exampleSentenceDisplay" class="text-gray-700 dark:text-gray-300 text-mi px-2"></div>
+                    </div>
+                </div>
+                <div id="inlineFeedback" class="inline-feedback-area ${feedbackHTML ? 'show incorrect-inline' : ''}" aria-live="polite">${feedbackHTML}</div>
+                <div class="options grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4">${optionsHTML}</div>
+            `;
+        },
+
+        bindQuizViewEvents(question, historyEntry) {
+            this.elements.quizContainer.querySelector('.exit-btn').addEventListener('click', () => this.resetQuiz());
+            if (question.vocab && (question.vocab.u || question.vocab.e)) {
+                const questionTextEl = this.elements.quizContainer.querySelector('#questionText');
+                questionTextEl.style.cursor = 'pointer';
+                questionTextEl.title = 'クリックして例文を表示/非表示';
+                questionTextEl.addEventListener('click', () => {
+                    const sentenceDisplay = this.elements.quizContainer.querySelector('#exampleSentenceDisplay');
+                    sentenceDisplay.textContent = question.vocab.e || question.vocab.u;
+                    sentenceDisplay.classList.toggle('visible');
+                });
+            }
+            if (!historyEntry) {
+                this.updateTimer();
+                this.elements.quizContainer.querySelector('.options').addEventListener('click', e => {
+                    const button = e.target.closest('.option');
+                    if (button && !this.state.isInputLocked) this.submitAnswer(parseInt(button.dataset.index, 10));
+                });
+            }
+        },
+
+        submitAnswer(selectedIndex) {
+            if (this.state.isInputLocked) return;
+            this.state.isInputLocked = true;
+            clearInterval(this.state.timerInterval);
+            const question = this.state.currentQuiz[this.state.currentQuestion];
+            const isCorrect = question.options[selectedIndex].correct;
+            const timeSpent = Math.floor((Date.now() - this.state.questionStartTime) / 1000);
+            this.state.answerLog.push({ questionIndex: this.state.currentQuestion, selectedOptionIndex: selectedIndex, isCorrect, timeSpent });
+            if (isCorrect) {
+                this.state.score++;
+                this.state.streak++;
+                if (this.state.streak > this.state.maxStreak) this.state.maxStreak = this.state.streak;
+            } else {
+                this.state.streak = 0;
+                this.state.wrongAnswers.push({
+                    question: question.question, yourAnswer: question.options[selectedIndex].text,
+                    correctAnswer: question.correctAnswer, vocab: question.vocab
+                });
+                this.addOrUpdateWrongWord(question.vocab, question.mode);
+            }
+            this.showQuestion();
+            this.state.nextQuestionTimeoutId = setTimeout(() => this.nextQuestion(), isCorrect ? 150 : 2000);
+        },
+        
+        nextQuestion() {
+            if (this.state.currentQuestion + 1 >= this.state.currentQuiz.length) {
+                this.showFinalScore(); return;
+            }
+            this.state.currentQuestion++;
+            if (this.state.currentQuestion > this.state.maxQuestionReachedInSession) {
+                this.state.maxQuestionReachedInSession = this.state.currentQuestion;
+            }
+            this.showQuestion();
+        },
+
+        showFinalScore() {
+            this.resetQuizInterface();
+            const { score, currentQuiz, maxStreak, wrongAnswers } = this.state;
+            const totalQuestions = currentQuiz.length;
+            const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+            const totalTime = Math.floor((Date.now() - this.state.startTime) / 1000);
+            const avgTime = totalQuestions > 0 ? Math.round(totalTime / totalQuestions) : 0;
+            let message = '復習が必要です。', emoji = '📚';
+            if (percentage >= 90) { message = '素晴らしい！'; emoji = '🏆'; }
+            else if (percentage >= 70) { message = 'よくできました！'; emoji = '🎉'; }
+            else if (percentage >= 50) { message = 'もう少し頑張りましょう。'; emoji = '💪'; }
+
+            const wrongAnswersHtml = wrongAnswers.length > 0 ? `
+            <div class="wrong-answers-section mt-8 text-left animate-[slideUp_0.8s_ease]">
+                <h3 class="text-center text-2xl font-bold mb-5 text-red-600 dark:text-red-400">${emoji} 復習が必要な単語 (${wrongAnswers.length}個)</h3>
+                <div class="wrong-answers-list max-h-80 overflow-y-auto bg-red-50 dark:bg-red-900/30 rounded-lg p-5 border border-red-200 dark:border-red-700">
+                    ${wrongAnswers.map(wrong => `
+                        <div class="wrong-answer-item mb-4 p-4 bg-white dark:bg-gray-700 rounded-lg border-l-4 border-red-500 shadow-md">
+                            <div class="font-bold mb-2 text-gray-900 dark:text-gray-100 text-lg">${wrong.question}</div>
+                            <div class="text-red-600 dark:text-red-400 mb-1">❌ あなたの回答: ${wrong.yourAnswer}</div>
+                            <div class="text-green-600 dark:text-green-400 mb-2">✅ 正解: ${wrong.correctAnswer}</div>
+                            <div class="bg-indigo-100 dark:bg-indigo-900/40 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300">
+                                <strong>${wrong.vocab.w}</strong> ${wrong.vocab.w !== wrong.vocab.r ? `(${wrong.vocab.r})` : ''}<br>
+                                意味: ${wrong.vocab.c || wrong.vocab.m}<br>
+                                元々の例文: ${wrong.vocab.u || 'なし'}
+                            </div>
+                        </div>`).join('')}
+                </div>
+            </div>` : '';
+
+            this.elements.quizContainer.innerHTML = `
+            <div class="final-score text-center text-gray-900 dark:text-gray-100 text-3xl font-bold my-8 animate-[fadeIn_1s_ease]">
+                <h2 class="text-4xl">${emoji} ${message}</h2>
+                <div class="text-indigo-600 dark:text-indigo-400 my-5 text-2xl">${score} / ${totalQuestions} 正解</div>
+                <div class="text-gray-600 dark:text-gray-400 text-xl mb-5">正答率: ${percentage}%</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8 text-base">
+                    <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg"><div class="text-green-600 dark:text-green-400 font-bold">🔥 最高連続正解</div><div class="text-2xl font-bold">${maxStreak}</div></div>
+                    <div class="bg-orange-50 dark:bg-orange-900/30 p-4 rounded-lg"><div class="text-orange-600 dark:text-orange-400 font-bold">⏱️ 総時間</div><div class="text-2xl font-bold">${Math.floor(totalTime / 60)}:${(totalTime % 60).toString().padStart(2, '0')}</div></div>
+                    <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg"><div class="text-indigo-600 dark:text-indigo-400 font-bold">📊 平均時間</div><div class="text-2xl font-bold">${avgTime}秒</div></div>
+                </div>
+                ${wrongAnswersHtml}
+                <div class="flex gap-4 justify-center mt-8 flex-wrap">
+                    <button id="restartQuizBtn" class="btn relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0">もう一度</button>
+                    <button id="reviewWrongBtn" class="btn secondary relative overflow-hidden bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 ${wrongAnswers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${wrongAnswers.length === 0 ? 'disabled' : ''}>復習モード</button>
+                </div>
+            </div>`;
+            this.elements.quizContainer.querySelector('#restartQuizBtn').addEventListener('click', () => this.startQuiz());
+            if (wrongAnswers.length > 0) {
+                this.elements.quizContainer.querySelector('#reviewWrongBtn').addEventListener('click', () => this.reviewWrongAnswers());
+            }
+        },
+
+        reviewWrongAnswers() {
+            const reviewVocab = this.state.wrongAnswers.map(wrong => wrong.vocab).filter(Boolean);
+            this.initializeAndRunQuiz(reviewVocab, 'mixed');
+        },
+        
+        resetQuiz() {
+            this.resetQuizInterface();
+            this.renderWelcomeMessage();
+        },
+
+        resetQuizInterface() {
+            this.state.isInputLocked = false;
+            clearTimeout(this.state.nextQuestionTimeoutId);
+            clearInterval(this.state.timerInterval);
+            this.elements.body.classList.remove('quiz-mode-active');
+            this.elements.header.classList.remove('hidden-during-quiz');
+            this.elements.controls.classList.remove('hidden-during-quiz');
+            
+            const qc = this.elements.quizContainer;
+            qc.classList.remove('immersive-active');
+            qc.classList.add('bg-white', 'dark:bg-slate-800', 'p-10', 'shadow-lg');
+        },
+        
+        initializeTheme() {
+            if (localStorage.getItem('theme') === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+                this.elements.body.classList.add('dark');
+                this.elements.themeToggleBtn.textContent = '☀️';
+            }
+        },
+
+        toggleTheme() {
+            this.elements.body.classList.toggle('dark');
+            const isDarkMode = this.elements.body.classList.contains('dark');
+            this.elements.themeToggleBtn.textContent = isDarkMode ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            if (this.elements.body.classList.contains('quiz-mode-active')) this.showQuestion();
+            if (!this.elements.wrongWordsModal.classList.contains('hidden')) {
+                this.renderWrongWordsList();
+                this.renderStatistics();
+            }
+        },
+        
+        renderWelcomeMessage() {
+            this.elements.quizContainer.innerHTML = `
+                <div class="welcome-message text-center">
+                    <h2 class="text-2xl font-bold mb-5 dark:text-white">練習モードを選んで開始してください</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-lg mb-8 leading-relaxed">
+                        <strong>読み方:</strong> 漢字の読みを選択<br>
+                        <strong>意味:</strong> 単語の意味を選択<br>
+                        <strong>使い方:</strong> 文脈に合う単語を選択<br>
+                        <strong>ミックス:</strong> 全種類の問題をランダムに
+                    </p>
+                    <div class="features glass-morphism mt-8 p-5 rounded-xl">
+                        <h3 class="text-center text-xl font-semibold mb-4">✨ 主な機能</h3>
+                        <ul class="text-left text-gray-600 dark:text-gray-300 leading-relaxed list-none list-inside">
+                            <li>📚 永続化错词本機能</li>
+                            <li>📝 错词本支持筛选后直接开始练习</li>
+                            <li>🎯 問題数選択（5/10/30/全て）</li>
+                            <li>🔥 連続正解カウンター</li>
+                            <li>🌙 ダークモード対応</li>
+                            <li>⌨️ キーボードショートカット</li>
+                            <li>👆 左右スワイプで问题切替 (モバイル)</li>
+                        </ul>
+                    </div>
+                </div>`;
+        },
+        
+        showLoadingScreen() {
+             this.elements.quizContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-4 text-lg font-semibold text-gray-700 dark:text-gray-300">正在生成问题中...</p>
+                </div>`;
+        },
+
+        showMessageBox(message) {
+            this.elements.messageBoxText.textContent = message;
+            this.elements.messageBox.classList.remove('hidden');
+        },
+        hideMessageBox() { this.elements.messageBox.classList.add('hidden'); },
+
+        showKeyboardHint() {
+            if (this.state.sessionHintShown) return;
+            const hint = this.elements.keyboardHint;
+            hint.classList.add('opacity-100');
+            setTimeout(() => hint.classList.remove('opacity-100'), 3000);
+            this.state.sessionHintShown = true;
+        },
+
+        updateTimer() {
+            clearInterval(this.state.timerInterval);
+            const timerElement = this.elements.quizContainer.querySelector('#timer');
+            if(timerElement && !this.state.answerLog.some(log => log.questionIndex === this.state.currentQuestion)) {
+                this.state.timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - this.state.questionStartTime) / 1000);
+                    if(timerElement) timerElement.textContent = elapsed;
+                }, 1000);
+            }
+        },
+
+        handleKeyDown(e) {
+            const isModalOpen = !this.elements.messageBox.classList.contains('hidden') || !this.elements.wrongWordsModal.classList.contains('hidden');
+            if (isModalOpen || !this.elements.body.classList.contains('quiz-mode-active')) return;
+            if (e.key === 'ArrowLeft') { this.navigateToPreviousQuestion(); return; }
+            if (e.key === 'ArrowRight') { this.navigateToNextQuestion(); return; }
+            if (this.state.isInputLocked) return;
+            if (e.key >= '1' && e.key <= '4') { this.submitAnswer(parseInt(e.key) - 1); }
+        },
+
+        navigateToPreviousQuestion() {
+            if (this.state.currentQuestion > 0) {
+                this.state.currentQuestion--;
+                this.showQuestion();
+            }
+        },
+
+        navigateToNextQuestion() {
+            const hasBeenAnswered = this.state.answerLog.some(log => log.questionIndex === this.state.currentQuestion);
+            if (hasBeenAnswered && this.state.currentQuestion < this.state.currentQuiz.length - 1) {
+                 this.nextQuestion();
+            }
+        },
+        
+        handleTouchStart(e) {
+            if (!this.elements.body.classList.contains('quiz-mode-active')) return;
+            this.state.touchstartX = e.changedTouches[0].screenX;
+            this.state.touchstartY = e.changedTouches[0].screenY;
+        },
+        handleTouchMove(e) {
+            if (this.state.touchstartX === 0) return;
+            const deltaX = e.changedTouches[0].screenX - this.state.touchstartX;
+            const deltaY = e.changedTouches[0].screenY - this.state.touchstartY;
+            if (Math.abs(deltaX) > Math.abs(deltaY)) e.preventDefault();
+        },
+        handleTouchEnd(e) {
+            if (this.state.touchstartX === 0) return;
+            const touchendX = e.changedTouches[0].screenX;
+            const deltaX = touchendX - this.state.touchstartX;
+            if (Math.abs(deltaX) > this.constants.SWIPE_THRESHOLD) {
+                if (deltaX < 0) this.navigateToNextQuestion();
+                else this.navigateToPreviousQuestion();
+            }
+            this.state.touchstartX = 0;
+        },
+
+        getWrongWordsKey() { return `${this.constants.WRONG_WORDS_KEY_PREFIX}${this.state.currentJLPTLevel}`; },
+        getWrongWords() { return JSON.parse(localStorage.getItem(this.getWrongWordsKey())) || []; },
+        saveWrongWords(words) { localStorage.setItem(this.getWrongWordsKey(), JSON.stringify(words)); },
+
+        addOrUpdateWrongWord(vocab, mode) {
+            let words = this.getWrongWords();
+            const existing = words.find(w => w.word === vocab.w);
+            const now = new Date().toISOString();
+            if (existing) {
+                existing.wrongCount++;
+                existing.lastWrongTimestamp = now;
+                existing.history.push({ timestamp: now, mode });
+                if (existing.masteryLevel === 'familiar') existing.masteryLevel = 'learning';
+            } else {
+                words.push({
+                    word: vocab.w, vocabObject: vocab, wrongCount: 1, firstWrongTimestamp: now, lastWrongTimestamp: now,
+                    masteryLevel: 'new', difficulty: 3, history: [{ timestamp: now, mode }]
+                });
+            }
+            this.saveWrongWords(words);
+        },
+        
+        initializeWrongWordsModal() {
+            const { wrongWordsOpenBtn, wrongWordsCloseBtn, wrongWordsTabs, wrongWordFilter, wrongWordSort, startWrongWordsQuizBtn, exportWrongWordsBtn, clearAllWrongWordsBtn, wrongWordsListContainer } = this.elements;
+            wrongWordsOpenBtn.addEventListener('click', () => {
+                this.elements.wrongWordsModal.classList.remove('hidden');
+                this.elements.body.style.overflow = 'hidden';
+                this.populateWrongWordFilters();
+                this.renderWrongWordsList();
+                this.renderStatistics();
+            });
+            wrongWordsCloseBtn.addEventListener('click', () => {
+                this.elements.wrongWordsModal.classList.add('hidden');
+                this.elements.body.style.overflow = '';
+            });
+            wrongWordsTabs.addEventListener('click', e => {
+                if (e.target.classList.contains('tab-button')) {
+                    wrongWordsTabs.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    const tabId = e.target.dataset.tab;
+                    this.elements.wrongWordsModal.querySelectorAll('.tab-content').forEach(content => {
+                        content.id === `tab-${tabId}` ? content.classList.remove('hidden') : content.classList.add('hidden');
+                    });
+                }
+            });
+            wrongWordFilter.addEventListener('change', () => this.renderWrongWordsList());
+            wrongWordSort.addEventListener('change', () => this.renderWrongWordsList());
+            startWrongWordsQuizBtn.addEventListener('click', () => this.startWrongWordsQuiz());
+            exportWrongWordsBtn.addEventListener('click', () => this.exportWrongWords());
+            clearAllWrongWordsBtn.addEventListener('click', () => {
+                if (confirm('确定要清空所有错词记录吗？此操作不可撤销。')) {
+                    this.saveWrongWords([]);
+                    this.renderWrongWordsList();
+                    this.renderStatistics();
+                }
+            });
+            wrongWordsListContainer.addEventListener('change', e => {
+                const target = e.target;
+                const action = target.dataset.action;
+                const wordValue = target.closest('[data-word]')?.dataset.word;
+                if (!wordValue || !action) return;
+                let words = this.getWrongWords();
+                const word = words.find(w => w.word === wordValue);
+                if (!word) return;
+                if (action === 'update-mastery') word.masteryLevel = target.value;
+                if (action === 'update-difficulty') word.difficulty = parseInt(target.value);
+                this.saveWrongWords(words);
+                this.renderWrongWordsList();
+            });
+            wrongWordsListContainer.addEventListener('click', e => {
+                const target = e.target.closest('[data-action="delete"]');
+                const wordValue = target?.closest('[data-word]')?.dataset.word;
+                if (!wordValue) return;
+                if (confirm(`确定要从错词本中删除 "${wordValue}" 吗？`)) {
+                    this.saveWrongWords(this.getWrongWords().filter(w => w.word !== wordValue));
+                    this.renderWrongWordsList();
+                    this.renderStatistics();
+                }
+            });
+        },
+        
+        populateWrongWordFilters() {
+            this.elements.wrongWordFilter.innerHTML = `
+                <option value="all">全部错误单词</option><option value="new">新错误</option>
+                <option value="learning">学习中</option><option value="familiar">熟悉</option>
+                <option value="difficulty-1">难度 1</option><option value="difficulty-2">难度 2</option>
+                <option value="difficulty-3">难度 3</option><option value="difficulty-4">难度 4</option>
+                <option value="difficulty-5">难度 5</option>`;
+            this.elements.wrongWordSort.innerHTML = `
+                <option value="recent">最近错误</option><option value="frequency">错误频率</option>
+                <option value="difficulty">难度</option><option value="alphabetical">字母顺序</option>`;
+        },
+        
+        getFilteredAndSortedWrongWords() {
+            const filter = this.elements.wrongWordFilter.value;
+            const sort = this.elements.wrongWordSort.value;
+            let words = this.getWrongWords();
+            words = words.filter(word => {
+                if (filter === 'all') return true;
+                if (['new', 'learning', 'familiar'].includes(filter)) return word.masteryLevel === filter;
+                if (filter.startsWith('difficulty-')) return word.difficulty === parseInt(filter.split('-')[1]);
+                return true;
+            });
+            return words.sort((a, b) => {
+                switch (sort) {
+                    case 'recent': return new Date(b.lastWrongTimestamp) - new Date(a.lastWrongTimestamp);
+                    case 'frequency': return b.wrongCount - a.wrongCount;
+                    case 'difficulty': return b.difficulty - a.difficulty;
+                    case 'alphabetical': return a.vocabObject.r.localeCompare(b.vocabObject.r, 'ja');
+                    default: return 0;
+                }
+            });
+        },
+
+        renderWrongWordsList() {
+            const listContainer = this.elements.wrongWordsListContainer;
+            const words = this.getFilteredAndSortedWrongWords();
+            if (words.length === 0) {
+                listContainer.innerHTML = `<div class="text-center text-gray-500 dark:text-gray-400 py-16">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-200">没有符合条件的单词</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">请更改筛选条件，或去练习添加新的错词吧！</p>
+                </div>`;
+                return;
+            }
+            const masteryLevels = {new: '新错误', learning: '学习中', familiar: '熟悉'};
+            const difficultyStyles = {
+                1: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:border-green-800', 2: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:border-blue-800',
+                3: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800', 4: 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-400 border-orange-200 dark:border-orange-800',
+                5: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:border-red-800',
+            };
+            listContainer.innerHTML = words.map(word => `
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 p-5 space-y-4" data-word="${word.word}">
+                <div class="flex justify-between items-start gap-4">
+                    <div class="space-y-1">
+                        <h4 class="text-2xl font-bold text-slate-800 dark:text-slate-100">${word.vocabObject.w}</h4>
+                        <p class="text-md text-slate-500 dark:text-slate-400">${word.vocabObject.r}</p>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <select data-action="update-mastery" title="设置掌握度" class="bg-gray-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold border-none text-sm rounded-md pl-2 pr-7 py-1 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-slate-800 focus:ring-indigo-400">
+                            ${Object.entries(masteryLevels).map(([k,v]) => `<option value="${k}" ${word.masteryLevel===k ? 'selected':''}>${v}</option>`).join('')}
+                        </select>
+                        <select data-action="update-difficulty" title="设置难度" class="font-semibold border text-sm rounded-md pl-2 pr-7 py-1 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-slate-800 focus:ring-indigo-400 ${difficultyStyles[word.difficulty] || ''}">
+                            ${[1,2,3,4,5].map(d => `<option value="${d}" ${word.difficulty===d ? 'selected':''}>难度 ${d}</option>`).join('')}
+                        </select>
+                        <button data-action="delete" title="删除这个单词" class="text-gray-400 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 transition-colors p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-slate-700 dark:text-slate-300"><strong>含义：</strong> ${word.vocabObject.c || word.vocabObject.m}</p>
+                    ${word.vocabObject.e || word.vocabObject.u ? `<div class="p-3 bg-indigo-50/70 dark:bg-slate-700/50 rounded-lg border-l-4 border-indigo-400 dark:border-indigo-500"><p class="text-slate-600 dark:text-slate-300">“${word.vocabObject.e || word.vocabObject.u}”</p></div>` : ''}
+                </div>
+                <div class="flex justify-between items-center text-xs text-slate-400 dark:text-slate-500 pt-1">
+                    <span>错误 ${word.wrongCount} 次</span>
+                    <span>上次 ${new Date(word.lastWrongTimestamp).toLocaleDateString()}</span>
+                </div>
+            </div>`).join('');
+        },
+
+        renderStatistics() {
+            const words = this.getWrongWords();
+            const { overallStatsContainer, masteryStatsContainer, difficultyStatsContainer } = this.elements;
+            if (words.length === 0) {
+                const noDataMsg = `<p>暂无数据</p>`;
+                overallStatsContainer.innerHTML = masteryStatsContainer.innerHTML = difficultyStatsContainer.innerHTML = noDataMsg;
+                return;
+            }
+            const totalWords = words.length;
+            const totalMistakes = words.reduce((sum, word) => sum + word.wrongCount, 0);
+            overallStatsContainer.innerHTML = `<p><strong>总计独特单词:</strong> ${totalWords} 个</p><p><strong>总计错误次数:</strong> ${totalMistakes} 次</p>`;
+            const masteryCounts = words.reduce((acc, word) => { acc[word.masteryLevel] = (acc[word.masteryLevel] || 0) + 1; return acc; }, { new: 0, learning: 0, familiar: 0 });
+            masteryStatsContainer.innerHTML = Object.entries(masteryCounts).map(([level, count]) => `<p><strong>${{new:'新错误',learning:'学习中',familiar:'熟悉'}[level]}:</strong> ${count} 个</p>`).join('');
+            const difficultyCounts = words.reduce((acc, word) => { acc[word.difficulty] = (acc[word.difficulty] || 0) + 1; return acc; }, {});
+            difficultyStatsContainer.innerHTML = [1,2,3,4,5].map(level => `<p><strong>难度 ${level}:</strong> ${difficultyCounts[level] || 0} 个</p>`).join('');
+        },
+
+        startWrongWordsQuiz() {
+            const wordsToPractice = this.getFilteredAndSortedWrongWords();
+            if (wordsToPractice.length === 0) {
+                this.showMessageBox("没有符合当前筛选条件的错词可供练习。"); return;
+            }
+            this.elements.wrongWordsModal.classList.add('hidden');
+            this.elements.body.style.overflow = '';
+            this.initializeAndRunQuiz(wordsToPractice.map(item => item.vocabObject), 'mixed');
+        },
+
+        exportWrongWords() {
+            const words = this.getFilteredAndSortedWrongWords();
+            if (words.length === 0) { this.showMessageBox('没有可导出的错词。'); return; }
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "单词,假名,含义,错误次数,难度,掌握度,首次错误时间,上次错误时间\n";
+            words.forEach(word => {
+                const row = [`"${word.word}"`, `"${word.vocabObject.r}"`, `"${(word.vocabObject.c || word.vocabObject.m).replace(/"/g, '""')}"`,
+                    word.wrongCount, word.difficulty, word.masteryLevel,
+                    `"${new Date(word.firstWrongTimestamp).toLocaleString()}"`, `"${new Date(word.lastWrongTimestamp).toLocaleString()}"`].join(',');
+                csvContent += row + "\n";
+            });
+            const link = document.createElement("a");
+            link.setAttribute("href", encodeURI(csvContent));
+            link.setAttribute("download", `wrong_words_${this.state.currentJLPTLevel}_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        },
+        
+        shuffleArray(array) {
             const shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
             return shuffled;
-        }
+        },
+    };
 
-        function isReadingSameAsWord(vocab) {
-            return vocab.w === vocab.r;
-        }
-
-        function generateQuestion(vocab, mode, allAvailableVocab) {
-            const correctAnswer = vocab;
-            let otherVocab = allAvailableVocab.filter(v => v.w !== vocab.w);
-            if (otherVocab.length < 3) {
-                const needed = 3 - otherVocab.length;
-                for (let i = 0; i < needed; i++) {
-                    let randomVocab;
-                    do {
-                        randomVocab = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
-                    } while (randomVocab.w === vocab.w || otherVocab.some(ov => ov.w === randomVocab.w));
-                    if (randomVocab) otherVocab.push(randomVocab);
-                }
-                otherVocab = otherVocab.filter(v => v.w !== vocab.w).slice(0, 3);
-            }
-            const wrongAnswersPool = shuffleArray(otherVocab).slice(0, 3);
-            while (wrongAnswersPool.length < 3) {
-                let randomFallback = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
-                if (randomFallback.w !== vocab.w && !wrongAnswersPool.some(w => w.w === randomFallback.w)) {
-                    wrongAnswersPool.push(randomFallback);
-                } else if (randomFallback.w !== vocab.w) {
-                    wrongAnswersPool.push(randomFallback);
-                } else if (allAvailableVocab.length > 1) {
-                    let anotherFallback;
-                    do {
-                        anotherFallback = allAvailableVocab[Math.floor(Math.random() * allAvailableVocab.length)];
-                    } while (anotherFallback.w === vocab.w && allAvailableVocab.length > 1);
-                    wrongAnswersPool.push(anotherFallback);
-                } else {
-                    wrongAnswersPool.push({ w: "---", r: "---", m: "---", c: "---" });
-                }
-            }
-
-            if (mode === 'reading') {
-                if (isReadingSameAsWord(vocab)) {
-                    const meaningQuestion = generateQuestion(vocab, 'meaning', allAvailableVocab);
-                    if (meaningQuestion) {
-                        meaningQuestion.originalIntendedMode = 'reading';
-                    }
-                    return meaningQuestion;
-                }
-                return {
-                    question: vocab.w,
-                    options: shuffleArray([
-                        { text: correctAnswer.r, correct: true },
-                        { text: wrongAnswersPool[0] ? wrongAnswersPool[0].r : '---', correct: false },
-                        { text: wrongAnswersPool[1] ? wrongAnswersPool[1].r : '---', correct: false },
-                        { text: wrongAnswersPool[2] ? wrongAnswersPool[2].r : '---', correct: false }
-                    ]),
-                    correctAnswer: correctAnswer.r, vocab: vocab, mode: 'reading'
-                };
-            } else if (mode === 'meaning') {
-                const correctMeaning = correctAnswer.c || correctAnswer.m;
-                const wrongMeaning1 = wrongAnswersPool[0] ? (wrongAnswersPool[0].c || wrongAnswersPool[0].m) : '---';
-                const wrongMeaning2 = wrongAnswersPool[1] ? (wrongAnswersPool[1].c || wrongAnswersPool[1].m) : '---';
-                const wrongMeaning3 = wrongAnswersPool[2] ? (wrongAnswersPool[2].c || wrongAnswersPool[2].m) : '---';
-                return {
-                    question: vocab.w + (vocab.w !== vocab.r ? ' (' + vocab.r + ')' : ''),
-                    options: shuffleArray([
-                        { text: correctMeaning, correct: true },
-                        { text: wrongMeaning1, correct: false },
-                        { text: wrongMeaning2, correct: false },
-                        { text: wrongMeaning3, correct: false }
-                    ]),
-                    correctAnswer: correctMeaning, vocab: vocab, mode: 'meaning'
-                };
-            } else {
-                if (!vocab.u) {
-                    return generateQuestion(vocab, 'meaning', allAvailableVocab);
-                }
-                return {
-                    question: vocab.u,
-                    options: shuffleArray([
-                        { text: correctAnswer.w, correct: true },
-                        { text: wrongAnswersPool[0] ? wrongAnswersPool[0].w : '---', correct: false },
-                        { text: wrongAnswersPool[1] ? wrongAnswersPool[1].w : '---', correct: false },
-                        { text: wrongAnswersPool[2] ? wrongAnswersPool[2].w : '---', correct: false }
-                    ]),
-                    correctAnswer: correctAnswer.w, vocab: vocab, mode: 'usage'
-                };
-            }
-        }
-
-        function startQuiz() {
-            if (Object.keys(allVocabulary).length === 0) {
-                showMessageBox(`語彙データ(${currentJLPTLevel})がまだ読み込まれていません。少々お待ちいただくか、ページを再読み込みしてください。`);
-                return;
-            }
-            if (headerElement) headerElement.classList.add('hidden-during-quiz');
-            if (controlsElement) controlsElement.classList.add('hidden-during-quiz');
-            document.body.classList.add('quiz-mode-active');
-            if (quizContainerElement) quizContainerElement.classList.add('immersive-active');
-
-            const selectedLesson = document.getElementById('lesson').value;
-            quizMode = document.getElementById('mode').value;
-            const difficulty = document.getElementById('difficulty').value;
-            let sourceVocab = [];
-            if (selectedLesson === 'all') {
-                for (const lessonKey in allVocabulary) {
-                    if (allVocabulary.hasOwnProperty(lessonKey) && Array.isArray(allVocabulary[lessonKey])) {
-                        sourceVocab = sourceVocab.concat(allVocabulary[lessonKey]);
-                    }
-                }
-            } else {
-                if (allVocabulary.hasOwnProperty(selectedLesson) && Array.isArray(allVocabulary[selectedLesson])) {
-                    sourceVocab = allVocabulary[selectedLesson];
-                } else {
-                    showMessageBox(`レッスン "${selectedLesson}" の単語が見つかりません (${currentJLPTLevel} データ)。`);
-                    resetQuizInterface(); return;
-                }
-            }
-            if (sourceVocab.length === 0) {
-                showMessageBox(`選択されたレッスンには単語がありません (${currentJLPTLevel} データ)。`);
-                resetQuizInterface(); return;
-            }
-            sourceVocab = sourceVocab.filter(item => typeof item === 'object' && item !== null && item.w);
-            let questionCount;
-            if (difficulty === 'all') {
-                questionCount = sourceVocab.length;
-            } else {
-                questionCount = parseInt(difficulty);
-            }
-            if (sourceVocab.length < questionCount && difficulty !== 'all') {
-                questionCount = sourceVocab.length;
-            }
-            if (questionCount === 0 && sourceVocab.length > 0) {
-                questionCount = Math.min(10, sourceVocab.length);
-            }
-            if (questionCount === 0) {
-                showMessageBox('問題数が0です。問題数を選択してください。');
-                resetQuizInterface(); return;
-            }
-
-            const shuffledVocabForQuiz = shuffleArray(sourceVocab).slice(0, questionCount);
-            let generatedQuestions = [];
-            const modes = ['reading', 'meaning', 'usage'];
-            for (const vocab of shuffledVocabForQuiz) {
-                let question = null;
-                if (quizMode === 'mixed') {
-                    const shuffledModes = shuffleArray([...modes]);
-                    for (const mode of shuffledModes) {
-                        question = generateQuestion(vocab, mode, sourceVocab);
-                        if (question) break;
-                    }
-                } else {
-                    question = generateQuestion(vocab, quizMode, sourceVocab);
-                }
-                if (question) {
-                    generatedQuestions.push(question);
-                }
-            }
-            currentQuiz = generatedQuestions;
-            if (currentQuiz.length === 0) {
-                showMessageBox('選択された条件で問題を作成できませんでした。別のモードまたはレッスンを試してください。');
-                resetQuiz(); return;
-            }
-            currentQuestion = 0; score = 0; streak = 0; maxStreak = 0; wrongAnswers = []; selectedAnswer = null; startTime = Date.now(); totalTime = 0;
-            answerLog = []; 
-            maxQuestionReachedInSession = 0; // Initialize to the first question's index (0)
-            touchstartX = 0; touchendX = 0; touchstartY = 0; touchendY = 0;
-            if (quizContainerElement) {
-                quizContainerElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-                quizContainerElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-                quizContainerElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-                quizContainerElement.addEventListener('click', handleCardClick);
-            }
-            showKeyboardHint();
-            showQuestion();
-        }
-
-        function showQuestion() {
-            if (currentQuestion >= currentQuiz.length) {
-                showFinalScore(); return;
-            }
-            const question = currentQuiz[currentQuestion];
-            const container = quizContainerElement;
-            const historyEntry = answerLog.find(log => log.questionIndex === currentQuestion);
-            
-            if (!historyEntry) { 
-                questionStartTime = Date.now();
-            }
-            // maxQuestionReachedInSession is primarily updated by nextQuestion() and navigateToNextQuestion() when moving to a new frontier.
-            // startQuiz initializes it to 0.
-
-            let questionTextHTML = `<div class="question text-2xl md:text-3xl mb-1 md:mb-2 font-semibold text-center text-gray-900 leading-tight" id="questionText">${question.question}</div>`;
-            let exampleSentenceHTML = `<div id="exampleSentenceDisplay" class="text-gray-700 text-mi px-2"></div>`;
-
-            container.innerHTML = `
-            <button class="exit-btn" onclick="resetQuiz()">✕</button>
-            <div class="progress-container mb-4 md:mb-8">
-                <div class="progress-info flex justify-between mb-2 font-semibold text-indigo-600">
-                    <span>${currentQuestion + 1} / ${currentQuiz.length}</span>
-                </div>
-                <div class="progress-bar w-full h-2.5 bg-indigo-200 rounded-md overflow-hidden relative">
-                    <div class="progress-fill h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-md transition-all duration-500 ease-in-out relative" style="width: ${(currentQuestion / currentQuiz.length) * 100}%"></div>
-                </div>
-            </div>
-            <div class="stats flex justify-between mb-3 md:mb-5 text-sm md:text-lg font-semibold flex-wrap gap-2">
-                <span class="score text-green-600 flex items-center gap-1 md:gap-2">✅ 正解: ${score}</span>
-                <span class="streak-counter text-red-500 flex items-center gap-1 md:gap-2">🔥 連続: ${streak}</span>
-                <span class="timer text-orange-500 flex items-center gap-1 md:gap-2">⏱️ 経過: <span id="timer">${historyEntry ? historyEntry.timeSpent : 0}</span>s</span>
-            </div>
-            <div class="question-area-wrapper">
-                <div class="question-content-area">
-                    ${questionTextHTML}
-                    ${exampleSentenceHTML}
-                </div>
-            </div>
-            <div id="inlineFeedback" class="inline-feedback-area"></div>
-            <div class="options grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4">
-                ${question.options.map((option, index) => `
-                    <button class="option relative overflow-hidden border-2 p-3 md:p-5 rounded-xl cursor-pointer transition-all duration-300 text-base md:text-lg text-center" onclick="selectAnswer(${index})" data-index="${index}">
-                        <span class="font-bold mr-2 ${isDarkMode ? 'text-indigo-300' : 'text-indigo-500'}">${index + 1}.</span>
-                        ${option.text}
-                    </button>
-                `).join('')}
-            </div>`;
-
-            const inlineFeedbackElement = container.querySelector('#inlineFeedback');
-            const optionElements = container.querySelectorAll('.option');
-
-            if (historyEntry) {
-                clearInterval(timerInterval);
-                if (inlineFeedbackElement) {
-                    inlineFeedbackElement.classList.remove('correct-inline', 'incorrect-inline', 'show');
-                    inlineFeedbackElement.innerHTML = ''; 
-                    let feedbackHTML = '';
-                    if (historyEntry.isCorrect) {
-                        // feedbackHTML = `🎉 正解！ (${historyEntry.timeSpent}秒)`;
-                        // inlineFeedbackElement.classList.add('correct-inline');
-                    } else {
-                        feedbackHTML = `不正解。正解は“${question.correctAnswer}”。`;
-                        inlineFeedbackElement.classList.add('incorrect-inline');
-                        if (question.vocab) {
-                            const displayMeaning = question.vocab.c || question.vocab.m;
-                            const detailTextColorClass = isDarkMode ? 'text-slate-300' : 'text-gray-700';
-                            feedbackHTML += `<br><small class="block mt-1 ${detailTextColorClass} opacity-85 text-sm md:text-base">
-                                ${question.vocab.w} ${question.vocab.w !== question.vocab.r ? '(' + question.vocab.r + ')' : ''} - ${displayMeaning}
-                            </small>`;
-                        }
-                    }
-                    if (feedbackHTML) { 
-                        inlineFeedbackElement.innerHTML = feedbackHTML;
-                        inlineFeedbackElement.classList.add('show');
-                    }
-                }
-                optionElements.forEach((opt, i) => {
-                    opt.disabled = true;
-                    opt.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white', 'border-indigo-500', 'from-green-500', 'to-lime-600', 'border-green-500', 'from-red-500', 'to-orange-500', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
-                    opt.style.borderColor = '';
-                    if (question.options[i].correct) {
-                        opt.classList.add('bg-gradient-to-br', 'from-green-500', 'to-lime-600', 'text-white', 'border-green-500');
-                    }
-                    if (i === historyEntry.selectedOptionIndex && !historyEntry.isCorrect) {
-                        opt.classList.add('bg-gradient-to-br', 'from-red-500', 'to-orange-500', 'text-white', 'border-red-500');
-                    }
-                });
-            } else { 
-                if (inlineFeedbackElement) {
-                    inlineFeedbackElement.innerHTML = '';
-                    inlineFeedbackElement.classList.remove('show', 'correct-inline', 'incorrect-inline');
-                }
-                optionElements.forEach(opt => {
-                    opt.disabled = false;
-                    opt.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white', 'border-indigo-500', 'from-green-500', 'to-lime-600', 'border-green-500', 'from-red-500', 'to-orange-500', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
-                    opt.style.borderColor = '';
-                });
-                updateTimer();
-            }
-
-            const questionTextElement = document.getElementById('questionText');
-            const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
-            if (exampleSentenceDisplayElement) {
-                exampleSentenceDisplayElement.classList.remove('visible');
-                exampleSentenceDisplayElement.textContent = '';
-            }
-            const canShowExampleOnClick = question.vocab && question.vocab.e;
-            if (questionTextElement && exampleSentenceDisplayElement && canShowExampleOnClick) {
-                questionTextElement.style.cursor = 'pointer';
-                questionTextElement.title = 'クリックして例文を表示/非表示';
-                questionTextElement.onclick = () => {
-                    const isViewingPast = optionElements.length > 0 && optionElements[0].disabled;
-                    if (selectedAnswer !== null && !isViewingPast) return; 
-                    if (!exampleSentenceDisplayElement.classList.contains('visible')) {
-                        exampleSentenceDisplayElement.textContent = question.vocab.e;
-                        exampleSentenceDisplayElement.classList.add('visible');
-                    } else {
-                        exampleSentenceDisplayElement.classList.remove('visible');
-                    }
-                };
-            }
-        }
-
-
-        function updateTimer() {
-            clearInterval(timerInterval);
-            const historyEntry = answerLog.find(log => log.questionIndex === currentQuestion);
-
-            if (currentQuestion >= currentQuiz.length || selectedAnswer !== null || historyEntry) {
-                return;
-            }
-            const timerElement = document.getElementById('timer');
-            if (timerElement && questionStartTime) {
-                const update = () => {
-                    const stillHistoryEntry = answerLog.find(log => log.questionIndex === currentQuestion);
-                    if (selectedAnswer !== null || currentQuestion >= currentQuiz.length || stillHistoryEntry) {
-                        clearInterval(timerInterval); return;
-                    }
-                    const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
-                    timerElement.textContent = elapsed;
-                };
-                update();
-                timerInterval = setInterval(update, 1000);
-            }
-        }
-
-        function selectAnswer(index) {
-            const optionButton = document.querySelectorAll('.option')[index];
-            if (selectedAnswer !== null || (optionButton && optionButton.disabled)) {
-                return;
-            }
-            selectedAnswer = index;
-            clearInterval(timerInterval); 
-            const exampleSentenceDisplayElement = document.getElementById('exampleSentenceDisplay');
-            if (exampleSentenceDisplayElement) {
-                exampleSentenceDisplayElement.classList.remove('visible'); 
-            }
-            document.querySelectorAll('.option').forEach((optionEl, i) => {
-                optionEl.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-500', 'to-purple-600', 'text-white', 'border-indigo-500');
-                optionEl.style.borderColor = ''; 
-                if (i === index) {
-                    optionEl.classList.add('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
-                    optionEl.style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8';
-                }
-            });
-            setTimeout(() => { submitAnswer(); }, 100); 
-        }
-
-        function submitAnswer() {
-            if (selectedAnswer === null) return;
-            const optionButton = document.querySelectorAll('.option')[selectedAnswer];
-            if (optionButton && optionButton.disabled) { 
-                selectedAnswer = null; return;
-            }
-            document.querySelectorAll('.option').forEach(optionEl => {
-                optionEl.classList.remove('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
-                optionEl.style.borderColor = '';
-            });
-
-            const question = currentQuiz[currentQuestion];
-            const isCorrect = question.options[selectedAnswer].correct;
-            const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
-            totalTime += timeSpent;
-
-            answerLog.push({
-                questionIndex: currentQuestion, selectedOptionIndex: selectedAnswer,
-                isCorrect: isCorrect, timeSpent: timeSpent,
-            });
-
-            if (isCorrect) {
-                score++; streak++;
-                if (streak > maxStreak) maxStreak = streak;
-            } else {
-                streak = 0;
-                wrongAnswers.push({
-                    question: question.question, yourAnswer: question.options[selectedAnswer].text,
-                    correctAnswer: question.correctAnswer, questionNumber: currentQuestion + 1,
-                    vocab: question.vocab, timeSpent: timeSpent, mode: question.mode
-                });
-            }
-
-            document.querySelectorAll('.option').forEach((option, i) => {
-                option.disabled = true;
-                if (question.options[i].correct) {
-                    option.classList.add('bg-gradient-to-br', 'from-green-500', 'to-lime-600', 'text-white', 'border-green-500');
-                } else if (i === selectedAnswer && !isCorrect) {
-                    option.classList.add('bg-gradient-to-br', 'from-red-500', 'to-orange-500', 'text-white', 'border-red-500', 'animate-[incorrectShake_0.3s_ease]');
-                }
-            });
-
-            const inlineFeedbackElement = document.getElementById('inlineFeedback');
-            if (inlineFeedbackElement) {
-                inlineFeedbackElement.classList.remove('show', 'correct-inline', 'incorrect-inline');
-                inlineFeedbackElement.innerHTML = ''; 
-            }
-
-            let delay;
-
-            if (isCorrect) {
-                delay = 150; 
-            } else {
-                if (inlineFeedbackElement) {
-                    let feedbackHTML = `不正解。正解は“${question.correctAnswer}”。`;
-                    inlineFeedbackElement.classList.add('incorrect-inline');
-                    if (question.vocab) {
-                        const displayMeaning = question.vocab.c || question.vocab.m;
-                        const detailTextColorClass = isDarkMode ? 'text-slate-300' : 'text-gray-700';
-                        feedbackHTML += `<br><small class="block mt-1 ${detailTextColorClass} opacity-85 text-sm md:text-base">
-                            ${question.vocab.w} ${question.vocab.w !== question.vocab.r ? '(' + question.vocab.r + ')' : ''} - ${displayMeaning}
-                        </small>`;
-                    }
-                    inlineFeedbackElement.innerHTML = feedbackHTML;
-                    inlineFeedbackElement.classList.add('show');
-                }
-                delay = 1800; 
-            }
-
-            setTimeout(() => {
-                nextQuestion(); 
-            }, delay);
-        }
-
-        // This function is called after submitAnswer
-        function nextQuestion() {
-            currentQuestion++;
-            selectedAnswer = null; 
-            // When moving to the next question after answering,
-            // this new question index is now the furthest reached.
-            if (currentQuestion > maxQuestionReachedInSession) {
-                maxQuestionReachedInSession = currentQuestion;
-            }
-            showQuestion();
-        }
-
-
-        function resetQuizInterface() {
-            if (headerElement) headerElement.classList.remove('hidden-during-quiz');
-            if (controlsElement) controlsElement.classList.remove('hidden-during-quiz');
-            document.body.classList.remove('quiz-mode-active');
-            if (quizContainerElement) {
-                quizContainerElement.classList.remove('immersive-active');
-                quizContainerElement.style.paddingTop = '';
-                quizContainerElement.style.paddingBottom = '';
-                quizContainerElement.style.paddingLeft = '';
-                quizContainerElement.style.paddingRight = '';
-                quizContainerElement.removeEventListener('touchstart', handleTouchStart);
-                quizContainerElement.removeEventListener('touchmove', handleTouchMove);
-                quizContainerElement.removeEventListener('touchend', handleTouchEnd);
-                quizContainerElement.removeEventListener('click', handleCardClick);
-            }
-        }
-
-        function showFinalScore() {
-            resetQuizInterface();
-            clearInterval(timerInterval);
-            totalTime = Math.floor((Date.now() - startTime) / 1000);
-            const percentage = currentQuiz.length > 0 ? Math.round((score / currentQuiz.length) * 100) : 0;
-            const avgTime = currentQuiz.length > 0 ? Math.round(totalTime / currentQuiz.length) : 0;
-
-            let message = ''; let emoji = '';
-            if (percentage >= 90) { message = '素晴らしい！'; emoji = '🏆'; }
-            else if (percentage >= 70) { message = 'よくできました！'; emoji = '🎉'; }
-            else if (percentage >= 50) { message = 'もう少し頑張りましょう。'; emoji = '💪'; }
-            else { message = '復習が必要です。'; emoji = '📚'; }
-
-            let wrongAnswersHtml = '';
-            if (wrongAnswers.length > 0) {
-                wrongAnswersHtml = `
-                <div class="wrong-answers-section mt-8 text-left animate-[slideUp_0.8s_ease]">
-                    <h3 class="text-center text-2xl font-bold mb-5 text-red-600">${emoji} 復習が必要な単語 (${wrongAnswers.length}個)</h3>
-                    <div class="wrong-answers-list max-h-80 overflow-y-auto bg-red-50 dark:bg-red-900 dark:bg-opacity-30 rounded-lg p-5 border border-red-200 dark:border-red-700">
-                        ${wrongAnswers.map(wrong => `
-                            <div class="wrong-answer-item mb-4 p-4 bg-white dark:bg-gray-700 rounded-lg border-l-4 border-red-500 shadow-md transition-transform duration-200 hover:translate-x-1">
-                                <div class="font-bold mb-2 text-gray-900 dark:text-gray-100 text-lg">問題${wrong.questionNumber}: ${wrong.question}</div>
-                                <div class="text-red-600 dark:text-red-400 mb-1 flex items-center gap-2">❌ あなたの回答: ${wrong.yourAnswer} <span class="bg-red-500 text-white py-0.5 px-2 rounded-full text-xs">${wrong.timeSpent}秒</span></div>
-                                <div class="text-green-600 dark:text-green-400 mb-2">✅ 正解: ${wrong.correctAnswer}</div>
-                                ${wrong.vocab ? `<div class="bg-indigo-100 dark:bg-indigo-900 dark:bg-opacity-40 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300">
-                                    <strong>${wrong.vocab.w}</strong> ${wrong.vocab.w !== wrong.vocab.r ? '(' + wrong.vocab.r + ')' : ''}<br>
-                                    意味: ${wrong.vocab.c || wrong.vocab.m}<br>
-                                    元々の例文: ${wrong.vocab.u || 'なし'}<br>
-                                    ${wrong.vocab.e ? `収録例文: ${wrong.vocab.e}<br>` : ''}
-                                    <button class="generate-sentence-btn mt-2 px-3 py-1.5 bg-blue-500 text-white text-sm rounded-full hover:bg-blue-600 transition-colors duration-200" onclick="generateExampleSentence(this, '${wrong.vocab.w.replace(/'/g, "\\'")}', '${wrong.vocab.r.replace(/'/g, "\\'")}', '${(wrong.vocab.c || wrong.vocab.m).replace(/'/g, "\\'")}')">✨ 新しい例文を生成</button>
-                                </div>` : ''}
-                            </div>`).join('')}
-                    </div>
-                </div>`;
-            }
-
-            quizContainerElement.innerHTML = `
-            <div class="final-score text-center text-gray-900 dark:text-gray-100 text-3xl font-bold my-8 animate-[fadeIn_1s_ease]">
-                <h2 class="text-4xl">${emoji} ${message}</h2>
-                <div class="text-indigo-600 dark:text-indigo-400 my-5 text-2xl">${score} / ${currentQuiz.length} 正解</div>
-                <div class="text-gray-600 dark:text-gray-400 text-xl mb-5">正答率: ${percentage}%</div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8 text-base">
-                    <div class="bg-green-50 dark:bg-green-900 dark:bg-opacity-30 p-4 rounded-lg text-center"><div class="text-green-600 dark:text-green-400 font-bold">🔥 最高連続正解</div><div class="text-2xl font-bold">${maxStreak}</div></div>
-                    <div class="bg-orange-50 dark:bg-orange-900 dark:bg-opacity-30 p-4 rounded-lg text-center"><div class="text-orange-600 dark:text-orange-400 font-bold">⏱️ 総時間</div><div class="text-2xl font-bold">${Math.floor(totalTime / 60)}:${(totalTime % 60).toString().padStart(2, '0')}</div></div>
-                    <div class="bg-indigo-50 dark:bg-indigo-900 dark:bg-opacity-30 p-4 rounded-lg text-center"><div class="text-indigo-600 dark:text-indigo-400 font-bold">📊 平均時間</div><div class="text-2xl font-bold">${avgTime}秒</div></div>
-                </div>
-                ${wrongAnswersHtml}
-                <div class="flex gap-4 justify-center mt-8 flex-wrap">
-                    <button class="btn relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0" onclick="startQuiz()">もう一度</button>
-                    <button class="btn secondary relative overflow-hidden bg-gradient-to-br from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-full cursor-pointer text-base shadow-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 ${wrongAnswers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="reviewWrongAnswers()" ${wrongAnswers.length === 0 ? 'disabled' : ''}>復習モード</button>
-                </div>
-            </div>`;
-        }
-
-        function reviewWrongAnswers() {
-            if (wrongAnswers.length === 0) {
-                showMessageBox('復習する問題がありません！'); return;
-            }
-            if (headerElement) headerElement.classList.add('hidden-during-quiz');
-            if (controlsElement) controlsElement.classList.add('hidden-during-quiz');
-            document.body.classList.add('quiz-mode-active');
-            if (quizContainerElement) quizContainerElement.classList.add('immersive-active');
-
-            let allCombinedVocab = [];
-            for (const lessonKey in allVocabulary) {
-                if (allVocabulary.hasOwnProperty(lessonKey) && Array.isArray(allVocabulary[lessonKey])) {
-                    allCombinedVocab = allCombinedVocab.concat(allVocabulary[lessonKey]);
-                }
-            }
-            if (allCombinedVocab.length === 0) {
-                allCombinedVocab = wrongAnswers.map(w => w.vocab).filter(Boolean);
-            }
-            allCombinedVocab = allCombinedVocab.filter(item => typeof item === 'object' && item !== null && item.w);
-
-            currentQuiz = wrongAnswers.map(wrong => {
-                const vocab = wrong.vocab;
-                if (!vocab || typeof vocab.w === 'undefined') { return null; }
-                const modes = ['reading', 'meaning', 'usage'];
-                const reviewMode = wrong.mode && modes.includes(wrong.mode) ? wrong.mode : modes[Math.floor(Math.random() * modes.length)];
-                const vocabSourceForOptions = allCombinedVocab.length > 0 ? allCombinedVocab : [vocab];
-                return generateQuestion(vocab, reviewMode, vocabSourceForOptions);
-            }).filter(Boolean);
-
-            if (currentQuiz.length === 0) {
-                showMessageBox('復習問題の作成に失敗しました。');
-                resetQuiz();
-                return;
-            }
-
-            currentQuestion = 0; score = 0; streak = 0; maxStreak = 0; selectedAnswer = null; startTime = Date.now(); totalTime = 0; wrongAnswers = [];
-            answerLog = []; 
-            maxQuestionReachedInSession = 0; // Reset for review session
-            touchstartX = 0; touchendX = 0; touchstartY = 0; touchendY = 0;
-
-            if (quizContainerElement) {
-                quizContainerElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-                quizContainerElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-                quizContainerElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-                quizContainerElement.addEventListener('click', handleCardClick);
-            }
-            showQuestion();
-        }
-
-        function resetQuiz() {
-            resetQuizInterface();
-            clearInterval(timerInterval);
-
-            quizContainerElement.innerHTML = `
-            <div class="welcome-message">
-                <h2 class="text-center text-2xl font-bold mb-5">練習モードを選んで開始してください</h2>
-                <p class="text-center text-gray-600 dark:text-gray-300 text-lg mb-8">
-                    <strong>読み方:</strong> 漢字の読みを選択<br>
-                    <strong>意味:</strong> 単語の意味を選択<br>
-                    <strong>使い方:</strong> 文脈に合う単語を選択<br>
-                    <strong>ミックス:</strong> 全種類の問題をランダムに<br>
-                </p>
-                <div class="features glass-morphism mt-8 p-5 bg-indigo-100 dark:bg-indigo-900 dark:bg-opacity-40 rounded-xl">
-                    <h3 class="text-center text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">✨ 新機能</h3>
-                    <ul class="text-left text-gray-600 dark:text-gray-300 leading-relaxed list-none list-inside">
-                        <li>🎯 問題数選択（5/10/30/全て）</li>
-                        <li>🔥 連続正解カウンター</li>
-                        <li>⏱️ 問題別タイマー</li>
-                        <li>🌙 ダークモード対応</li>
-                        <li>⌨️ キーボードショートカット</li>
-                        <li>📱 完全レスポンシブ対応</li>
-                        <li>📚 レッスン選択機能</li>
-                        <li>🇨🇳 意味練習で中国語表示</li>
-                        <li>✨ AIによる新しい例文生成</li>
-                        <li>📖 問題文クリックで例文表示</li>
-                        <li>👆 左右スワイプで问题切替</li>
-                    </ul>
-                </div>
-            </div>`;
-
-            currentQuiz = []; currentQuestion = 0; score = 0; selectedAnswer = null; streak = 0; maxStreak = 0;
-            startTime = null; questionStartTime = null; totalTime = 0; wrongAnswers = [];
-            answerLog = []; maxQuestionReachedInSession = 0;
-        }
-
-
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            const body = document.body;
-            const button = document.querySelector('.theme-toggle');
-            if (isDarkMode) {
-                body.classList.add('dark-mode');
-                body.classList.remove('text-gray-800');
-                button.textContent = '☀️';
-            } else {
-                body.classList.remove('dark-mode');
-                body.classList.add('text-gray-800');
-                button.textContent = '🌙';
-            }
-            if (document.body.classList.contains('quiz-mode-active') && currentQuiz.length > 0 && currentQuestion < currentQuiz.length) {
-                const tempSelected = selectedAnswer;
-                const tempCurrentQ = currentQuestion;
-                showQuestion();
-                const isViewingPast = answerLog.find(log => log.questionIndex === tempCurrentQ);
-                if (!isViewingPast && tempSelected !== null) {
-                    selectedAnswer = tempSelected;
-                    const options = document.querySelectorAll('.option');
-                    if (options[selectedAnswer] && !options[selectedAnswer].disabled) {
-                        options[selectedAnswer].classList.add('selected-option', 'bg-gradient-to-br', 'from-indigo-400', 'to-purple-500', 'text-white');
-                        options[selectedAnswer].style.borderColor = isDarkMode ? '#a78bfa' : '#818cf8';
-                    }
-                } else {
-                    selectedAnswer = null;
-                }
-            }
-        }
-
-        async function generateExampleSentence(buttonElement, word, reading, meaning) {
-            buttonElement.disabled = true;
-            buttonElement.textContent = '生成中...';
-            showSentenceLoadingSpinner();
-            let chatHistory = [{ role: "user", parts: [{ text: `「${word} (${reading})」という日本語の単語（意味：${meaning}）を使って、JLPT N3/N2レベルの自然な例文を一つ生成してください。**例文のみを日本語で提供し、説明や他のテキストは一切含めないでください。**` }] }];
-            const payload = { contents: chatHistory };
-            const apiKey = "YOUR_GEMINI_API_KEY"; 
-
-            if (apiKey === "YOUR_GEMINI_API_KEY" || apiKey === "") {
-                showGeneratedSentenceModal('APIキーが設定されていません。');
-                buttonElement.disabled = false;
-                buttonElement.innerHTML = '✨ 新しい例文を生成';
-                const spinner = document.getElementById('sentenceLoadingSpinner');
-                if (spinner) spinner.classList.add('hidden');
-                return;
-            }
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) {
-                    const errorResult = await response.json().catch(() => ({ error: { message: 'Unknown API error format.' } }));
-                    throw new Error(`Gemini API request failed: ${response.status} ${response.statusText}. ${errorResult.error?.message || ''}`);
-                }
-                const result = await response.json();
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const sentence = result.candidates[0].content.parts[0].text.trim();
-                    showGeneratedSentenceModal(sentence);
-                } else {
-                    showGeneratedSentenceModal('例文の生成に失敗しました。APIからの応答形式が予期しないものです。');
-                }
-            } catch (error) {
-                console.error('Error generating sentence:', error);
-                showGeneratedSentenceModal(`例文の生成中にエラーが発生しました。`);
-            } finally {
-                buttonElement.disabled = false;
-                buttonElement.innerHTML = '✨ 新しい例文を生成';
-            }
-        }
-
-        // Allows navigating to previous questions
-        function navigateToPreviousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                selectedAnswer = null; 
-                clearInterval(timerInterval); 
-                showQuestion();
-            }
-        }
-
-        // MODIFIED FUNCTION - Allows moving to the next new question if current is answered
-        function navigateToNextQuestion() {
-            if (currentQuestion < currentQuiz.length - 1) { // If not the last question
-                const targetQuestionIndex = currentQuestion + 1;
-                const currentQuestionIsAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
-
-                // Condition 1: Moving within already reached/unlocked questions
-                if (targetQuestionIndex <= maxQuestionReachedInSession) {
-                    currentQuestion = targetQuestionIndex;
-                    selectedAnswer = null;
-                    clearInterval(timerInterval);
-                    showQuestion();
-                } 
-                // Condition 2: Moving from an ANSWERED current question to the VERY NEXT NEW question
-                // This allows proceeding to the next question if the current one has been completed.
-                else if (currentQuestionIsAnswered && targetQuestionIndex === maxQuestionReachedInSession + 1) {
-                    currentQuestion = targetQuestionIndex;
-                    maxQuestionReachedInSession = currentQuestion; // Advance the frontier because we are moving to a new question
-                    selectedAnswer = null;
-                    clearInterval(timerInterval);
-                    showQuestion();
-                }
-                // Else: User is trying to skip an unanswered question to a new one, or jump too far. Block this.
-                // No action needed here, navigation is simply not performed.
-                // else {
-                //    console.log("Navigation blocked: Cannot skip current unanswered question to a new one OR jump too far ahead.");
-                // }
-            }
-        }
-
-
-        function handleTouchStart(event) {
-            const currentQuestionHasBeenAnswered = answerLog.find(log => log.questionIndex === currentQuestion);
-            // Allow touch start for navigation if quiz is active.
-            // The decision to navigate or not will be handled by navigateToNext/PreviousQuestion.
-            if (!document.body.classList.contains('quiz-mode-active')) {
-                touchstartX = 0; 
-                return;
-            }
-            // If an answer is selected but not yet submitted (very short window for auto-submit),
-            // we might want to prevent swipe until submission or allow swipe to cancel.
-            // Current navigateTo functions clear selectedAnswer, so swipe will effectively cancel pending auto-submit.
-            // Thus, no specific block needed here based on selectedAnswer.
-            touchstartX = event.changedTouches[0].screenX;
-            touchstartY = event.changedTouches[0].screenY;
-        }
-
-        function handleTouchMove(event) {
-            if (touchstartX === 0) return; 
-            const currentX = event.changedTouches[0].screenX;
-            const currentY = event.changedTouches[0].screenY;
-            const deltaX = currentX - touchstartX;
-            const deltaY = currentY - touchstartY;
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                event.preventDefault();
-            }
-        }
-
-        function handleTouchEnd(event) {
-            if (touchstartX === 0) return; 
-            touchendX = event.changedTouches[0].screenX;
-            touchendY = event.changedTouches[0].screenY;
-            handleSwipeGesture();
-            touchstartX = 0; 
-            touchstartY = 0;
-        }
-
-        function handleSwipeGesture() {
-            const deltaX = touchendX - touchstartX;
-            const deltaY = touchendY - touchstartY;
-            if (Math.abs(deltaX) > swipeThreshold && Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX < 0) { 
-                    navigateToNextQuestion();
-                } else if (deltaX > 0) { 
-                    navigateToPreviousQuestion();
-                }
-            }
-        }
-
-        function handleCardClick(event) {
-            // Similar to touch, card click navigation relies on navigateToNextQuestion's logic.
-            if (!document.body.classList.contains('quiz-mode-active')) {
-                return;
-            }
-            const target = event.target;
-            if (target.closest('.option') || target.closest('.exit-btn') || target.closest('#questionText') || target.closest('#inlineFeedback') || target.closest('.progress-container') || target.closest('.stats')) {
-                return;
-            }
-            const optionsDiv = quizContainerElement.querySelector('.options');
-            if (optionsDiv) {
-                const optionsRect = optionsDiv.getBoundingClientRect();
-                if (event.clientY >= optionsRect.top) {
-                    return;
-                }
-            }
-            if (!quizContainerElement) return;
-            const rect = quizContainerElement.getBoundingClientRect();
-            const clickX = event.clientX - rect.left;
-            const elementWidth = rect.width;
-            const clickZoneWidth = elementWidth * 0.30; 
-             if (clickX > (elementWidth - clickZoneWidth)) {
-                navigateToNextQuestion();
-            }
-        }
-
-    </script>
-
+    document.addEventListener('DOMContentLoaded', () => {
+        VocabularyApp.init();
+    });
+</script>
 </body>
 </html>

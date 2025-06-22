@@ -484,6 +484,14 @@ const VocabularyApp = {
             // 2. Handle answer option clicks
             const optionBtn = e.target.closest('.option');
             if (optionBtn && !this.state.isInputLocked) {
+                // 获取当前问题的数据,以便检查其模式
+                const currentQuestionData = this.state.currentQuiz[this.state.currentQuestion];
+                const wordToPlay = optionBtn.dataset.word;
+
+                // 只有在当前问题是 "reading" 模式时,才播放音频
+                if (wordToPlay && currentQuestionData && currentQuestionData.mode === 'reading') {
+                    this.playWordAudio(wordToPlay);
+                }
                 this.submitAnswer(parseInt(optionBtn.dataset.index, 10));
                 return;
             }
@@ -521,6 +529,16 @@ const VocabularyApp = {
 
     // --- NEW: Helper function to play word audio ---
     playWordAudio(word) {
+        // 1. 定义一个当前支持音频的级别列表
+        const supportedLevels = ['n2']; // 将来支持了 N1，就改成 ['n1', 'n2']
+        // 2. 获取当前级别
+        const currentLevel = this.state.currentJLPTLevel.toLowerCase();
+        // 3. 检查当前级别是否在支持列表中
+        if (!supportedLevels.includes(currentLevel)) {
+            // 如果不支持，直接返回，什么也不做
+            console.log(`Audio playback is not yet supported for level: ${currentLevel}`);
+            return; 
+        }
         let audioPlayer = document.getElementById('audioPlayer');
         if (!audioPlayer) {
             audioPlayer = document.createElement('audio');
@@ -528,8 +546,7 @@ const VocabularyApp = {
             audioPlayer.style.display = 'none';
             document.body.appendChild(audioPlayer);
         }
-        const level = this.state.currentJLPTLevel.toLowerCase();
-        const audioPath = `data/audio/${level}/${word}.mp3`;
+        const audioPath = `data/audio/${currentLevel}/${word}.mp3`;
         audioPlayer.src = audioPath;
         audioPlayer.play().catch(error => {
             console.warn(`Could not play audio for "${word}". File might be missing.`, error);
@@ -817,7 +834,7 @@ const VocabularyApp = {
                 if (option.correct) { stateClasses += ' !bg-green-600 !text-white !border-green-700'; textClasses = '!text-white font-medium'; numberClasses = '!text-white font-bold mr-3'; } 
                 else if (index === historyEntry.selectedOptionIndex) { stateClasses += ' !bg-red-600 !text-white !border-red-700 animate-[incorrectShake_0.3s_ease]'; textClasses = '!text-white font-medium'; numberClasses = '!text-white font-bold mr-3'; } 
             } 
-            return `<button class="${baseClasses} ${stateClasses}" data-index="${index}" ${historyEntry ? 'disabled' : ''}><span class="${numberClasses}">${index + 1}.</span><span class="${textClasses}">${option.text}</span></button>`; 
+            return `<button class="${baseClasses} ${stateClasses}" data-index="${index}" data-word="${option.vocab.w}" ${historyEntry ? 'disabled' : ''}><span class="${numberClasses}">${index + 1}.</span><span class="${textClasses}">${option.text}</span></button>`;
         }).join(''); 
         
         let feedbackHTML = '', feedbackClass = ''; 
@@ -877,8 +894,14 @@ const VocabularyApp = {
                         <span class="rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-900/30 pointer-events-none">${icon}</span>
                     </div>
                     <div class="space-y-1 text-sm pointer-events-none">
-                        <div class="flex"><span class="text-gray-500 dark:text-gray-400 w-12 flex-shrink-0">${_t('detailed_info_meaning_prefix')}</span><span class="text-gray-900 dark:text-white">${vocab[meaningKey] || vocab.c || vocab.m}</span></div>
-                        ${exampleSentence ? `<div class="flex"><span class="text-gray-500 dark:text-gray-400 w-12 flex-shrink-0">${_t('detailed_info_example_prefix')}</span><span class="text-gray-900 dark:text-white">${exampleSentence}</span></div>` : ''}
+                        <div class="grid grid-cols-[auto_1fr] gap-2">
+                            <span class="text-gray-500 dark:text-gray-400">${_t('detailed_info_meaning_prefix')}</span>
+                            <span class="text-gray-900 dark:text-white">${vocab[meaningKey] || vocab.c || vocab.m}</span>
+                        </div>
+                        ${exampleSentence ? `<div class="grid grid-cols-[auto_1fr] gap-2">
+                            <span class="text-gray-500 dark:text-gray-400">${_t('detailed_info_example_prefix')}</span>
+                            <span class="text-gray-900 dark:text-white">${exampleSentence}</span>
+                        </div>` : ''}
                     </div>
                 </div>`;
         }).join('');

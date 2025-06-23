@@ -471,13 +471,16 @@ const VocabularyApp = {
         document.addEventListener('click', () => this.closeAllSelects());
 
         // --- MODIFIED: Event delegation for quiz interactions ---
-        this.elements.quizContainer.addEventListener('click', (e) => {
+        this.elements.quizContainer.addEventListener('click', async (e) => { 
             // Only handle events when quiz is active
             if (!this.elements.body.classList.contains('quiz-mode-active')) return;
 
             // 1. Handle exit button
             if (e.target.closest('.exit-btn')) {
-                this.resetQuiz();
+                const confirmed = await this.showConfirmation('confirm_exit_quiz'); 
+                if (confirmed) {
+                    this.resetQuiz();
+                }
                 return;
             }
 
@@ -489,9 +492,10 @@ const VocabularyApp = {
                 const wordToPlay = optionBtn.dataset.word;
 
                 // 只有在当前问题是 "reading" 模式时,才播放音频
-                if (wordToPlay && currentQuestionData && currentQuestionData.mode === 'reading') {
+                if (wordToPlay) {
                     this.playWordAudio(wordToPlay);
                 }
+                
                 this.submitAnswer(parseInt(optionBtn.dataset.index, 10));
                 return;
             }
@@ -641,7 +645,7 @@ const VocabularyApp = {
             }
     
             const buttonHtml = buttons.map(btn => 
-                `<button class="glass-control py-2 px-4 interactive-press-effect ${btn.classes}" data-value="${btn.value}">${_t(btn.textKey)}</button>`
+                `<button class="modal-action-btn glass-control py-2 px-4 interactive-press-effect ${btn.classes}" data-value="${btn.value}">${_t(btn.textKey)}</button>`
             ).join('');
     
             this.elements.messageBoxButtons.innerHTML = buttonHtml;

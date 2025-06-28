@@ -1027,7 +1027,14 @@ const VocabularyApp = {
         }
         if (!this.elements.body.classList.contains('quiz-mode-active') || !this.elements.wrongWordsModal.classList.contains('hidden')) return;
 
-        if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') this.navigateToPreviousQuestion();
+        if (e.key === ' ') {
+            e.preventDefault();
+            const detailedInfoPanel = this.elements.quizContainer.querySelector('#detailedInfoPanel');
+            if (detailedInfoPanel) {
+                detailedInfoPanel.classList.toggle('visible');
+            }
+        }
+        else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') this.navigateToPreviousQuestion();
         else if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') this.navigateToNextQuestion();
         else if (e.key >= '1' && e.key <= '4' && !this.state.isInputLocked) this.submitAnswer(parseInt(e.key) - 1);
     },

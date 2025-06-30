@@ -901,6 +901,10 @@ body.dark #wrongWordsModal>div {
         border-top-left-radius: .75rem;
         border-top-right-radius: .75rem;
     }
+
+    .detailed-info-item {
+        padding: .8rem 1rem;
+    }
     
     /* 隐藏或缩小其他非关键元素 */
     body.quiz-mode-active .theme-toggle {

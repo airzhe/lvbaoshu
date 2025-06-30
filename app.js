@@ -772,7 +772,7 @@ const VocabularyApp = {
                 if (!questionText) return null;
                 questionData = { vocab, mode: 'usage', questionText, answerKey: 'w' };
             } else {
-                const questionText = `${vocab.w}${vocab.r && vocab.w !== vocab.r ? ` (${vocab.r})` : ''}`;
+                const questionText = vocab.w;  // 只显示单词，不显示读音
                 questionData = { vocab, mode: 'meaning', questionText, answerKey: meaningKey };
             }
             
@@ -884,7 +884,27 @@ const VocabularyApp = {
         if (!historyEntry) return '';
         const meaningKey = this.state.currentLanguage === 'en' ? 'm' : 'c';
 
-        return question.options.map((option, index) => {
+        // 对选项进行排序：错误答案第一，正确答案第二，其他选项最后
+        const sortedOptions = question.options.map((option, index) => ({ option, index }))
+            .sort((a, b) => {
+                const aIsSelected = a.index === historyEntry.selectedOptionIndex;
+                const bIsSelected = b.index === historyEntry.selectedOptionIndex;
+                const aIsCorrect = a.option.correct;
+                const bIsCorrect = b.option.correct;
+                
+                // 如果用户选择了错误答案，它排第一
+                if (aIsSelected && !aIsCorrect) return -1;
+                if (bIsSelected && !bIsCorrect) return 1;
+                
+                // 正确答案排第二
+                if (aIsCorrect && !bIsCorrect) return -1;
+                if (bIsCorrect && !aIsCorrect) return 1;
+                
+                // 其他保持原顺序
+                return a.index - b.index;
+            });
+
+        return sortedOptions.map(({ option, index }) => {
             if (!option.vocab) return '';
             const { vocab } = option;
             const { icon, borderColor } = this._getOptionStatusInfo(option, index, historyEntry);
@@ -895,7 +915,7 @@ const VocabularyApp = {
                 : vocab.w;
             return `
                 <div class="bg-white dark:bg-gray-900 rounded-2xl p-4 border-l-4 ${borderColor} shadow-lg hover:shadow-xl transition-all duration-300 detailed-info-item cursor-pointer block w-full mb-3"
-                     data-w="${vocab.w}" style="display: block !important; width: 100% !important; margin-bottom: 0.75rem !important;">
+                     data-w="${vocab.w}">
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white pointer-events-none">${wordReadingHTML}</h3>
                         <span class="rounded-lg flex items-center justify-center bg-green-100 dark:bg-green-900/30 pointer-events-none">${icon}</span>

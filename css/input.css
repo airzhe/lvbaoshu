@@ -902,8 +902,8 @@ body.dark #wrongWordsModal>div {
         border-top-right-radius: .75rem;
     }
 
-    .detailed-info-item {
-        padding: .8rem 1rem;
+    #detailedInfoPanel h3 {
+        display: none !important;
     }
     
     /* 隐藏或缩小其他非关键元素 */

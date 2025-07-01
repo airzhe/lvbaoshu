@@ -902,7 +902,7 @@ body.dark #wrongWordsModal>div {
         border-top-right-radius: .75rem;
     }
 
-    #detailedInfoPanel h3 {
+    #detailedInfoPanel>h3 {
         display: none !important;
     }
     

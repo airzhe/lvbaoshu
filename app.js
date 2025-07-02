@@ -491,8 +491,6 @@ const VocabularyApp = {
                 // 获取当前问题的数据,以便检查其模式
                 const currentQuestionData = this.state.currentQuiz[this.state.currentQuestion];
                 const wordToPlay = optionBtn.dataset.word;
-
-                // 只有在当前问题是 "reading" 模式时,才播放音频
                 if (wordToPlay) {
                     this.playWordAudio(wordToPlay);
                 }
@@ -610,6 +608,16 @@ const VocabularyApp = {
         this.state.isInputLocked = true;
         clearInterval(this.state.timerInterval);
         const question = this.state.currentQuiz[this.state.currentQuestion];
+        
+        // 播放选中选项的读音 - 使用与点击选项相同的条件判断逻辑
+        const selectedOption = question.options[selectedIndex];
+        const wordToPlay = selectedOption && selectedOption.vocab && selectedOption.vocab.w;
+        
+        // 播放音频（与点击选项逻辑保持一致）
+        if (wordToPlay) {
+            this.playWordAudio(wordToPlay);
+        }
+        
         const isCorrect = question.options[selectedIndex].correct;
         const timeSpent = Math.floor((Date.now() - this.state.questionStartTime) / 1000);
         this.state.answerLog.push({ questionIndex: this.state.currentQuestion, selectedOptionIndex: selectedIndex, isCorrect, timeSpent });

@@ -772,7 +772,7 @@ const VocabularyApp = {
                 if (!questionText) return null;
                 questionData = { vocab, mode: 'usage', questionText, answerKey: 'w' };
             } else {
-                const questionText = vocab.w;  // 只显示单词，不显示读音
+                const questionText = vocab.r;  // 只显示单词，不显示读音
                 questionData = { vocab, mode: 'meaning', questionText, answerKey: meaningKey };
             }
             

@@ -779,10 +779,25 @@ body.dark #wrongWordsModal>div {
 
 @media (max-width: 480px) {
     /* Small modal adjustments */
+  #wrongWordsModal {
+    box-sizing: border-box;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
     #wrongWordsModal > div {
-        margin: .5rem;
-        max-width: calc(100vw - 1rem);
-        max-height: calc(100vh - 1rem);
+        margin: 0.5rem;
+        max-width: calc(100dvw - 1rem); /* 使用动态视口单位 */
+        max-height: calc(100dvh - 1rem);
+        box-sizing: border-box;
+        overflow: auto; /* 允许内容滚动 */
+    }
+
+    /* 回退样式，针对不支持 dvw/dvh 的浏览器 */
+    @supports not (max-width: 100dvw) {
+        #wrongWordsModal > div {
+            max-width: calc(100vw - 1rem);
+            max-height: calc(100vh - 1rem);
+        }
     }
     
     /* Typography scale for small screens */

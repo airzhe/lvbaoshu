@@ -403,6 +403,25 @@ const WrongWordsManager = {
         link.click();
         document.body.removeChild(link);
     },
+
+    async importFromUrl(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`无法获取数据: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // 直接覆盖现有数据
+            this.save(data);
+            console.log(`已从 ${url} 导入 ${data.length} 个单词到错词本`);
+            
+        } catch (error) {
+            console.error('导入失败:', error);
+            throw error;
+        }
+    },
 };
 
 const VocabularyApp = {
@@ -429,9 +448,9 @@ const VocabularyApp = {
     
     init() {
         this.cacheDOMElements(); this.initializeTheme();
-        this.lessonMultiSelect = new MultiSelect('.multi-select-container', { app: this });
-        this.modeSelect = new SingleSelect('mode', { defaultValue: 'reading', app: this });
-        this.difficultySelect = new SingleSelect('difficulty', { defaultValue: 'all', app: this });
+        this.lessonMultiSelect = new MultiSelect('.multi-select-container', { app: this, onSelectionChange: () => this.updateUrlParams() });
+        this.modeSelect = new SingleSelect('mode', { defaultValue: 'reading', app: this, onSelectionChange: () => this.updateUrlParams() });
+        this.difficultySelect = new SingleSelect('difficulty', { defaultValue: 'all', app: this, onSelectionChange: () => this.updateUrlParams() });
         this.selects.push(this.lessonMultiSelect, this.modeSelect, this.difficultySelect);
         this.bindEvents(); this.determineLanguage();
         this.loadTranslations().then(() => {
@@ -439,6 +458,7 @@ const VocabularyApp = {
             this.elements.startQuizButton.disabled = false;
             this.elements.startQuizButton.textContent = _t('btn_start_practice');
             this.initializeAppBasedOnURL(); WrongWordsManager.init(this);
+            this.checkUrlImport(); // 检查URL导入参数
         }).catch(error => { console.error("Failed to load translations:", error); this.elements.startQuizButton.textContent = _t('load_failed'); this.showMessageBox('load_failed'); });
     },
     
@@ -724,7 +744,13 @@ const VocabularyApp = {
             const cachedData = localStorage.getItem(cacheKey);
             if (cachedData) { this.state.allVocabulary = JSON.parse(cachedData); this.populateLessonSelect(); } 
             else { this.showMessageBox('data_load_failed_message', { fileName }); this.elements.startQuizButton.textContent = _t('load_failed'); }
-        } finally { if (Object.keys(this.state.allVocabulary).length > 0) { this.elements.startQuizButton.disabled = false; this.elements.startQuizButton.textContent = _t('btn_start_practice'); } }
+        } finally { 
+            if (Object.keys(this.state.allVocabulary).length > 0) { 
+                this.elements.startQuizButton.disabled = false; 
+                this.elements.startQuizButton.textContent = _t('btn_start_practice'); 
+                this.loadUrlParams(); // 在词汇数据加载完成后恢复URL参数设置
+            } 
+        }
     },
     
     populateLessonSelect() { 
@@ -1130,6 +1156,93 @@ const VocabularyApp = {
         this.state.touchstartX = 0; this.state.touchstartY = 0; this.state.touchendX = 0; this.state.touchendY = 0; this.state.touchstartTime = 0;
     },
     
+    checkUrlImport() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const importUrl = urlParams.get('import_url');
+        
+        if (importUrl) {
+            console.log('检测到导入URL参数:', importUrl);
+            
+            // 异步导入数据
+            WrongWordsManager.importFromUrl(importUrl)
+                .then(() => {
+                    console.log('URL导入成功');
+                    // 清除URL参数
+                    const newUrl = new URL(window.location);
+                    newUrl.searchParams.delete('import_url');
+                    window.history.replaceState({}, '', newUrl);
+                })
+                .catch(error => {
+                    console.error('URL导入失败:', error);
+                });
+        }
+    },
+
+    loadUrlParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // 加载课程选择
+        const lessons = urlParams.get('lessons');
+        if (lessons && this.lessonMultiSelect) {
+            const lessonArray = lessons.split(',');
+            this.lessonMultiSelect.selectedValues = new Set(lessonArray);
+            this.lessonMultiSelect.renderOptions();
+            this.lessonMultiSelect.updateTriggerText();
+        }
+        
+        // 加载模式选择
+        const mode = urlParams.get('mode');
+        if (mode && this.modeSelect) {
+            this.modeSelect.selectedValue = mode;
+            this.modeSelect.updateTriggerText();
+            this.modeSelect.renderOptions();
+        }
+        
+        // 加载题目数选择
+        const difficulty = urlParams.get('count');
+        if (difficulty && this.difficultySelect) {
+            this.difficultySelect.selectedValue = difficulty;
+            this.difficultySelect.updateTriggerText();
+            this.difficultySelect.renderOptions();
+        }
+    },
+
+    updateUrlParams() {
+        // 防止在初始化过程中更新URL
+        if (!this.lessonMultiSelect || !this.modeSelect || !this.difficultySelect) {
+            return;
+        }
+        
+        const url = new URL(window.location);
+        
+        // 更新课程参数
+        const selectedLessons = this.lessonMultiSelect.getSelectedValues();
+        if (selectedLessons.includes('all') || selectedLessons.length === 0) {
+            url.searchParams.delete('lessons');
+        } else {
+            url.searchParams.set('lessons', selectedLessons.join(','));
+        }
+        
+        // 更新模式参数
+        const mode = this.modeSelect.getValue();
+        if (mode && mode !== 'reading') {
+            url.searchParams.set('mode', mode);
+        } else {
+            url.searchParams.delete('mode');
+        }
+        
+        // 更新题目数参数
+        const count = this.difficultySelect.getValue();
+        if (count && count !== 'all') {
+            url.searchParams.set('count', count);
+        } else {
+            url.searchParams.delete('count');
+        }
+        
+        // 更新URL但不刷新页面
+        window.history.replaceState({}, '', url);
+    },
+
     shuffleArray(array) { 
         const shuffled = [...array]; 
         for (let i = shuffled.length - 1; i > 0; i--) { 

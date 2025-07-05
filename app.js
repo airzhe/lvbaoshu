@@ -406,21 +406,150 @@ const WrongWordsManager = {
 
     async importFromUrl(url) {
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
+            });
+            
             if (!response.ok) {
-                throw new Error(`无法获取数据: ${response.status}`);
+                throw new Error(`HTTP错误 ${response.status}: ${response.statusText}`);
             }
             
-            const data = await response.json();
+            const csvText = await response.text();
+            const data = this.parseCsvToWrongWords(csvText);
             
-            // 直接覆盖现有数据
+            if (!Array.isArray(data) || data.length === 0) {
+                throw new Error('CSV文件中没有有效的单词数据');
+            }
+            
             this.save(data);
-            console.log(`已从 ${url} 导入 ${data.length} 个单词到错词本`);
+            return data.length;
             
         } catch (error) {
-            console.error('导入失败:', error);
+            if (error.message.includes('CORS') || error.message.includes('fetch')) {
+                throw new Error('无法访问该URL，可能是跨域问题。请确保服务器允许跨域访问。');
+            }
             throw error;
         }
+    },
+
+    parseCsvToWrongWords(csvText) {
+        const lines = csvText.trim().split('\n');
+        
+        if (lines.length < 2) {
+            throw new Error('CSV文件格式错误，至少需要标题行和数据行');
+        }
+        
+        const headers = this.parseCsvLine(lines[0]);
+        const words = [];
+        
+        // 标题映射
+        const headerMap = {
+            word: ['单词', 'word', 'w'],
+            kana: ['假名', 'kana', 'reading', 'r'],
+            meaning: ['含义', 'meaning', 'c', 'm'],
+            wrongCount: ['错误次数', 'wrong_count', 'wrongCount'],
+            difficulty: ['难度', 'difficulty'],
+            mastery: ['掌握度', 'mastery', 'masteryLevel'],
+            firstWrongTime: ['首次错误时间', 'first_wrong_time', 'firstWrongTimestamp'],
+            lastWrongTime: ['上次错误时间', 'last_wrong_time', 'lastWrongTimestamp']
+        };
+        
+        // 创建列索引映射
+        const columnMap = {};
+        headers.forEach((header, index) => {
+            const normalizedHeader = header.trim();
+            Object.keys(headerMap).forEach(key => {
+                if (headerMap[key].some(h => h === normalizedHeader || h.toLowerCase() === normalizedHeader.toLowerCase())) {
+                    columnMap[key] = index;
+                }
+            });
+        });
+        
+        // 如果找不到标准列，使用位置映射
+        if (columnMap.word === undefined && headers.length >= 3) {
+            columnMap.word = 0;
+            columnMap.kana = 1;
+            columnMap.meaning = 2;
+            if (headers.length >= 4) columnMap.wrongCount = 3;
+            if (headers.length >= 5) columnMap.difficulty = 4;
+            if (headers.length >= 6) columnMap.mastery = 5;
+        }
+        
+        // 解析数据行
+        for (let i = 1; i < lines.length; i++) {
+            const values = this.parseCsvLine(lines[i]);
+            
+            if (values.length >= 1 && values[0]?.trim()) {
+                const word = this.cleanValue(values[columnMap.word] || values[0]);
+                const kana = this.cleanValue(values[columnMap.kana] || values[1] || word);
+                const meaning = this.cleanValue(values[columnMap.meaning] || values[2]);
+                
+                if (word && meaning) {
+                    const now = new Date().toISOString();
+                    words.push({
+                        word: word,
+                        vocabObject: {
+                            w: word,
+                            r: kana,
+                            c: meaning,
+                            m: meaning
+                        },
+                        wrongCount: parseInt(values[columnMap.wrongCount]) || 1,
+                        firstWrongTimestamp: this.cleanValue(values[columnMap.firstWrongTime]) || now,
+                        lastWrongTimestamp: this.cleanValue(values[columnMap.lastWrongTime]) || now,
+                        masteryLevel: this.parseMasteryLevel(values[columnMap.mastery]) || 'new',
+                        difficulty: parseInt(values[columnMap.difficulty]) || 3,
+                        history: [{ timestamp: now, mode: 'imported' }]
+                    });
+                }
+            }
+        }
+        
+        return words;
+    },
+
+    cleanValue(value) {
+        if (!value) return '';
+        return value.toString().replace(/"/g, '').trim();
+    },
+
+    parseCsvLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            const nextChar = line[i + 1];
+            
+            if (char === '"') {
+                if (inQuotes && nextChar === '"') {
+                    current += '"';
+                    i++; // 跳过下一个引号
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                result.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        
+        result.push(current.trim());
+        return result;
+    },
+
+    parseMasteryLevel(masteryText) {
+        if (!masteryText) return 'new';
+        const text = masteryText.toString().toLowerCase().trim();
+        
+        if (text.includes('学习中') || text.includes('learning')) return 'learning';
+        if (text.includes('熟悉') || text.includes('familiar')) return 'familiar';
+        return 'new';
     },
 };
 
@@ -1161,19 +1290,16 @@ const VocabularyApp = {
         const importUrl = urlParams.get('import_url');
         
         if (importUrl) {
-            console.log('检测到导入URL参数:', importUrl);
-            
-            // 异步导入数据
             WrongWordsManager.importFromUrl(importUrl)
-                .then(() => {
-                    console.log('URL导入成功');
+                .then((count) => {
+                    alert(`成功导入 ${count} 个单词到错词本！`);
                     // 清除URL参数
                     const newUrl = new URL(window.location);
                     newUrl.searchParams.delete('import_url');
                     window.history.replaceState({}, '', newUrl);
                 })
                 .catch(error => {
-                    console.error('URL导入失败:', error);
+                    alert(`导入失败: ${error.message}`);
                 });
         }
     },

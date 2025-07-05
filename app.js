@@ -359,7 +359,12 @@ const WrongWordsManager = {
             card.querySelector('[data-field="meaning"]').textContent = `${_t('wrong_word_meaning_prefix')}${word.vocabObject.c || word.vocabObject.m}`;
             const exampleContainer = card.querySelector('[data-field="exampleContainer"]');
             const exampleText = word.vocabObject.e || word.vocabObject.u;
-            if (exampleText) { card.querySelector('[data-field="example"]').textContent = exampleText; exampleContainer.classList.remove('hidden'); }
+            if (exampleText) { 
+                card.querySelector('[data-field="example"]').textContent = exampleText; 
+                exampleContainer.classList.remove('hidden'); 
+            } else {
+                exampleContainer.classList.add('hidden');
+            }
             
             const masteryButton = card.querySelector('[data-field="masteryBadge"]');
             const mInfo = masteryInfo[word.masteryLevel];
@@ -425,7 +430,7 @@ const WrongWordsManager = {
 
             // 读取文件内容
             const csvText = await this.readFileAsText(file);
-            const data = this.parseCsvToWrongWords(csvText);
+            const data = this.parseCsvToWrongWords(csvText, this.app.state.allVocabulary);
             
             if (!Array.isArray(data) || data.length === 0) {
                 throw new Error('CSV文件中没有有效的单词数据');
@@ -506,7 +511,7 @@ const WrongWordsManager = {
         }
     },
 
-    parseCsvToWrongWords(csvText) {
+    parseCsvToWrongWords(csvText, allVocabulary) {
         const lines = csvText.trim().split('\n');
         
         if (lines.length < 2) {
@@ -521,6 +526,8 @@ const WrongWordsManager = {
             word: ['单词', 'word', 'w'],
             kana: ['假名', 'kana', 'reading', 'r'],
             meaning: ['含义', 'meaning', 'c', 'm'],
+            example: ['例句', 'example', 'e', 'sentence'],
+            usage: ['用法', 'usage', 'u', 'use'],
             wrongCount: ['错误次数', 'wrong_count', 'wrongCount'],
             difficulty: ['难度', 'difficulty'],
             mastery: ['掌握度', 'mastery', 'masteryLevel'],
@@ -557,8 +564,19 @@ const WrongWordsManager = {
                 const word = this.cleanValue(values[columnMap.word] || values[0]);
                 const kana = this.cleanValue(values[columnMap.kana] || values[1] || word);
                 const meaning = this.cleanValue(values[columnMap.meaning] || values[2]);
+                const example = this.cleanValue(values[columnMap.example] || '');
+                const usage = this.cleanValue(values[columnMap.usage] || '');
                 
                 if (word && meaning) {
+                    // 从原始词汇数据中查找例句
+                    let foundVocab = null;
+                    if (allVocabulary) {
+                        for (const lesson of Object.values(allVocabulary)) {
+                            foundVocab = lesson.find(v => v.w === word || (v.r && v.r === kana));
+                            if (foundVocab) break;
+                        }
+                    }
+                    
                     const now = new Date().toISOString();
                     words.push({
                         word: word,
@@ -566,7 +584,9 @@ const WrongWordsManager = {
                             w: word,
                             r: kana,
                             c: meaning,
-                            m: meaning
+                            m: meaning,
+                            e: example || (foundVocab ? foundVocab.e : ''),
+                            u: usage || (foundVocab ? foundVocab.u : '')
                         },
                         wrongCount: parseInt(values[columnMap.wrongCount]) || 1,
                         firstWrongTimestamp: this.cleanValue(values[columnMap.firstWrongTime]) || now,
@@ -1382,8 +1402,8 @@ const VocabularyApp = {
         if (difficulty && this.difficultySelect) {
             this.difficultySelect.selectedValue = difficulty;
             this.difficultySelect.updateTriggerText();
-            this.difficultySelect.renderOptions();
         }
+        
     },
 
     updateUrlParams() {

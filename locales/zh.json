@@ -136,5 +136,11 @@
     "detailed_info_example_prefix": "例句：",
     "status_correct": "正解",
     "status_selected": "选择", 
-    "status_option": "选项"
+    "status_option": "选项",
+    "wrong_words_import_file": "导入文件",
+    "upload_processing": "正在处理文件...",
+    "upload_success": "导入成功！",
+    "upload_error": "导入失败",
+    "upload_success_detail": "成功导入 {count} 个单词",
+    "upload_error_detail": "请检查文件格式是否正确"
 }

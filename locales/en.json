@@ -136,5 +136,11 @@
     "detailed_info_example_prefix": "Example: ",
     "status_correct": "Correct",
     "status_selected": "Selected",
-    "status_option": "Option"
+    "status_option": "Option",
+    "wrong_words_import_file": "Import File",
+    "upload_processing": "Processing file...",
+    "upload_success": "Import successful!",
+    "upload_error": "Import failed",
+    "upload_success_detail": "Successfully imported {count} words",
+    "upload_error_detail": "Please check if the file format is correct"
 }

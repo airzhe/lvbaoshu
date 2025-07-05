@@ -181,6 +181,12 @@ const WrongWordsManager = {
             }
         });
 
+        // 文件上传功能
+        const fileInput = document.getElementById('csvFileInput');
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
+        }
+
         elements.wrongWordsListContainer.addEventListener('click', async e => {
             const actionTarget = e.target.closest('[data-action]');
             if (actionTarget) {
@@ -404,33 +410,99 @@ const WrongWordsManager = {
         document.body.removeChild(link);
     },
 
-    async importFromUrl(url) {
+    async handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // 显示处理状态
+        this.showUploadStatus('processing', _t('upload_processing'), '');
+
         try {
-            const response = await fetch(url, {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache'
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP错误 ${response.status}: ${response.statusText}`);
+            // 检查文件类型
+            if (!file.name.toLowerCase().endsWith('.csv') && file.type !== 'text/csv') {
+                throw new Error('请选择CSV格式的文件');
             }
-            
-            const csvText = await response.text();
+
+            // 读取文件内容
+            const csvText = await this.readFileAsText(file);
             const data = this.parseCsvToWrongWords(csvText);
             
             if (!Array.isArray(data) || data.length === 0) {
                 throw new Error('CSV文件中没有有效的单词数据');
             }
             
+            // 保存数据
             this.save(data);
-            return data.length;
+            this.renderAll();
+            
+            // 显示成功状态
+            this.showUploadStatus('success', _t('upload_success'), _t('upload_success_detail', { count: data.length }));
+            
+            // 3秒后隐藏状态
+            setTimeout(() => this.hideUploadStatus(), 3000);
             
         } catch (error) {
-            if (error.message.includes('CORS') || error.message.includes('fetch')) {
-                throw new Error('无法访问该URL，可能是跨域问题。请确保服务器允许跨域访问。');
-            }
-            throw error;
+            // 显示错误状态
+            this.showUploadStatus('error', _t('upload_error'), error.message || _t('upload_error_detail'));
+            
+            // 5秒后隐藏状态
+            setTimeout(() => this.hideUploadStatus(), 5000);
+        }
+        
+        // 清空文件输入
+        event.target.value = '';
+    },
+
+    readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = () => reject(new Error('文件读取失败'));
+            reader.readAsText(file, 'UTF-8');
+        });
+    },
+
+    showUploadStatus(type, message, detail) {
+        const statusEl = document.getElementById('uploadStatus');
+        const iconEl = document.getElementById('uploadIcon');
+        const messageEl = document.getElementById('uploadMessage');
+        const detailEl = document.getElementById('uploadDetail');
+        
+        if (!statusEl) return;
+        
+        // 清除之前的样式
+        statusEl.className = 'mb-4 p-4 rounded-xl border-l-4 transition-all duration-300 animate-[slideDown_0.3s_ease]';
+        
+        let iconHtml = '';
+        let statusClass = '';
+        
+        switch (type) {
+            case 'processing':
+                statusClass = 'bg-blue-50 dark:bg-blue-900/20 border-blue-400 text-blue-800 dark:text-blue-200';
+                iconHtml = '<div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>';
+                break;
+            case 'success':
+                statusClass = 'bg-green-50 dark:bg-green-900/20 border-green-400 text-green-800 dark:text-green-200';
+                iconHtml = '<svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                break;
+            case 'error':
+                statusClass = 'bg-red-50 dark:bg-red-900/20 border-red-400 text-red-800 dark:text-red-200';
+                iconHtml = '<svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                break;
+        }
+        
+        statusEl.className += ` ${statusClass}`;
+        iconEl.innerHTML = iconHtml;
+        messageEl.textContent = message;
+        detailEl.textContent = detail;
+        
+        statusEl.classList.remove('hidden');
+    },
+
+    hideUploadStatus() {
+        const statusEl = document.getElementById('uploadStatus');
+        if (statusEl) {
+            statusEl.classList.add('hidden');
         }
     },
 
@@ -587,7 +659,6 @@ const VocabularyApp = {
             this.elements.startQuizButton.disabled = false;
             this.elements.startQuizButton.textContent = _t('btn_start_practice');
             this.initializeAppBasedOnURL(); WrongWordsManager.init(this);
-            this.checkUrlImport(); // 检查URL导入参数
         }).catch(error => { console.error("Failed to load translations:", error); this.elements.startQuizButton.textContent = _t('load_failed'); this.showMessageBox('load_failed'); });
     },
     
@@ -1285,24 +1356,6 @@ const VocabularyApp = {
         this.state.touchstartX = 0; this.state.touchstartY = 0; this.state.touchendX = 0; this.state.touchendY = 0; this.state.touchstartTime = 0;
     },
     
-    checkUrlImport() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const importUrl = urlParams.get('import_url');
-        
-        if (importUrl) {
-            WrongWordsManager.importFromUrl(importUrl)
-                .then((count) => {
-                    alert(`成功导入 ${count} 个单词到错词本！`);
-                    // 清除URL参数
-                    const newUrl = new URL(window.location);
-                    newUrl.searchParams.delete('import_url');
-                    window.history.replaceState({}, '', newUrl);
-                })
-                .catch(error => {
-                    alert(`导入失败: ${error.message}`);
-                });
-        }
-    },
 
     loadUrlParams() {
         const urlParams = new URLSearchParams(window.location.search);

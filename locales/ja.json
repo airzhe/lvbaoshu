@@ -142,6 +142,7 @@
    "upload_success": "読込成功！",
    "upload_error": "読込失敗",
    "upload_success_detail": "{count}個の単語を読み込みました",
-   "upload_error_detail": "ファイル形式をご確認ください"
+   "upload_error_detail": "ファイル形式をご確認ください",
+    "more_actions": "その他"
    
 }

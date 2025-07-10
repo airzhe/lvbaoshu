@@ -952,3 +952,18 @@ body.dark #wrongWordsModal>div {
         display: none !important;
     }
 }
+
+#wrongWordSort {
+    margin-right: auto;
+}
+.wwm-card-badge {
+    padding: 0.25rem 0.75rem;
+}
+.wwm-delete-btn {
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+}

@@ -163,9 +163,22 @@ const WrongWordsManager = {
         elements.wrongWordFilter.addEventListener('change', () => this.renderList());
         elements.wrongWordSort.addEventListener('change', () => this.renderList());
         elements.startWrongWordsQuizBtn.addEventListener('click', () => this.startQuiz());
-        elements.exportWrongWordsBtn.addEventListener('click', () => this.export());
+        
+        // New "More Actions" dropdown logic
+        elements.moreActionsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            elements.moreActionsDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', (e) => {
+            if (!elements.moreActionsContainer.contains(e.target)) {
+                elements.moreActionsDropdown.classList.add('hidden');
+            }
+        });
+
+        elements.exportWrongWordsBtn.addEventListener('click', () => { this.export(); elements.moreActionsDropdown.classList.add('hidden'); });
         
         elements.clearFilteredWrongWordsBtn.addEventListener('click', async () => {
+            elements.moreActionsDropdown.classList.add('hidden');
             const filteredWords = this.getFilteredAndSorted();
             if (filteredWords.length === 0) {
                 this.app.showMessageBox('no_words_to_delete');
@@ -181,15 +194,20 @@ const WrongWordsManager = {
             }
         });
 
-        // 文件上传功能
         const fileInput = document.getElementById('csvFileInput');
         if (fileInput) {
-            fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
+            fileInput.addEventListener('change', (e) => {
+                this.handleFileUpload(e);
+                elements.moreActionsDropdown.classList.add('hidden');
+            });
         }
 
         elements.wrongWordsListContainer.addEventListener('click', async e => {
+            const card = e.target.closest('.wwm-card');
             const actionTarget = e.target.closest('[data-action]');
-            if (actionTarget) {
+            
+            if (actionTarget) { // An action button was clicked (delete, mastery)
+                e.stopPropagation(); // Prevent card click from firing
                 await this.handleCardInteraction(actionTarget);
             }
         });
@@ -215,7 +233,7 @@ const WrongWordsManager = {
         } else { words.push({ word: vocab.w, vocabObject: vocab, wrongCount: 1, firstWrongTimestamp: now, lastWrongTimestamp: now, masteryLevel: 'new', difficulty: 3, history: [{ timestamp: now, mode }] }); }
         this.save(words);
     },
-    
+
     promoteMastery(vocabObject) {
         let words = this.get();
         const wordIndex = words.findIndex(w => w.word === vocabObject.w);
@@ -243,14 +261,11 @@ const WrongWordsManager = {
                     this.save(words);
                     this.renderAll();
                 }
-                return;
+                return; // Important to return early
             case 'edit-mastery':
                 const masteryLevels = ['new', 'learning', 'familiar'];
                 const currentMasteryIndex = masteryLevels.indexOf(wordData.masteryLevel);
                 wordData.masteryLevel = masteryLevels[(currentMasteryIndex + 1) % masteryLevels.length];
-                break;
-            case 'edit-difficulty':
-                wordData.difficulty = ((wordData.difficulty || 3) % 5) + 1;
                 break;
             default: return;
         }
@@ -264,8 +279,7 @@ const WrongWordsManager = {
             const filterValue = this.app.elements.wrongWordFilter.value;
             const shouldDisappear = (filterValue === 'new' && wordData.masteryLevel !== 'new') ||
                 (filterValue === 'learning' && wordData.masteryLevel !== 'learning') ||
-                (filterValue === 'familiar' && wordData.masteryLevel !== 'familiar') ||
-                (filterValue.startsWith('difficulty-') && wordData.difficulty !== parseInt(filterValue.split('-')[1]));
+                (filterValue === 'familiar' && wordData.masteryLevel !== 'familiar');
 
             if (shouldDisappear) {
                 cardElement.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
@@ -279,25 +293,23 @@ const WrongWordsManager = {
     updateCardUI(cardElement, wordData) {
         if (!cardElement || !wordData) return;
         const masteryInfo = {
-            new: { text: _t('wrong_word_mastery_new'), classes: 'bg-bg-blue-600/10 text-blue-600 dark:bg-bg-blue-600/20 dark:text-blue-300' },
-            learning: { text: _t('wrong_word_mastery_learning'), classes: 'bg-bg-violet-600/10 text-violet-600 dark:bg-bg-violet-600/20 dark:text-purple-300' },
-            familiar: { text: _t('wrong_word_mastery_familiar'), classes: 'bg-bg-emerald-600/20 text-emerald-600 dark:bg-bg-emerald-600/30 dark:text-green-300' }
+            new: { text: _t('wrong_word_mastery_new'), classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
+            learning: { text: _t('wrong_word_mastery_learning'), classes: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-purple-300' },
+            familiar: { text: _t('wrong_word_mastery_familiar'), classes: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-green-300' }
         };
-        const difficultyInfo = {
-            1: { text: _t('wrong_word_difficulty', {level: 1}), classes: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' }, 2: { text: _t('wrong_word_difficulty', {level: 2}), classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' }, 3: { text: _t('wrong_word_difficulty', {level: 3}), classes: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400' }, 4: { text: _t('wrong_word_difficulty', {level: 4}), classes: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400' }, 5: { text: _t('wrong_word_difficulty', {level: 5}), classes: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' }
-        };
-        const baseBadgeClasses = 'wwm-card-badge border-0 transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bg-indigo-500';
+        
+        const baseBadgeClasses = 'wwm-card-badge flex-shrink-0 border-0 transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
         const masteryButton = cardElement.querySelector('[data-field="masteryBadge"]');
         const mInfo = masteryInfo[wordData.masteryLevel];
-        if(masteryButton && mInfo) { masteryButton.className = `${baseBadgeClasses} ${mInfo.classes}`; masteryButton.textContent = mInfo.text; }
-        const difficultyButton = cardElement.querySelector('[data-field="difficultyBadge"]');
-        const dInfo = difficultyInfo[wordData.difficulty];
-        if(difficultyButton && dInfo) { difficultyButton.className = `${baseBadgeClasses} ${dInfo.classes}`; difficultyButton.textContent = dInfo.text; }
+        if(masteryButton && mInfo) { 
+            masteryButton.className = `${baseBadgeClasses} ${mInfo.classes}`; 
+            masteryButton.textContent = mInfo.text; 
+        }
     },
     
     populateFilters() {
-        this.app.elements.wrongWordFilter.innerHTML = `<option value="all">${_t('wrong_words_filter_all')}</option><option value="new">${_t('wrong_words_filter_new')}</option><option value="learning">${_t('wrong_words_filter_learning')}</option><option value="familiar">${_t('wrong_words_filter_familiar')}</option>` + [1,2,3,4,5].map(l => `<option value="difficulty-${l}">${_t('wrong_words_filter_difficulty', { level: l })}</option>`).join('');
-        this.app.elements.wrongWordSort.innerHTML = `<option value="recent">${_t('wrong_words_sort_recent')}</option><option value="frequency">${_t('wrong_words_sort_frequency')}</option><option value="difficulty">${_t('wrong_words_sort_difficulty')}</option><option value="alphabetical">${_t('wrong_words_sort_alphabetical')}</option>`;
+        this.app.elements.wrongWordFilter.innerHTML = `<option value="all">${_t('wrong_words_filter_all')}</option><option value="new">${_t('wrong_words_filter_new')}</option><option value="learning">${_t('wrong_words_filter_learning')}</option><option value="familiar">${_t('wrong_words_filter_familiar')}</option>`;
+        this.app.elements.wrongWordSort.innerHTML = `<option value="recent">${_t('wrong_words_sort_recent')}</option><option value="frequency">${_t('wrong_words_sort_frequency')}</option><option value="alphabetical">${_t('wrong_words_sort_alphabetical')}</option>`;
     },
     
     getFilteredAndSorted() {
@@ -307,14 +319,12 @@ const WrongWordsManager = {
         words = words.filter(word => {
             if (filter === 'all') return true;
             if (['new', 'learning', 'familiar'].includes(filter)) return word.masteryLevel === filter;
-            if (filter.startsWith('difficulty-')) return word.difficulty === parseInt(filter.split('-')[1]);
             return true;
         });
         return words.sort((a, b) => {
             switch (sort) {
                 case 'recent': return new Date(b.lastWrongTimestamp) - new Date(a.lastWrongTimestamp);
                 case 'frequency': return b.wrongCount - a.wrongCount;
-                case 'difficulty': return (b.difficulty || 0) - (a.difficulty || 0);
                 case 'alphabetical': return (a.vocabObject.r || a.vocabObject.w).localeCompare(b.vocabObject.r || b.vocabObject.w, this.app.state.currentLanguage);
                 default: return 0;
             }
@@ -340,12 +350,9 @@ const WrongWordsManager = {
         }
         
         const masteryInfo = {
-            new: { text: _t('wrong_word_mastery_new'), classes: 'bg-bg-blue-600/10 text-blue-600 dark:bg-bg-blue-600/20 dark:text-blue-300' },
-            learning: { text: _t('wrong_word_mastery_learning'), classes: 'bg-bg-violet-600/10 text-violet-600 dark:bg-bg-violet-600/20 dark:text-purple-300' },
-            familiar: { text: _t('wrong_word_mastery_familiar'), classes: 'bg-bg-emerald-600/20 text-emerald-600 dark:bg-bg-emerald-600/30 dark:text-green-300' }
-        };
-        const difficultyInfo = {
-            1: { text: _t('wrong_word_difficulty', {level: 1}), classes: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' }, 2: { text: _t('wrong_word_difficulty', {level: 2}), classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' }, 3: { text: _t('wrong_word_difficulty', {level: 3}), classes: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400' }, 4: { text: _t('wrong_word_difficulty', {level: 4}), classes: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400' }, 5: { text: _t('wrong_word_difficulty', {level: 5}), classes: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' }
+            new: { text: _t('wrong_word_mastery_new'), classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
+            learning: { text: _t('wrong_word_mastery_learning'), classes: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-purple-300' },
+            familiar: { text: _t('wrong_word_mastery_familiar'), classes: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-green-300' }
         };
 
         const fragment = document.createDocumentFragment();
@@ -353,32 +360,35 @@ const WrongWordsManager = {
             const card = cardTemplate.content.cloneNode(true);
             const cardDiv = card.querySelector('[data-word]');
             cardDiv.dataset.word = word.word;
-            cardDiv.style.opacity = '1';
-            card.querySelector('[data-field="word"]').textContent = word.vocabObject.w;
-            card.querySelector('[data-field="reading"]').textContent = word.vocabObject.r;
-            card.querySelector('[data-field="meaning"]').textContent = `${_t('wrong_word_meaning_prefix')}${word.vocabObject.c || word.vocabObject.m}`;
+            
+            const wordReading = word.vocabObject.r && word.vocabObject.r !== word.vocabObject.w 
+                ? `${word.vocabObject.w} <span class="text-base font-normal text-slate-500 dark:text-slate-400">(${word.vocabObject.r})</span>`
+                : word.vocabObject.w;
+            card.querySelector('[data-field="word"]').innerHTML = wordReading;
+            card.querySelector('[data-field="meaning"]').textContent = `${word.vocabObject.c || word.vocabObject.m}`;
+            
             const exampleContainer = card.querySelector('[data-field="exampleContainer"]');
+            const exampleTextEl = card.querySelector('[data-field="example"]');
             const exampleText = word.vocabObject.e || word.vocabObject.u;
             if (exampleText) { 
-                card.querySelector('[data-field="example"]').textContent = exampleText; 
-                exampleContainer.classList.remove('hidden'); 
+                exampleTextEl.textContent = exampleText; 
+                exampleContainer.classList.remove('hidden'); // Ensure it's visible if example exists
             } else {
                 exampleContainer.classList.add('hidden');
             }
             
             const masteryButton = card.querySelector('[data-field="masteryBadge"]');
             const mInfo = masteryInfo[word.masteryLevel];
-            if(mInfo) { masteryButton.className += ` ${mInfo.classes}`; masteryButton.textContent = mInfo.text; }
+            if(mInfo) { 
+                
+                masteryButton.className += ` ${mInfo.classes}`; 
+                masteryButton.textContent = mInfo.text; 
+            }
             masteryButton.title = _t('wrong_word_edit_mastery_title');
-            
-            const difficultyButton = card.querySelector('[data-field="difficultyBadge"]');
-            const dInfo = difficultyInfo[word.difficulty];
-            if(dInfo) { difficultyButton.className += ` ${dInfo.classes}`; difficultyButton.textContent = dInfo.text; }
-            difficultyButton.title = _t('wrong_word_edit_difficulty_title');
             
             card.querySelector('[data-action="delete"]').title = _t('wrong_word_delete');
             card.querySelector('[data-field="wrongCount"]').textContent = _t('wrong_word_count', { count: word.wrongCount });
-            card.querySelector('[data-field="lastWrongDate"]').textContent = _t('wrong_word_last_wrong_date', { date: new Date(word.lastWrongTimestamp).toLocaleString(this.app.state.currentLanguage, { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) });
+            card.querySelector('[data-field="lastWrongDate"]').textContent = _t('wrong_word_last_wrong_date', { date: new Date(word.lastWrongTimestamp).toLocaleString(this.app.state.currentLanguage, { year: '2-digit', month: '2-digit', day: '2-digit' }) });
             fragment.appendChild(card);
         });
         listContainer.appendChild(fragment);
@@ -691,7 +701,10 @@ const VocabularyApp = {
             wrongWordsModal: document.getElementById('wrongWordsModal'), wrongWordsOpenBtn: document.getElementById('wrongWordsOpenBtn'), wrongWordsCloseBtn: document.getElementById('wrongWordsCloseBtn'),
             wrongWordsListContainer: document.getElementById('wrongWordsList'),
             wrongWordFilter: document.getElementById('wrongWordFilter'), wrongWordSort: document.getElementById('wrongWordSort'),
-            startWrongWordsQuizBtn: document.getElementById('startWrongWordsQuizBtn'), exportWrongWordsBtn: document.getElementById('exportWrongWordsBtn'),
+            startWrongWordsQuizBtn: document.getElementById('startWrongWordsQuizBtn'),
+            moreActionsContainer: document.getElementById('moreActionsContainer'),
+            moreActionsBtn: document.getElementById('moreActionsBtn'), moreActionsDropdown: document.getElementById('moreActionsDropdown'),
+            importFileBtn: document.getElementById('importFileBtn'), exportWrongWordsBtn: document.getElementById('exportWrongWordsBtn'),
             clearFilteredWrongWordsBtn: document.getElementById('clearFilteredWrongWordsBtn'),
             wrongWordCardTemplate: document.getElementById('wrongWordCardTemplate')
         };
@@ -838,6 +851,10 @@ const VocabularyApp = {
                 element.innerHTML = translation; 
             } 
         }); 
+        document.querySelectorAll('[data-i18n-title]').forEach(element => {
+            const key = element.getAttribute('data-i18n-title');
+            element.title = _t(key);
+        });
         document.title = _t('page_title'); 
         this.modeSelect.setOptions([ { value: 'reading', label: _t('mode_reading') }, { value: 'meaning', label: _t('mode_meaning') }, { value: 'usage', label: _t('mode_usage') }, { value: 'mixed', label: _t('mode_mixed') } ]); 
         this.difficultySelect.setOptions([ { value: '5', label: _t('count_5') }, { value: '10', label: _t('count_10') }, { value: '20', label: _t('count_20') }, { value: '30', label: _t('count_30') }, { value: 'all', label: _t('count_all') } ]); 

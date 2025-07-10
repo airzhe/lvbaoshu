@@ -773,7 +773,7 @@ const VocabularyApp = {
     // --- NEW: Helper function to play word audio ---
     playWordAudio(word) {
         // 1. 定义一个当前支持音频的级别列表
-        const supportedLevels = ['n2']; // 将来支持了 N1，就改成 ['n1', 'n2']
+        const supportedLevels = ['n1','n2']; // 将来支持了 N1，就改成 ['n1', 'n2']
         // 2. 获取当前级别
         const currentLevel = this.state.currentJLPTLevel.toLowerCase();
         // 3. 检查当前级别是否在支持列表中
@@ -1138,7 +1138,6 @@ const VocabularyApp = {
         if (!historyEntry) return '';
         const meaningKey = this.state.currentLanguage === 'en' ? 'm' : 'c';
 
-        // 对选项进行排序：错误答案第一，正确答案第二，其他选项最后
         const sortedOptions = question.options.map((option, index) => ({ option, index }))
             .sort((a, b) => {
                 const aIsSelected = a.index === historyEntry.selectedOptionIndex;
@@ -1146,13 +1145,13 @@ const VocabularyApp = {
                 const aIsCorrect = a.option.correct;
                 const bIsCorrect = b.option.correct;
                 
-                // 如果用户选择了错误答案，它排第一
-                if (aIsSelected && !aIsCorrect) return -1;
-                if (bIsSelected && !bIsCorrect) return 1;
-                
-                // 正确答案排第二
+                // 正确答案排第1
                 if (aIsCorrect && !bIsCorrect) return -1;
                 if (bIsCorrect && !aIsCorrect) return 1;
+
+                // 如果用户选择了错误答案，它排第2
+                if (aIsSelected && !aIsCorrect) return -1;
+                if (bIsSelected && !bIsCorrect) return 1;
                 
                 // 其他保持原顺序
                 return a.index - b.index;

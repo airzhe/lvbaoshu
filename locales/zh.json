@@ -142,5 +142,6 @@
     "upload_success": "导入成功！",
     "upload_error": "导入失败",
     "upload_success_detail": "成功导入 {count} 个单词",
-    "upload_error_detail": "请检查文件格式是否正确"
+    "upload_error_detail": "请检查文件格式是否正确",
+    "more_actions": "更多操作"
 }

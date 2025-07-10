@@ -142,5 +142,6 @@
     "upload_success": "Import successful!",
     "upload_error": "Import failed",
     "upload_success_detail": "Successfully imported {count} words",
-    "upload_error_detail": "Please check if the file format is correct"
+    "upload_error_detail": "Please check if the file format is correct",
+    "more_actions": "More"
 }

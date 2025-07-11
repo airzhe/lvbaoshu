@@ -893,7 +893,7 @@ const VocabularyApp = {
         const delay = isCorrect ? this.constants.NEXT_QUESTION_DELAY_CORRECT : this.constants.NEXT_QUESTION_DELAY_INCORRECT;
         this.state.nextQuestionTimeoutId = setTimeout(() => this.nextQuestion(), delay);
     },
-    
+
     hideMessageBox() {
         this.elements.messageBox.classList.add('hidden');
     },
@@ -905,7 +905,7 @@ const VocabularyApp = {
             if (buttons.length === 0) {
                 buttons.push({
                     textKey: 'message_box_ok',
-                    classes: 'from-indigo-500 to-purple-600 text-white',
+                    classes: 'from-indigo-500 to-purple-600',
                     value: true
                 });
             }

@@ -965,7 +965,7 @@ body.dark #wrongWordsModal>div {
 
 /* 超宽横屏设备特殊优化（如平板横屏） */
 @media (orientation: landscape) and (min-width: 768px) and (max-height: 600px) {
-    /* 更宽屏幕可以使用更多的水平空间 */
+    /* 更宽屏幕可以使用��多的水平空间 */
     #quizContainer.immersive-active {
         padding: 1rem 2rem .5rem;
     }
@@ -1002,4 +1002,27 @@ body.dark #wrongWordsModal>div {
     align-items: center;
     justify-content: center;
     border-radius: 0.75rem;
+}
+
+@layer utilities {
+    @keyframes shine-effect {
+        0% { transform: translateX(-100%) skewX(-25deg); }
+        100% { transform: translateX(200%) skewX(-25deg); }
+    }
+
+    .shine-effect {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .shine-effect::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+        animation: shine-effect 3s infinite;
+    }
 }

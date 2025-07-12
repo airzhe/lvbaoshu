@@ -785,6 +785,10 @@ const VocabularyApp = {
 
     // --- NEW: Helper function to play word audio ---
     playWordAudio(word) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('noaudio')) {
+            return;
+        }
         // 1. 定义一个当前支持音频的级别列表
         const supportedLevels = ['n1','n2']; // 将来支持了 N1，就改成 ['n1', 'n2']
         // 2. 获取当前级别

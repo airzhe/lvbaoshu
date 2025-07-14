@@ -1332,7 +1332,28 @@ const VocabularyApp = {
         }
         else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') this.navigateToPreviousQuestion();
         else if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') this.navigateToNextQuestion();
-        else if (e.key >= '1' && e.key <= '4' && !this.state.isInputLocked) this.submitAnswer(parseInt(e.key) - 1);
+        else if (e.key >= '1' && e.key <= '4') {
+            if (this.state.isInputLocked) return;
+
+            const hasBeenAnswered = this.state.answerLog.some(log => log.questionIndex === this.state.currentQuestion);
+
+            if (hasBeenAnswered) {
+                // Review mode: play audio and navigate
+                const selectedIndex = parseInt(e.key) - 1;
+                const question = this.state.currentQuiz[this.state.currentQuestion];
+                if (question && question.options[selectedIndex]) {
+                    const wordToPlay = question.options[selectedIndex].vocab.w;
+                    if (wordToPlay) {
+                        this.playWordAudio(wordToPlay);
+                    }
+                }
+                // A short delay to allow audio to start playing before navigating
+                setTimeout(() => this.navigateToNextQuestion(), 150);
+            } else {
+                // Answering mode: submit the answer
+                this.submitAnswer(parseInt(e.key) - 1);
+            }
+        }
     },
     
     navigateToPreviousQuestion() { 
